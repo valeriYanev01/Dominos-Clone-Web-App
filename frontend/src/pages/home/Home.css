@@ -1,6 +1,3 @@
-.homepage {
-  height: 100svh;
-  /* background: url("/images/banner_1.jpg");
-  background-repeat: no-repeat;
-  background-size: cover; */
+.heaader {
+  position: relative;
 }

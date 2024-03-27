@@ -1,5 +1,6 @@
 import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
+import Deals from "../../components/Homepage/Deals";
 
 const Home = () => {
   return (
@@ -7,19 +8,7 @@ const Home = () => {
       <Navbar />
 
       <div className="header">
-        <ul>
-          <li>
-            <img src="/images/banner_1.jpg" />
-            <p>Text</p>
-          </li>
-          <li>
-            <img src="/images/banner_2.jpg" />
-            <p>Text</p>
-          </li>
-          <li>
-            <img src="/images/banner_3.jpg" />
-          </li>
-        </ul>
+        <Deals />
       </div>
     </div>
   );

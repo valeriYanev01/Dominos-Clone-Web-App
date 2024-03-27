@@ -4,6 +4,8 @@
   top: 0;
   justify-content: space-between;
   width: 100%;
+  padding: 10px 0;
+  z-index: 99;
 }
 
 .navigation-list-container-links > li > a,
@@ -22,7 +24,24 @@
 }
 
 .logo {
-  width: 200px;
+  width: 250px;
+  display: inline-block;
+}
+
+.logo-letter {
+  fill: white;
+}
+
+.logo-cube-outer {
+  fill: #ffffff;
+}
+
+.logo-blue-part {
+  fill: #0078ae;
+}
+
+.logo-red-part {
+  fill: #e31837;
 }
 
 .navigation-hiring {
@@ -31,11 +50,13 @@
   background: #bef5ca;
   padding: 2px 11px;
   border-radius: 50px;
-  margin: 0 25px;
+  margin: 20px 25px 0 25px;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  font-family: dominos-font-light;
+  font-family: dominos-font-regular;
+  letter-spacing: 1px;
+  font-size: 17px;
 }
 
 .hiring-dot {
