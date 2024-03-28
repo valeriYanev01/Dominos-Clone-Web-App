@@ -1,6 +1,6 @@
 .deal-container {
   position: absolute;
-  z-index: 999;
+  z-index: 2;
   top: 130px;
   left: 230px;
   width: 550px;

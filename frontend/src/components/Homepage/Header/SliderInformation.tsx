@@ -1,8 +1,8 @@
-import "./DealInformation.css";
-import { DealInfo } from "../../types/Home";
+import "./SliderInformation.css";
+import { SliderInfo } from "../../../types/Home";
 import React from "react";
 
-const DealInformation: React.FC<DealInfo> = ({ caption, valid, desc }) => {
+const SliderInformation: React.FC<SliderInfo> = ({ caption, valid, desc }) => {
   return (
     <div className="deal-container">
       <div className="second-layer">
@@ -14,4 +14,4 @@ const DealInformation: React.FC<DealInfo> = ({ caption, valid, desc }) => {
   );
 };
 
-export default DealInformation;
+export default SliderInformation;

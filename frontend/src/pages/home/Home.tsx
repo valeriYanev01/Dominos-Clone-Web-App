@@ -1,6 +1,8 @@
 import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
-import Deals from "../../components/Homepage/Deals";
+import Slider from "../../components/Homepage/Header/Slider";
+import Deals from "../../components/Homepage/Deals/Deals";
+import Gadgets from "../../components/Homepage/Gadgets";
 
 const Home = () => {
   return (
@@ -8,8 +10,12 @@ const Home = () => {
       <Navbar />
 
       <div className="header">
-        <Deals />
+        <Slider />
       </div>
+
+      <Deals />
+
+      <Gadgets />
     </div>
   );
 };

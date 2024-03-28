@@ -4,15 +4,20 @@ import { Link } from "react-router-dom";
 import { NavColors } from "../../types/Navbar";
 
 const Navbar = () => {
-  const [navColors, setNavColors] = useState<NavColors>({ navBg: "transparent", svgLetters: "#fff", link: "#fff" });
+  const [navColors, setNavColors] = useState<NavColors>({
+    navBg: "transparent",
+    svgLetters: "#fff",
+    link: "#fff",
+    navShadow: "none",
+  });
 
   useEffect(() => {
     const handleScroll = () => {
       const newScrollPosition = window.scrollY;
       setNavColors(
         newScrollPosition > 50
-          ? { navBg: "white", svgLetters: "#0078ae", link: "#898989" }
-          : { navBg: "transparent", svgLetters: "#fff", link: "#fff" }
+          ? { navBg: "white", svgLetters: "#0078ae", link: "#898989", navShadow: "0 2px 2px rgba(0,0,0,.15)" }
+          : { navBg: "transparent", svgLetters: "#fff", link: "#fff", navShadow: "none" }
       );
     };
     window.addEventListener("scroll", handleScroll);
@@ -23,7 +28,14 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="navigation-container" style={{ background: navColors.navBg }}>
+    <nav
+      className="navigation-container"
+      style={{
+        background: navColors.navBg,
+        transition: "all 0.4s",
+        boxShadow: navColors.navShadow,
+      }}
+    >
       <ul className="navigation-list-container-logo">
         <li>
           <Link to="/" className="logo">
@@ -109,16 +121,16 @@ const Navbar = () => {
 
       <ul className="navigation-list-container-links">
         <li>
-          <span style={{ color: navColors.link }}>BG | </span>
-          <span style={{ color: navColors.link }}>EN</span>
+          <span style={{ color: navColors.link, transition: "all 0.4s" }}>BG | </span>
+          <span style={{ color: navColors.link, transition: "all 0.4s" }}>EN</span>
         </li>
         <li>
-          <Link to="/menu" style={{ color: navColors.link }}>
+          <Link to="/menu" style={{ color: navColors.link, transition: "all 0.4s" }}>
             MENU
           </Link>
         </li>
         <li>
-          <Link to="/menu/deals" style={{ color: navColors.link }}>
+          <Link to="/menu/deals" style={{ color: navColors.link, transition: "all 0.4s" }}>
             DEALS
           </Link>
         </li>
