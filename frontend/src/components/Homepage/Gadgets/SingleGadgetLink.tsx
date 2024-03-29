@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { GadgetInfo } from "../../../types/Home";
 import "./SingleGadgetLink.css";
 
-const SingleGadgetLink: React.FC<GadgetInfo> = ({ bgColor, title, description, btnBg, btnLink, btnText }) => {
+const SingleGadgetLink: React.FC<GadgetInfo> = ({ bgColor, btnColor, title, description, btnBg, btnLink, btnText }) => {
   return (
     <div className="single-gadget-link" style={{ backgroundColor: bgColor }}>
       <div className="gadget-title-container">
@@ -12,7 +12,7 @@ const SingleGadgetLink: React.FC<GadgetInfo> = ({ bgColor, title, description, b
       </div>
       <p className="gadget-description">{description}</p>
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <Link style={{ backgroundColor: btnBg }} to={btnLink} className="gadget-btn">
+        <Link style={{ backgroundColor: btnBg, color: btnColor }} to={btnLink} className="gadget-btn">
           {btnText}
         </Link>
       </div>

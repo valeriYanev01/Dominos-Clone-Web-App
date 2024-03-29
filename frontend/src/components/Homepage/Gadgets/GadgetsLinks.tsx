@@ -13,17 +13,19 @@ const GadgetsLinks = () => {
           btnBg="#000"
           btnLink=""
           btnText="TRACK YOUR ORDER NOW!"
+          btnColor="#fff"
         />
       </div>
 
       <div>
         <SingleGadgetLink
           bgColor="#e31837"
-          title="Careers"
+          title="CAREERS"
           description="Please fill the application form"
           btnBg="#000"
           btnLink=""
           btnText="JOB APPLICATION"
+          btnColor="#fff"
         />
       </div>
 
@@ -32,9 +34,10 @@ const GadgetsLinks = () => {
           bgColor="#006491"
           title="SUBSCRIBE NOW"
           description="Sign up on our newsletter and be the first to know of our hot deals!"
-          btnBg="#000"
+          btnBg="#FFF"
           btnLink=""
-          btnText="Subscribe"
+          btnText="SUBSCRIBE"
+          btnColor="#0f74a8"
         />
       </div>
 

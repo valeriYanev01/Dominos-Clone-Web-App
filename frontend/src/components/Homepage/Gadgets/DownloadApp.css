@@ -1,5 +1,50 @@
 .gadgets-download {
   grid-column: 3/4;
-  grid-row: 1/3;
-  width: 400px;
+  grid-row: 1/4;
+  height: 100%;
+  background-color: #323232;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.gadgets-download-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gadgets-download-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.gadgets-download-desc-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.gadgets-download-desc {
+  font-size: 18px;
+  text-align: center;
+  font-weight: 100 !important;
+  line-height: 0px;
+}
+
+.gadgets-download-platform-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-top: 30px;
+}
+
+.gadgets-download-platform {
+  width: 75px;
+}
+
+.gadgets-download-phone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

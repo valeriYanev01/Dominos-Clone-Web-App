@@ -18,4 +18,5 @@ export interface GadgetInfo {
   btnBg: "#000" | "#FFF",
   btnLink: string,
   btnText: string
+  btnColor: "#fff" | "#0f74a8"
 }
