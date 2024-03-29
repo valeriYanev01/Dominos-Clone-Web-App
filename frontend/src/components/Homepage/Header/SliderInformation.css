@@ -4,29 +4,41 @@
   top: 130px;
   left: 230px;
   width: 550px;
-  background: white;
-  padding: 5px;
-  border: 2px solid #888;
-  mask-image: radial-gradient(circle 10px at 0 0, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 100% 0, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 0 100%, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 100% 100%, transparent 0, transparent 10px, black 11px);
+  padding: 10px;
+  background-color: white;
+  border: 2px solid lightgray;
+  background: radial-gradient(circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(circle at bottom right, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(circle at bottom left, transparent 8px, lightgray 8px 10px, white 10px);
+
+  mask-image: radial-gradient(circle at top left, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at top right, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at bottom left, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at bottom right, transparent 0, transparent 10px, black 10px);
   mask-position: top left, top right, bottom left, bottom right;
   mask-repeat: no-repeat;
   mask-size: 60% 60%;
 }
 
 .second-layer {
-  background: white;
+  background-color: white;
+  background-image: radial-gradient(10px circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(10px circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(10px circle at bottom left, transparent 8px, lightgray 8px 10px, transparent 0 0),
+    radial-gradient(10px circle at bottom right, transparent 8px, lightgray 8px 10px, white 10px);
+  z-index: 4;
   padding: 30px;
-  border: 2px solid #888;
-  mask-image: radial-gradient(circle 10px at 0 0, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 100% 0, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 0 100%, transparent 0, transparent 10px, black 11px),
-    radial-gradient(circle 10px at 100% 100%, transparent 0, transparent 10px, black 11px);
+  mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at 100% 0, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at 0 100%, transparent 0, transparent 10px, black 10px),
+    radial-gradient(circle at 100% 100%, transparent 0, transparent 10px, black 10px);
   mask-position: top left, top right, bottom left, bottom right;
   mask-repeat: no-repeat;
-  mask-size: 50% 50%;
+  mask-size: 60% 60%;
+  border: 2px solid lightgray;
+  max-height: 330px;
+  max-width: 525px;
 }
 
 .deal-caption {
@@ -41,6 +53,7 @@
 }
 
 .deal-valid {
+  position: relative;
   font-size: 24px;
   line-height: 28px;
   font-weight: 900;
@@ -48,6 +61,20 @@
   text-align: center;
   border-top: dotted lightgray 2px;
   border-bottom: dotted lightgray 2px;
+}
+
+.deal-decor {
+  height: 30px;
+}
+
+.deal-decor-left {
+  position: absolute;
+  left: 0;
+}
+
+.deal-decor-right {
+  position: absolute;
+  right: 0;
 }
 
 .deal-desc {
