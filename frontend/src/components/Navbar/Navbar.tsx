@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { NavColors } from "../../types/Navbar";
+import { Page } from "../../types/Menu";
 
-const Navbar = () => {
+const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
     navBg: "transparent",
     svgLetters: "#fff",
@@ -11,21 +12,31 @@ const Navbar = () => {
     navShadow: "none",
   });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const newScrollPosition = window.scrollY;
-      setNavColors(
-        newScrollPosition > 50
-          ? { navBg: "white", svgLetters: "#0078ae", link: "#898989", navShadow: "0 2px 2px rgba(0,0,0,.15)" }
-          : { navBg: "transparent", svgLetters: "#fff", link: "#fff", navShadow: "none" }
-      );
-    };
-    window.addEventListener("scroll", handleScroll);
+  console.log(page);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  useEffect(() => {
+    if (page === "home") {
+      const handleScroll = () => {
+        setNavColors(
+          window.scrollY > 50
+            ? { navBg: "white", svgLetters: "#0078ae", link: "#898989", navShadow: "0 2px 2px rgba(0,0,0,.15)" }
+            : { navBg: "transparent", svgLetters: "#fff", link: "#fff", navShadow: "none" }
+        );
+      };
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    } else {
+      setNavColors({
+        navBg: "white",
+        svgLetters: "#0078ae",
+        link: "#898989",
+        navShadow: "0 2px 2px rgba(0,0,0,.15)",
+      });
+    }
+  }, [page]);
 
   return (
     <nav
