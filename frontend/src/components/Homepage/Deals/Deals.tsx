@@ -63,7 +63,7 @@ const Deals = () => {
   return (
     <div className="deals-container">
       <button className="arrow-button left" disabled={startIndex === 0} onClick={handlePrevious}>
-        <img src="/svg/leftArrow.svg" className="deal-arrow" />
+        <img src="/svg/homepage/leftArrow.svg" className="deal-arrow" />
       </button>
       <div style={{ overflow: "hidden" }}>
         <div className="deal-row" style={rowStyle}>
@@ -76,7 +76,7 @@ const Deals = () => {
         </div>
       </div>
       <button className="arrow-button right" disabled={startIndex === components.length - 4} onClick={handleNext}>
-        <img src="/svg/rightArrow.svg" className="deal-arrow" />
+        <img src="/svg/homepage/rightArrow.svg" className="deal-arrow" />
       </button>
     </div>
   );

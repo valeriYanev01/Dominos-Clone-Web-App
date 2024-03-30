@@ -14,8 +14,8 @@ const DownloadApp = () => {
       </div>
 
       <div className="gadgets-download-platform-container">
-        <img src="/svg/apple.svg" className="gadgets-download-platform" />
-        <img src="/svg/android.svg" className="gadgets-download-platform" />
+        <img src="/svg/homepage/apple.svg" className="gadgets-download-platform" />
+        <img src="/svg/homepage/android.svg" className="gadgets-download-platform" />
         <img src="/images/huawei_icon.png" className="gadgets-download-platform" />
       </div>
 

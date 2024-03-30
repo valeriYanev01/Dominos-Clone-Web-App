@@ -3,7 +3,7 @@ import "./AverageTime.css";
 const AverageTime = () => {
   return (
     <div className="gadgets-average-time">
-      <img src="/svg/live.svg" className="gadgets-live-svg" />
+      <img src="/svg/homepage/live.svg" className="gadgets-live-svg" />
       <div className="gadgets-delivery-minutes-container">
         <img
           src="/svg/decorLeftRed.svg"

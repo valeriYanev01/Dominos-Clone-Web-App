@@ -1,5 +1,16 @@
 .img-container {
   height: 100vh !important;
+  position: relative;
+}
+
+.img-container::before {
+  position: absolute;
+  top: 0;
+  content: "";
+  display: block;
+  width: -webkit-fill-available;
+  height: 20%;
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .header-img {

@@ -1,0 +1,57 @@
+.footer-container {
+  width: 100%;
+  text-align: center;
+  color: #898989;
+  background-color: #fff;
+  padding-top: 50px;
+}
+
+.footer {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-links {
+  display: flex;
+  width: 100%;
+}
+
+.footer-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 0px;
+}
+
+.footer-links-container > h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.footer-links-container-text a {
+  display: block;
+  text-decoration: none;
+  color: #898989;
+  font-size: 14px;
+}
+
+.contacts {
+  margin-top: 50px;
+  display: flex;
+  gap: 40px;
+}
+
+.footer-svg {
+  width: 45px;
+  height: 45px;
+}
+
+.footer-svg.number {
+  width: 120px;
+}
+
+.footer-dominos-link {
+  text-decoration: none;
+  color: #006491;
+}

@@ -1,7 +1,3 @@
 .homepage {
-  background: url("/images/background.webp");
-}
-
-.heaader {
-  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
 }
