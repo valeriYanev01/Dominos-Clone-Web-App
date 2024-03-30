@@ -7,7 +7,7 @@ const Slider = () => {
   return (
     <div className="af-height-100 af-max-width mx-auto">
       <Carousel controls={false} pause={false}>
-        <Carousel.Item interval={3000000} className="img-container">
+        <Carousel.Item interval={3000} className="img-container">
           <img className="d-block w-100 mh-100 header-img" src="/images/banner_1.jpg" alt="First slide" />
           <SliderInformation
             caption="SECOND PIZZA HALF PRICE!"
