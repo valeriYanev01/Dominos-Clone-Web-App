@@ -7,6 +7,10 @@ body {
   font-family: dominos-font-regular;
 }
 
+p {
+  margin: auto;
+}
+
 @font-face {
   font-family: dominos-font-light;
   src: url("./font/FUTURA45LIGHT.TTF");

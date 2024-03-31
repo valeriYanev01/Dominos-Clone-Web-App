@@ -1,18 +1,12 @@
-.menu-header {
+.menu-header-container {
   background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  text-align: center;
+}
+
+.menu-header {
   padding-top: 110px;
-}
-
-.menu-header-item {
-  display: flex;
-}
-
-.single-menu-header-item {
-  padding: 10px;
-}
-
-.single-menu-header-item > p {
-  font-family: dominos-font-light;
+  width: 80%;
 }
 
 .menu-header-item {
@@ -21,8 +15,30 @@
   color: white;
   font-weight: bold;
   width: fit-content;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  padding-bottom: 20px;
+}
+
+.single-menu-header-item {
+  padding: 5px 10px 0 10px;
+}
+
+.single-menu-header-item > p {
+  font-family: dominos-font-light;
 }
 
 .single-menu-header-item-icon {
   width: 45px;
+}
+
+.menu-deals {
+  background-color: #be1e2d;
+}
+
+.menu-header-options {
+  color: white;
+  padding-bottom: 20px;
+  text-align: left;
 }

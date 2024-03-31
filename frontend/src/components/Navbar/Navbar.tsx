@@ -12,8 +12,6 @@ const Navbar = ({ page }: Page) => {
     navShadow: "none",
   });
 
-  console.log(page);
-
   useEffect(() => {
     if (page === "home") {
       const handleScroll = () => {
