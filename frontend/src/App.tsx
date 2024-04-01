@@ -9,7 +9,7 @@ function App() {
       element: <Home />,
     },
     {
-      path: "menu",
+      path: "/menu/*",
       element: <Menu />,
     },
   ]);

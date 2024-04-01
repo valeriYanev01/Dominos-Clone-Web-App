@@ -23,6 +23,41 @@
 
 .single-menu-header-item {
   padding: 5px 10px 0 10px;
+  position: relative;
+  text-decoration: none;
+  color: white;
+}
+
+.menu-active::after,
+.menu-deals-active::after {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: solid transparent;
+  border-top-color: #0073aa;
+  border-width: 8px;
+  transform: translateX(-33%);
+}
+
+.menu-active::before,
+.menu-deals-active::before {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: solid transparent;
+  border-top-color: white;
+  border-width: 11px;
+  transform: translateX(-36.5%);
+}
+
+.menu-deals-active::after {
+  border-top: 9px solid #be1e2d;
 }
 
 .single-menu-header-item > p {

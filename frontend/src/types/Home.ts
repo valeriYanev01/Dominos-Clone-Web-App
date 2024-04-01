@@ -8,7 +8,8 @@ export interface DealInfo {
   headerImg: string,
   heading: string,
   desc: string,
-  method: { carryOut: string | null, delivery: string | null }
+  method: { carryOut: string | undefined, delivery: string | undefined },
+  deal: boolean
 }
 
 export interface GadgetInfo {

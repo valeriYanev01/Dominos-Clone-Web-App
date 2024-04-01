@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import { NavColors } from "../../types/Navbar";
-import { Page } from "../../types/Menu";
+import { NavColors, Page } from "../../types/Navbar";
+import { MenuContext } from "../../context/MenuContext";
 
 const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
@@ -11,6 +11,8 @@ const Navbar = ({ page }: Page) => {
     link: "#fff",
     navShadow: "none",
   });
+
+  const { setSelectedItem } = useContext(MenuContext);
 
   useEffect(() => {
     if (page === "home") {
@@ -134,12 +136,24 @@ const Navbar = ({ page }: Page) => {
           <span style={{ color: navColors.link, transition: "all 0.4s" }}>EN</span>
         </li>
         <li>
-          <Link to="/menu" style={{ color: navColors.link, transition: "all 0.4s" }}>
+          <Link
+            to="/menu/pizza"
+            onClick={() => {
+              setSelectedItem("pizza");
+            }}
+            style={{ color: navColors.link, transition: "all 0.4s" }}
+          >
             MENU
           </Link>
         </li>
         <li>
-          <Link to="/menu/deals" style={{ color: navColors.link, transition: "all 0.4s" }}>
+          <Link
+            to="/menu/deals"
+            onClick={() => {
+              setSelectedItem("deals");
+            }}
+            style={{ color: navColors.link, transition: "all 0.4s" }}
+          >
             DEALS
           </Link>
         </li>

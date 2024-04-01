@@ -2,11 +2,11 @@ import "./SingleDeal.css";
 import { DealInfo } from "../../../types/Home";
 import React from "react";
 
-const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method }) => {
+const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method, deal }) => {
   return (
     <div className="single-deal-container">
       <img src={headerImg} className="deal-header-img" />
-      <img src="/svg/deal.svg" className="deal-svg" />
+      {deal && <img src="/svg/homepage/deal.svg" className="deal-svg" />}
       <p className="deal-heading">{heading}</p>
       <div className="single-deal-breakline" />
       <p className="deal-desc">{desc}</p>

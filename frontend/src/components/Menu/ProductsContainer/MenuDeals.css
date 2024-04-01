@@ -1,0 +1,14 @@
+.menu-deals-container {
+  width: 100%;
+}
+
+.menu-deals-img {
+  width: -webkit-fill-available;
+  height: 180px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.menu-deal-title {
+  overflow: hidden;
+}
