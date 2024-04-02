@@ -193,7 +193,7 @@ export const products = [
     name: "Master Burger Pizza",
     desc: "barbecue sauce, mozzarella, caramelized onion, chicken fillet, tomatoes, burger sauce ",
     img: "/images/menu/master-burger.png",
-    filter: ["Vegetarian"],
+    filter: [""],
   },
   {
     type: "pizza",

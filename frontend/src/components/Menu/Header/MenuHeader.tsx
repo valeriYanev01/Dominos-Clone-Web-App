@@ -46,14 +46,21 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
   };
 
   const menuOptions = new Set();
+  const menuVegetarianOptions = new Set();
 
   products.forEach((product) => {
-    if (product.type === location) {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          menuOptions.add(f);
-        }
-      });
+    if (location !== "vegetarian") {
+      if (product.type === location) {
+        product.filter.forEach((f) => {
+          if (f !== "") {
+            menuOptions.add(f);
+          }
+        });
+      }
+    } else if (location === "vegetarian") {
+      if (product.filter.includes("Vegetarian")) {
+        product.filter.map((f) => menuVegetarianOptions.add(f));
+      }
     }
   });
 
@@ -135,23 +142,41 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
               selectedItem !== "deals" ? { borderTop: "2px solid white" } : { paddingTop: "0px", borderTop: "none" }
             }
           >
-            {Array.from(menuOptions).map((option, i) => (
-              <div key={i} className="menu-header-single-option">
-                <input
-                  type="checkbox"
-                  checked={checked.includes(option as string)}
-                  id={`menu-option-${i}`}
-                  onChange={() => handleChecked(option as string)}
-                />
-                <label
-                  htmlFor={`menu-option-${i}`}
-                  className={`menu-option-label-${i}`}
-                  onClick={() => handleFilters(option as FilterOption)}
-                >
-                  {(option as string).toUpperCase()}
-                </label>
-              </div>
-            ))}
+            {location !== "vegetarian"
+              ? Array.from(menuOptions).map((option, i) => (
+                  <div key={i} className="menu-header-single-option">
+                    <input
+                      type="checkbox"
+                      checked={checked.includes(option as string)}
+                      id={`menu-option-${i}`}
+                      onChange={() => handleChecked(option as string)}
+                    />
+                    <label
+                      htmlFor={`menu-option-${i}`}
+                      className={`menu-option-label-${i}`}
+                      onClick={() => handleFilters(option as FilterOption)}
+                    >
+                      {(option as string).toUpperCase()}
+                    </label>
+                  </div>
+                ))
+              : Array.from(menuVegetarianOptions).map((option, i) => (
+                  <div key={i} className="menu-header-single-option">
+                    <input
+                      type="checkbox"
+                      checked={checked.includes(option as string)}
+                      id={`menu-option-${i}`}
+                      onChange={() => handleChecked(option as string)}
+                    />
+                    <label
+                      htmlFor={`menu-option-${i}`}
+                      className={`menu-option-label-${i}`}
+                      onClick={() => handleFilters(option as FilterOption)}
+                    >
+                      {(option as string).toUpperCase()}
+                    </label>
+                  </div>
+                ))}
           </div>
         )}
       </div>

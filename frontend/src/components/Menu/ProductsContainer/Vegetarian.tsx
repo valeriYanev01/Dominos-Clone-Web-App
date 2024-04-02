@@ -18,7 +18,7 @@ const Vegetarian: React.FC<Product> = ({ product }) => {
       </div>
       <img src={product.img} className={`menu-spc-img ${product.type === "drinks" ? "menu-spc-drinks-img" : ""}`} />
       <p className={`menu-spc-desc ${product.type === "drinks" ? "menu-spc-drinks-desc" : ""}`}>{product.desc}</p>
-      {product.filter[0] !== "" ? (
+      {product.filter[0] !== "" && (
         <div className="menu-spc-filter" key={product.img}>
           {product.filter.map((f, i) =>
             f === "Vegetarian" ? (
@@ -35,10 +35,6 @@ const Vegetarian: React.FC<Product> = ({ product }) => {
               ""
             )
           )}
-        </div>
-      ) : (
-        <div className="menu-spc-filter">
-          <span></span>
         </div>
       )}
       <button className="menu-spc-btn">CHOOSE</button>

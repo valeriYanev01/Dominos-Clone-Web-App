@@ -38,6 +38,7 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
         </div>
       ) : (
         <div className="menu-spc-filter">
+          {/* to match the height for all items without filters */}
           <span></span>
         </div>
       )}
