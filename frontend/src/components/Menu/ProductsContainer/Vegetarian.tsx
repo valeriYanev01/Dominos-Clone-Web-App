@@ -10,7 +10,7 @@ type Product = {
   };
 };
 
-const SingleProduct: React.FC<Product> = ({ product }) => {
+const Vegetarian: React.FC<Product> = ({ product }) => {
   return (
     <div key={product.name}>
       <div className="menu-spc-title-container">
@@ -46,4 +46,4 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
   );
 };
 
-export default SingleProduct;
+export default Vegetarian;

@@ -95,7 +95,7 @@ export const products = [
     name: "American Hot",
     desc: "Tomato sauce, mozzarella, pepperoni, spicy jalapeno peppers, onions",
     img: "/images/menu/american-hot.png",
-    filter: ["Vegetarian"],
+    filter: ["Spicy"],
   },
   {
     type: "pizza",
@@ -192,7 +192,7 @@ export const products = [
     type: "pizza",
     name: "Master Burger Pizza",
     desc: "barbecue sauce, mozzarella, caramelized onion, chicken fillet, tomatoes, burger sauce ",
-    img: "/images/menu/margarita.png",
+    img: "/images/menu/master-burger.png",
     filter: ["Vegetarian"],
   },
   {

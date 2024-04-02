@@ -14,6 +14,8 @@ type FilterOption = {
 
 const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
   const [hoveredItem, setHoveredItem] = useState("");
+  const [checked, setChecked] = useState<string[]>([]);
+
   const { selectedItem, setSelectedItem } = useContext(MenuContext);
 
   useEffect(() => {
@@ -39,6 +41,8 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   const handleSelect = (item: string) => {
     setSelectedItem(item);
+    setSelectedFilters([]);
+    setChecked([]);
   };
 
   const menuOptions = new Set();
@@ -63,6 +67,16 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
       return [...prevState, option];
     });
+  };
+
+  const handleChecked = (option: string) => {
+    const isChecked = checked.includes(option);
+
+    if (isChecked) {
+      setChecked(checked.filter((item) => item !== option));
+    } else {
+      setChecked([...checked, option]);
+    }
   };
 
   return (
@@ -114,7 +128,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
           )}
         </div>
 
-        {selectedItem !== "deals" ? (
+        {selectedItem !== "deals" && (
           <div
             className="menu-header-options"
             style={
@@ -123,15 +137,22 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
           >
             {Array.from(menuOptions).map((option, i) => (
               <div key={i} className="menu-header-single-option">
-                <input type="checkbox" id={`menu-option-${i}`} />
-                <label htmlFor={`menu-option-${i}`} onClick={() => handleFilters(option as FilterOption)}>
-                  {String((option as string).toUpperCase())}
+                <input
+                  type="checkbox"
+                  checked={checked.includes(option as string)}
+                  id={`menu-option-${i}`}
+                  onChange={() => handleChecked(option as string)}
+                />
+                <label
+                  htmlFor={`menu-option-${i}`}
+                  className={`menu-option-label-${i}`}
+                  onClick={() => handleFilters(option as FilterOption)}
+                >
+                  {(option as string).toUpperCase()}
                 </label>
               </div>
             ))}
           </div>
-        ) : (
-          ""
         )}
       </div>
     </div>

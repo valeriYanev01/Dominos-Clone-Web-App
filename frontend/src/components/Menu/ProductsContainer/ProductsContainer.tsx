@@ -5,6 +5,7 @@ import { MenuContext } from "../../../context/MenuContext";
 import MenuDeals from "./MenuDeals";
 import { products } from "../../../data/products";
 import SingleProduct from "./SingleProduct";
+import Vegetarian from "./Vegetarian";
 
 type FilterOption = {
   option: string;
@@ -24,22 +25,29 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
   });
 
   const nestedFilteredProducts = filteredProducts.filter((product) => {
-    return selectedFilters.some((filter) => product.filter.includes(filter));
+    return selectedFilters.some((filter) => product.filter.includes(filter as unknown as string));
   });
-
-  console.log(nestedFilteredProducts);
 
   return (
     <div className="menu-products-container">
+      {location === "vegetarian" &&
+        products.map(
+          (product) =>
+            product.filter.includes("Vegetarian") && (
+              <div className="menu-single-product-container">
+                <Vegetarian product={product} />
+              </div>
+            )
+        )}
       {location == "deals" && <MenuDeals />}
       {nestedFilteredProducts.length > 0
         ? nestedFilteredProducts.map((product) => (
-            <div key={product.desc}>
+            <div key={product.img} className="menu-single-product-container">
               <SingleProduct product={product} />
             </div>
           ))
         : filteredProducts.map((product) => (
-            <div key={product.desc}>
+            <div key={product.img} className="menu-single-product-container">
               <SingleProduct product={product} />
             </div>
           ))}
