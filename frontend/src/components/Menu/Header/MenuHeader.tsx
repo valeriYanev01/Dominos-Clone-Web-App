@@ -1,10 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./MenuHeader.css";
 import { Link, useLocation } from "react-router-dom";
 import { MenuContext } from "../../../context/MenuContext";
 import { products } from "../../../data/products";
 
-const MenuHeader = () => {
+interface SelectedFilters {
+  setSelectedFilters: React.Dispatch<React.SetStateAction<FilterOption[]>>;
+}
+
+type FilterOption = {
+  option: string;
+};
+
+const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
   const [hoveredItem, setHoveredItem] = useState("");
   const { selectedItem, setSelectedItem } = useContext(MenuContext);
 
@@ -33,91 +41,29 @@ const MenuHeader = () => {
     setSelectedItem(item);
   };
 
-  const smthType = new Set();
-
-  const pizzaTypes = new Set();
-  const quesadillaTypes = new Set();
-  const startersTypes = new Set();
-  const chickenTypes = new Set();
-  const pastaTypes = new Set();
-  const saladTypes = new Set();
-  const sandwichTypes = new Set();
-  const dipsTypes = new Set();
-  const dessertsTypes = new Set();
-  const drinksTypes = new Set();
+  const menuOptions = new Set();
 
   products.forEach((product) => {
-    if (product.type === "pizza") {
+    if (product.type === location) {
       product.filter.forEach((f) => {
         if (f !== "") {
-          pizzaTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "quesadilla") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          quesadillaTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "starters") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          startersTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "chicken") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          chickenTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "pasta") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          pastaTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "salad") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          saladTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "sandwich") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          sandwichTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "dips") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          dipsTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "desserts") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          dessertsTypes.add(f);
-        }
-      });
-    }
-    if (product.type === "drinks") {
-      product.filter.forEach((f) => {
-        if (f !== "") {
-          drinksTypes.add(f);
+          menuOptions.add(f);
         }
       });
     }
   });
+
+  const handleFilters = (option: FilterOption) => {
+    setSelectedFilters((prevState) => {
+      prevState = prevState || [];
+
+      if (prevState.includes(option)) {
+        return prevState.filter((opt) => opt !== option);
+      }
+
+      return [...prevState, option];
+    });
+  };
 
   return (
     <div className="menu-header-container">
@@ -172,22 +118,17 @@ const MenuHeader = () => {
           <div
             className="menu-header-options"
             style={
-              selectedItem !== "deals"
-                ? { paddingTop: "10px", borderTop: "2px solid white" }
-                : { paddingTop: "0px", borderTop: "none" }
+              selectedItem !== "deals" ? { borderTop: "2px solid white" } : { paddingTop: "0px", borderTop: "none" }
             }
           >
-            {products.map((product) =>
-              product.type === location ? (
-                <div>
-                  {product.filter.map((f) => (
-                    <span key={f}>{f}</span>
-                  ))}
-                </div>
-              ) : (
-                ""
-              )
-            )}
+            {Array.from(menuOptions).map((option, i) => (
+              <div key={i} className="menu-header-single-option">
+                <input type="checkbox" id={`menu-option-${i}`} />
+                <label htmlFor={`menu-option-${i}`} onClick={() => handleFilters(option as FilterOption)}>
+                  {String((option as string).toUpperCase())}
+                </label>
+              </div>
+            ))}
           </div>
         ) : (
           ""
