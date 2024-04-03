@@ -18,11 +18,13 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   const { selectedItem, setSelectedItem } = useContext(MenuContext);
 
-  useEffect(() => {
-    setSelectedItem(location);
-  }, [selectedItem]);
+  const itemNameUrl = useLocation().pathname.split("/")[3];
 
-  const location = useLocation().pathname.split("/")[2];
+  useEffect(() => {
+    setSelectedItem(itemNameUrl);
+  }, [itemNameUrl]);
+
+  const storeLocation = useLocation().pathname.split("/")[2];
 
   const menuHeaderItems = [
     "deals",
@@ -49,15 +51,15 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
   const menuVegetarianOptions = new Set();
 
   products.forEach((product) => {
-    if (location !== "vegetarian") {
-      if (product.type === location) {
+    if (itemNameUrl !== "vegetarian") {
+      if (product.type === itemNameUrl) {
         product.filter.forEach((f) => {
           if (f !== "") {
             menuOptions.add(f);
           }
         });
       }
-    } else if (location === "vegetarian") {
+    } else if (itemNameUrl === "vegetarian") {
       if (product.filter.includes("Vegetarian")) {
         product.filter.map((f) => menuVegetarianOptions.add(f));
       }
@@ -93,7 +95,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
           {menuHeaderItems.map((item) =>
             item !== "deals" ? (
               <Link
-                to={`/menu/${item}`}
+                to={`/menu/${storeLocation}/${item}`}
                 className="single-menu-header-item"
                 onClick={() => handleSelect(item)}
                 onMouseEnter={() => setHoveredItem(item)}
@@ -113,7 +115,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
               </Link>
             ) : (
               <Link
-                to="/menu/deals"
+                to={`/menu/${storeLocation}/deals`}
                 className="single-menu-header-item menu-deals"
                 onMouseEnter={() => setHoveredItem(item)}
                 onMouseLeave={() => setHoveredItem("")}
@@ -142,7 +144,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
               selectedItem !== "deals" ? { borderTop: "2px solid white" } : { paddingTop: "0px", borderTop: "none" }
             }
           >
-            {location !== "vegetarian"
+            {itemNameUrl !== "vegetarian"
               ? Array.from(menuOptions).map((option, i) => (
                   <div key={i} className="menu-header-single-option">
                     <input

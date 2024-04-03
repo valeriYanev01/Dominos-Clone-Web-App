@@ -5,7 +5,6 @@
   left: 230px;
   width: 550px;
   padding: 10px;
-  background-color: white;
   border: 2px solid lightgray;
   background: radial-gradient(circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
@@ -22,7 +21,6 @@
 }
 
 .second-layer {
-  background-color: white;
   background-image: radial-gradient(10px circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(10px circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(10px circle at bottom left, transparent 8px, lightgray 8px 10px, transparent 0 0),

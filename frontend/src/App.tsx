@@ -1,20 +1,32 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Menu from "./pages/menu/Menu";
+import Modal from "./components/Modal/Modal";
+import { ModalContext, ModalContextProvider } from "./context/Modal.Context";
+import { useContext } from "react";
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/menu/*",
-      element: <Menu />,
-    },
-  ]);
+  return (
+    <ModalContextProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ModalContextProvider>
+  );
+}
 
-  return <RouterProvider router={router} />;
+function AppContent() {
+  const { openModal } = useContext(ModalContext);
+
+  return (
+    <>
+      <Modal openModal={openModal} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/menu/:store/*" element={<Menu />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;

@@ -1,6 +1,7 @@
 .img-container {
   height: 100vh !important;
   position: relative;
+  transition: all 1s ease-in-out;
 }
 
 .img-container::before {

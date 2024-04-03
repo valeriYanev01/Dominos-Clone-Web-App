@@ -17,7 +17,9 @@ interface SelectedFilters {
 const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
   const { selectedItem } = useContext(MenuContext);
 
-  const location = useLocation().pathname.split("/")[2];
+  const location = useLocation().pathname.split("/")[3];
+
+  console.log(location);
 
   const filteredProducts = products.filter((product) => {
     return product.type === selectedItem;

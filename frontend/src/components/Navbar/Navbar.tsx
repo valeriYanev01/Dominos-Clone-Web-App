@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { NavColors, Page } from "../../types/Navbar";
 import { MenuContext } from "../../context/MenuContext";
+import { ModalContext } from "../../context/Modal.Context";
 
 const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
@@ -13,6 +14,9 @@ const Navbar = ({ page }: Page) => {
   });
 
   const { setSelectedItem } = useContext(MenuContext);
+  const { setOpenModal, setModalType } = useContext(ModalContext);
+
+  const inStore = useLocation().pathname.includes("/menu");
 
   useEffect(() => {
     if (page === "home") {
@@ -38,6 +42,14 @@ const Navbar = ({ page }: Page) => {
     }
   }, [page]);
 
+  const handleOpenStore = (menuItem: string) => {
+    setSelectedItem(menuItem);
+    if (!inStore) {
+      setModalType("selectStore");
+      setOpenModal(true);
+    }
+  };
+
   return (
     <nav
       className="navigation-container"
@@ -49,7 +61,14 @@ const Navbar = ({ page }: Page) => {
     >
       <ul className="navigation-list-container-logo">
         <li>
-          <Link to="/" className="logo">
+          <Link
+            onClick={() => {
+              setOpenModal(false);
+              setModalType("");
+            }}
+            to="/"
+            className="logo"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
@@ -123,7 +142,14 @@ const Navbar = ({ page }: Page) => {
           </Link>
         </li>
         <li>
-          <Link className="navigation-hiring" to="/careers">
+          <Link
+            onClick={() => {
+              setOpenModal(false);
+              setModalType("");
+            }}
+            className="navigation-hiring"
+            to="/careers"
+          >
             <div className="hiring-dot" />
             We're Hiring!
           </Link>
@@ -136,26 +162,34 @@ const Navbar = ({ page }: Page) => {
           <span style={{ color: navColors.link, transition: "all 0.4s" }}>EN</span>
         </li>
         <li>
-          <Link
-            to="/menu/pizza"
-            onClick={() => {
-              setSelectedItem("pizza");
-            }}
-            style={{ color: navColors.link, transition: "all 0.4s" }}
-          >
-            MENU
-          </Link>
+          {inStore ? (
+            <Link
+              to="pizza"
+              onClick={() => handleOpenStore("pizza")}
+              style={{ color: navColors.link, transition: "all 0.4s" }}
+            >
+              MENU
+            </Link>
+          ) : (
+            <span onClick={() => handleOpenStore("pizza")} style={{ color: navColors.link, transition: "all 0.4s" }}>
+              MENU
+            </span>
+          )}
         </li>
         <li>
-          <Link
-            to="/menu/deals"
-            onClick={() => {
-              setSelectedItem("deals");
-            }}
-            style={{ color: navColors.link, transition: "all 0.4s" }}
-          >
-            DEALS
-          </Link>
+          {inStore ? (
+            <Link
+              to="deals"
+              onClick={() => handleOpenStore("deals")}
+              style={{ color: navColors.link, transition: "all 0.4s" }}
+            >
+              DEALS
+            </Link>
+          ) : (
+            <span onClick={() => handleOpenStore("deals")} style={{ color: navColors.link, transition: "all 0.4s" }}>
+              DEALS
+            </span>
+          )}
         </li>
         <li>
           <Link to="/dominos-more" className="navigation-more">
