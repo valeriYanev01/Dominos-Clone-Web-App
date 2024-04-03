@@ -50,14 +50,14 @@ const SelectStoreModal = () => {
 
   return (
     <div>
-      <div>
-        <img src="/svg/decorLeftRed.svg" className="deal-decor deal-decor-left" />
+      <div className="modal-title">
+        <img src="/svg/decorLeftRed.svg" className="deal-decor deal-decor-left modal-decor-left" />
         <span>SELECT STORE</span>
-        <img src="/svg/decorRightRed.svg" className="deal-decor deal-decor-right" />
+        <img src="/svg/decorRightRed.svg" className="deal-decor deal-decor-right modal-decor-right" />
       </div>
       <div>
-        <p>STORE</p>
-        <select onChange={(e) => handleSelectStore(e)}>
+        <p className="modal-desc">STORE</p>
+        <select onChange={(e) => handleSelectStore(e)} className="modal-store-select">
           {stores.map((store) => (
             <option value={store} key={store}>
               {store}

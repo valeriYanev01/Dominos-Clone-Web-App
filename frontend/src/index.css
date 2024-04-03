@@ -20,3 +20,7 @@ p {
   font-family: dominos-font-regular;
   src: url("./font/FUTURA55REGULAR.TTF");
 }
+
+.hide-scrollbar {
+  overflow: hidden;
+}

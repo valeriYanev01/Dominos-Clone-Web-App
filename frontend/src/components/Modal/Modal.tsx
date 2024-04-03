@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import SelectStoreModal from "./SelectStore/SelectStoreModal";
 import DeliveryModal from "./Delivery/DeliveryModal";
@@ -13,6 +13,18 @@ interface ModalInterface {
 
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   const { modalType, setOpenModal } = useContext(ModalContext);
+
+  if (openModal) {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        setOpenModal(false);
+      }
+    });
+  }
+
+  useEffect(() => {
+    openModal ? document.body.classList.toggle("hide-scrollbar") : document.body.classList.remove("hide-scrollbar");
+  }, [openModal]);
 
   return (
     <>
@@ -32,10 +44,8 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                 ""
               )}
             </div>
-            <div className="close-modal-container">
-              <div className="close-modal" onClick={() => setOpenModal(false)}></div>
-            </div>
           </div>
+          <span className="close-modal" onClick={() => setOpenModal(false)}></span>
         </div>
       )}
     </>
