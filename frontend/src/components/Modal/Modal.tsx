@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import SelectStoreModal from "./SelectStore/SelectStoreModal";
 import DeliveryModal from "./Delivery/DeliveryModal";
@@ -14,6 +14,8 @@ interface ModalInterface {
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   const { modalType, setOpenModal } = useContext(ModalContext);
 
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
   if (openModal) {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -23,15 +25,15 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   }
 
   useEffect(() => {
-    openModal ? document.body.classList.toggle("hide-scrollbar") : document.body.classList.remove("hide-scrollbar");
+    openModal ? document.body.classList.add("hide-scrollbar") : document.body.classList.remove("hide-scrollbar");
   }, [openModal]);
 
   return (
     <>
       {openModal && (
-        <div className="modal-container">
-          <div className="modall">
-            <div className="inner-layer">
+        <div className="modal-container" ref={modalRef}>
+          <div className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}>
+            <div className={`inner-layer ${modalType === "login" ? "modal-login-inner-layer" : ""}`}>
               {modalType === "selectStore" ? (
                 <SelectStoreModal />
               ) : modalType === "delivery" ? (
@@ -45,7 +47,10 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
               )}
             </div>
           </div>
-          <span className="close-modal" onClick={() => setOpenModal(false)}></span>
+          <span
+            className={`close-modal ${modalType === "login" ? "close-modal-login" : ""}`}
+            onClick={() => setOpenModal(false)}
+          ></span>
         </div>
       )}
     </>

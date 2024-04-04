@@ -15,11 +15,11 @@ const Deals = () => {
     setStartIndex(startIndex + 1);
   };
 
-  const containerWidth = `${80 + 5 * 20}%`;
+  const containerWidth = `${150}%`;
 
   const rowStyle = {
     width: containerWidth,
-    transform: `translateX(-${startIndex * 14}%)`,
+    transform: `translateX(-${startIndex * 17}%)`,
   };
 
   return (

@@ -29,22 +29,3 @@
   outline: none;
 }
 
-.close-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 30;
-  transform: translate(310px, -140px);
-  cursor: pointer;
-}
-
-.close-modal:before {
-  position: absolute;
-  content: "\2716";
-  top: -5px;
-  right: -5px;
-  color: white;
-  padding: 5px 10px;
-  background-color: #0073aa;
-  border-radius: 50%;
-}

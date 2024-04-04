@@ -197,9 +197,15 @@ const Navbar = ({ page }: Page) => {
           </Link>
         </li>
         <li>
-          <Link to="order" className="navigation-order">
+          <span
+            onClick={() => {
+              setOpenModal(true);
+              setModalType("login");
+            }}
+            className="navigation-order"
+          >
             ORDER NOW
-          </Link>
+          </span>
         </li>
       </ul>
     </nav>

@@ -23,4 +23,7 @@ p {
 
 .hide-scrollbar {
   overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 999 !important;
 }
