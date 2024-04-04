@@ -19,8 +19,6 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
 
   const location = useLocation().pathname.split("/")[3];
 
-  console.log(location);
-
   const filteredProducts = products.filter((product) => {
     return product.type === selectedItem;
   });

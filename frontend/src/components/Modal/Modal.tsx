@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 
 import SelectStoreModal from "./SelectStore/SelectStoreModal";
 import DeliveryModal from "./Delivery/DeliveryModal";
@@ -6,6 +6,7 @@ import CarryOutModal from "./CarryOut/CarryOutModal";
 import LoginModal from "./Login/LoginModal";
 import "./Modal.css";
 import { ModalContext } from "../../context/Modal.Context";
+import ProductModal from "./Product/ProductModal";
 
 interface ModalInterface {
   openModal: boolean;
@@ -13,8 +14,6 @@ interface ModalInterface {
 
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   const { modalType, setOpenModal } = useContext(ModalContext);
-
-  const modalRef = useRef<HTMLDivElement | null>(null);
 
   if (openModal) {
     window.addEventListener("keydown", (e) => {
@@ -31,9 +30,16 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   return (
     <>
       {openModal && (
-        <div className="modal-container" ref={modalRef}>
-          <div className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}>
-            <div className={`inner-layer ${modalType === "login" ? "modal-login-inner-layer" : ""}`}>
+        <div className="modal-container">
+          <div
+            className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
+            style={modalType === "product" ? { border: "none", background: "white", maskImage: "none" } : {}}
+          >
+            <div
+              className={`${modalType !== "product" ? "inner-layer" : ""} ${
+                modalType === "login" ? "modal-login-inner-layer" : ""
+              }`}
+            >
               {modalType === "selectStore" ? (
                 <SelectStoreModal />
               ) : modalType === "delivery" ? (
@@ -42,6 +48,8 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                 <CarryOutModal />
               ) : modalType === "login" ? (
                 <LoginModal />
+              ) : modalType === "product" ? (
+                <ProductModal />
               ) : (
                 ""
               )}

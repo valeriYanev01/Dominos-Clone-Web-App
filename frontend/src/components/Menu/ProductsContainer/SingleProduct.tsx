@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ModalContext } from "../../../context/Modal.Context";
 
 type Product = {
   product: {
@@ -11,8 +12,17 @@ type Product = {
 };
 
 const SingleProduct: React.FC<Product> = ({ product }) => {
+  const { setModalType, setOpenModal, setProduct } = useContext(ModalContext);
+
   return (
-    <div key={product.name}>
+    <div
+      key={product.name}
+      onClick={() => {
+        setModalType("product");
+        setOpenModal(true);
+        setProduct([product.name, product.img, product.desc]);
+      }}
+    >
       <div className="menu-spc-title-container">
         <p className="menu-spc-title">{product.name}</p>
       </div>

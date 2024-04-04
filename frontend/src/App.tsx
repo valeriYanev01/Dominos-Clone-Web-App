@@ -4,6 +4,7 @@ import Menu from "./pages/menu/Menu";
 import Modal from "./components/Modal/Modal";
 import { ModalContext, ModalContextProvider } from "./context/Modal.Context";
 import { useContext } from "react";
+import DominosMore from "./pages/more/DominosMore";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu/:store/*" element={<Menu />} />
+        <Route path="/dominos-more" element={<DominosMore />} />
       </Routes>
     </>
   );
