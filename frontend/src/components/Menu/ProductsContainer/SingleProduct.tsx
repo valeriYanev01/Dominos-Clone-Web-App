@@ -7,6 +7,7 @@ type Product = {
     name: string;
     desc: string;
     img: string;
+    bigImg?: string;
     filter: string[];
   };
 };
@@ -20,7 +21,7 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
       onClick={() => {
         setModalType("product");
         setOpenModal(true);
-        setProduct([product.name, product.img, product.desc]);
+        setProduct([product.name, product.img, product.desc, product.bigImg || ""]);
       }}
     >
       <div className="menu-spc-title-container">

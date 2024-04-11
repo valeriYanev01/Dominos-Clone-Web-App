@@ -1,0 +1,62 @@
+.product-modal-container {
+  height: 100vh;
+  width: 80vw;
+  white-space: none;
+  overflow-y: auto;
+}
+
+.pm-heading-image {
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.pm-info-container {
+  width: 100%;
+  position: relative;
+  margin-top: -20%;
+}
+
+.pm-name-container {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  gap: 10px;
+}
+
+.pm-name-container p {
+  font-size: 34px;
+  text-transform: uppercase;
+  color: #0073aa;
+}
+
+.pm-options-container {
+  border-top: 2px dashed #5555555d;
+  width: 90%;
+  display: flex;
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.pm-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 calc(100% / 3 / 2.5);
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.pm-options:hover {
+  background-color: #b4bbc148;
+}
+
+.pm-options p {
+  color: #337ab7;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.pm-options.active-option {
+  border-bottom: 4px solid #0073aa;
+}
