@@ -1,0 +1,106 @@
+.pm-pizza-crust {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  cursor: pointer;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  width: 100%;
+  align-items: center;
+}
+
+.pm-pizza-crust-img {
+  width: 60px;
+}
+
+.pm-pizza-crust-select-container {
+  margin: 0;
+}
+
+.pm-pizza-crust-select {
+  width: 25px;
+  height: 25px;
+  background-color: #ddd;
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+}
+
+.pm-pizza-crust-info {
+  gap: 10px;
+}
+
+.active-crust {
+  background-color: #609e29;
+}
+
+.pm-pizza-crust-text {
+  flex-direction: column;
+}
+
+.pm-pizza-crust-text li {
+  text-align: start;
+  margin: 0;
+}
+
+.pm-pizza-crust-title {
+  color: #0073aa;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.pm-pizza-crust-desc {
+  color: #555;
+  line-height: 1;
+}
+
+.pm-desc-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+  align-items: start;
+}
+
+.pm-desc {
+  flex: 2;
+  margin: 0;
+  font-weight: bold;
+  color: #555;
+  font-size: 18px;
+}
+
+.pm-desc p:first-child {
+  font-size: 20px;
+}
+
+.pm-order-container {
+  flex: 1;
+  justify-content: center;
+}
+
+.pm-quantity-control {
+  display: flex;
+  margin: 0;
+}
+
+.pm-qty-weigh-container {
+  font-weight: bold;
+  font-size: 20px;
+  color: #555;
+  font-size: 20px;
+}
+
+.pm-quantity-text {
+  font-size: 30px;
+  margin: 0 20px;
+}
+
+.pm-quantity-increase,
+.pm-quantity-decrease {
+  border: 2px solid #555;
+  padding: 0px 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+  cursor: pointer;
+}

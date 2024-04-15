@@ -6,6 +6,7 @@ export const products = [
     img: "/images/menu/make-your.png",
     bigImg: "/images/menu/make-your.png",
     filter: [""],
+    price: [{ medium: 11.90 }, { large: 14 }, { jumbo: 15.40 }]
   },
   {
     type: "pizza",
@@ -14,6 +15,7 @@ export const products = [
     img: "/images/menu/half-half.png",
     bigImg: "/images/menu/half-half.png",
     filter: [""],
+    price: [{ medium: 11.90 }, { large: 14 }, { jumbo: 15.40 }]
   },
   {
     type: "pizza",
@@ -22,6 +24,7 @@ export const products = [
     img: "/images/menu/margarita.png",
     bigImg: "/images/menu/large/margarita.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 11.90 }, { large: 14 }, { jumbo: 15.40 }]
   },
   {
     type: "pizza",
@@ -30,6 +33,7 @@ export const products = [
     img: "/images/menu/pulled-beef.png",
     bigImg: "/images/menu/large/pulled-beef.avif",
     filter: ["Premium"],
+    price: [{ large: 18.90 },]
   },
   {
     type: "pizza",
@@ -38,6 +42,7 @@ export const products = [
     img: "/images/menu/beast-v-3.png",
     bigImg: "/images/menu/large/beast-v-3.avif",
     filter: ["Spicy"],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -46,6 +51,7 @@ export const products = [
     img: "/images/menu/gyros.png",
     bigImg: "/images/menu/large/gyros.avif",
     filter: [""],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -54,6 +60,7 @@ export const products = [
     img: "/images/menu/chickenita.png",
     bigImg: "/images/menu/large/chickenita.avif",
     filter: [""],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -62,6 +69,7 @@ export const products = [
     img: "/images/menu/mexicana.png",
     bigImg: "/images/menu/large/mexicana.avif",
     filter: ["Spicy"],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -70,6 +78,7 @@ export const products = [
     img: "/images/menu/special.png",
     bigImg: "/images/menu/large/special.avif",
     filter: [""],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -78,6 +87,7 @@ export const products = [
     img: "/images/menu/milano.png",
     bigImg: "/images/menu/large/milano.avif",
     filter: ["New"],
+    price: [{ large: 17.90 },]
   },
   {
     type: "pizza",
@@ -86,6 +96,7 @@ export const products = [
     img: "/images/menu/chick-chi-rick.png",
     bigImg: "/images/menu/large/chick-chi-rick.avif",
     filter: [""],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -94,6 +105,7 @@ export const products = [
     img: "/images/menu/parma.png",
     bigImg: "/images/menu/large/parma.avif",
     filter: ["New"],
+    price: [{ large: 17.90 },]
   },
   {
     type: "pizza",
@@ -102,6 +114,7 @@ export const products = [
     img: "/images/menu/carbonara.png",
     bigImg: "/images/menu/large/carbonara.avif",
     filter: [""],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "pizza",
@@ -110,6 +123,7 @@ export const products = [
     img: "/images/menu/american-hot.png",
     bigImg: "/images/menu/large/american-hot.avif",
     filter: ["Spicy"],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -118,6 +132,7 @@ export const products = [
     img: "/images/menu/garden-classic.png",
     bigImg: "/images/menu/large/garden-classic.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 12.90 }, { large: 14.90 }, { jumbo: 16.90 }]
   },
   {
     type: "pizza",
@@ -126,6 +141,7 @@ export const products = [
     img: "/images/menu/chilli-sin-carne.png",
     bigImg: "/images/menu/large/chilli-sin-carne.avif",
     filter: ["Spicy", "Vegetarian", "Fasting"],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "pizza",
@@ -134,6 +150,7 @@ export const products = [
     img: "/images/menu/pepperoni.png",
     bigImg: "/images/menu/large/pepperoni.avif",
     filter: ["Spicy"],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -142,6 +159,7 @@ export const products = [
     img: "/images/menu/bbq-chicken.png",
     bigImg: "/images/menu/large/bbq-chicken.avif",
     filter: [""],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -150,6 +168,7 @@ export const products = [
     img: "/images/menu/bbq-classic.png",
     bigImg: "/images/menu/large/bbq-classic.avif",
     filter: [""],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -158,6 +177,7 @@ export const products = [
     img: "/images/menu/new-york.png",
     bigImg: "/images/menu/large/new-york.avif",
     filter: [""],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "pizza",
@@ -166,6 +186,7 @@ export const products = [
     img: "/images/menu/ham-classic.png",
     bigImg: "/images/menu/large/ham-classic.avif",
     filter: [""],
+    price: [{ medium: 12.90 }, { large: 14.90 }, { jumbo: 16.90 }]
   },
   {
     type: "pizza",
@@ -174,6 +195,7 @@ export const products = [
     img: "/images/menu/italian-classic.png",
     bigImg: "/images/menu/large/italian-classic.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "pizza",
@@ -182,6 +204,7 @@ export const products = [
     img: "/images/menu/hawaii.png",
     bigImg: "/images/menu/large/hawaii.avif",
     filter: [""],
+    price: [{ medium: 12.90 }, { large: 14.90 }, { jumbo: 16.90 }]
   },
   {
     type: "pizza",
@@ -190,6 +213,7 @@ export const products = [
     img: "/images/menu/four-cheese.png",
     bigImg: "/images/menu/large/four-cheese.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "pizza",
@@ -198,6 +222,7 @@ export const products = [
     img: "/images/menu/tuna.png",
     bigImg: "/images/menu/large/tuna.avif",
     filter: [""],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -206,6 +231,7 @@ export const products = [
     img: "/images/menu/extravaganza.png",
     bigImg: "/images/menu/large/extravaganza.avif",
     filter: [""],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -214,6 +240,7 @@ export const products = [
     img: "/images/menu/burger.png",
     bigImg: "/images/menu/large/burger.avif",
     filter: [""],
+    price: [{ medium: 14.90 }, { large: 16.90 }, { jumbo: 18.90 }]
   },
   {
     type: "pizza",
@@ -222,6 +249,7 @@ export const products = [
     img: "/images/menu/master-burger.png",
     bigImg: "/images/menu/large/master-burger.avif",
     filter: [""],
+    price: [{ medium: 15.90 }, { large: 17.90 }, { jumbo: 19.90 }]
   },
   {
     type: "pizza",
@@ -230,6 +258,7 @@ export const products = [
     img: "/images/menu/fasting-2.png",
     bigImg: "/images/menu/large/fasting-2.avif",
     filter: ["Vegetarian", "Fasting"],
+    price: [{ medium: 12.90 }, { large: 14.90 }, { jumbo: 16.90 }]
   },
   {
     type: "pizza",
@@ -238,6 +267,7 @@ export const products = [
     img: "/images/menu/smokey-bacon.png",
     bigImg: "/images/menu/large/smokey-bacon.avif",
     filter: [""],
+    price: [{ medium: 13.90 }, { large: 15.90 }, { jumbo: 17.90 }]
   },
   {
     type: "quesadilla",
@@ -245,6 +275,7 @@ export const products = [
     desc: "mozzarella, cheddar, green peppers, corn, chicken, accompanied by chipotle sauce",
     img: "/images/menu/ques1.png",
     filter: ["New"],
+    price: [{ medium: 9.90 }]
   },
   {
     type: "quesadilla",
@@ -252,6 +283,7 @@ export const products = [
     desc: "cheddar, chili sin carne, onion, corn, accompanied by chipotle sauce",
     img: "/images/menu/ques2.png",
     filter: ["Spicy", "Vegetarian", "New"],
+    price: [{ medium: 9.90 }]
   },
   {
     type: "starters",
@@ -259,6 +291,7 @@ export const products = [
     desc: "Freshly baked, topped with mozzarella and the special Domino's seasoning, served with tomato dip",
     img: "/images/menu/cheesy-bread.png",
     filter: ["Vegetarian"],
+    price: [{ medium: 4.50 },]
   },
   {
     type: "starters",
@@ -266,6 +299,7 @@ export const products = [
     desc: "Potato wedges with a lightly spicy coating. Served with a barbecue dip",
     img: "/images/menu/potato-wedges.png",
     filter: ["Vegetarian"],
+    price: [{ medium: 4.50 },]
   },
   {
     type: "starters",
@@ -273,6 +307,7 @@ export const products = [
     desc: "five crispy mozzarella sticks with BBQ dip",
     img: "/images/menu/mozzarella-sticks.png",
     filter: [""],
+    price: [{ medium: 7.50 },]
   },
   {
     type: "chicken",
@@ -280,6 +315,7 @@ export const products = [
     desc: "Oven baked chicken nuggets in a spicy breadcrumb coating. Served with Barbecue dip",
     img: "/images/menu/kickers.png",
     filter: ["Spicy"],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "chicken",
@@ -287,6 +323,7 @@ export const products = [
     desc: "Succulent pieces of white chicken breast, not spicy, coated in breadcrumbs cooked in the oven. Served with sweet chilli sauce",
     img: "/images/menu/strippers.png",
     filter: [""],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "chicken",
@@ -294,6 +331,7 @@ export const products = [
     desc: "8 freshly baked chicken wings covered in Domino's barbecue sauce",
     img: "/images/menu/buffalo.png",
     filter: [""],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "chicken",
@@ -301,6 +339,7 @@ export const products = [
     desc: "8 freshly baked chicken wings in Franks sauce",
     img: "/images/menu/hot-buffalo.png",
     filter: ["Spicy"],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "pasta",
@@ -309,6 +348,7 @@ export const products = [
     img: "/images/menu/pasta-carbonara.png",
     bigImg: "/images/menu/large/pasta-carbonara.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "pasta",
@@ -317,6 +357,7 @@ export const products = [
     img: "/images/menu/pasta-napoliten.png",
     bigImg: "/images/menu/large/pasta-napoliten.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "pasta",
@@ -325,6 +366,7 @@ export const products = [
     img: "/images/menu/pasta-pepperoni.png",
     bigImg: "/images/menu/pasta-pepperoni.png",
     filter: ["Spicy"],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "pasta",
@@ -333,6 +375,7 @@ export const products = [
     img: "/images/menu/pasta-mac-and-cheese.png",
     bigImg: "/images/menu/large/pasta-mac-and-cheese.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "salad",
@@ -341,6 +384,7 @@ export const products = [
     img: "/images/menu/salad-rocket.png",
     bigImg: "/images/menu/large/salad-rocket.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 7.50 },]
   },
   {
     type: "salad",
@@ -349,6 +393,7 @@ export const products = [
     img: "/images/menu/salad-tricolore.png",
     bigImg: "/images/menu/large/salad-tricolore.avif",
     filter: ["Vegetarian"],
+    price: [{ medium: 7.50 },]
   },
   {
     type: "salad",
@@ -357,6 +402,7 @@ export const products = [
     img: "/images/menu/salad-ceasers-bacon.png",
     bigImg: "/images/menu/large/salad-ceasers-bacon.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "salad",
@@ -365,6 +411,7 @@ export const products = [
     img: "/images/menu/salad-ceasers-chicken.png",
     bigImg: "/images/menu/large/salad-ceasers-chicken.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "salad",
@@ -373,6 +420,7 @@ export const products = [
     img: "/images/menu/salad-tuna.png",
     bigImg: "/images/menu/large/salad-tuna.avif",
     filter: [""],
+    price: [{ medium: 9.50 },]
   },
   {
     type: "sandwich",
@@ -381,6 +429,7 @@ export const products = [
     img: "/images/menu/sandwich-milano.png",
     bigImg: "/images/menu/large/sandwich-milano.avif",
     filter: ["New"],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "sandwich",
@@ -389,6 +438,7 @@ export const products = [
     img: "/images/menu/sandwich-pepperoni.png",
     bigImg: "/images/menu/sandwich-pepperoni.png",
     filter: [""],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "sandwich",
@@ -397,6 +447,7 @@ export const products = [
     img: "/images/menu/sandwich-bbq-chicken.png",
     bigImg: "/images/menu/large/sandwich-bbq-chicken.avif",
     filter: [""],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "sandwich",
@@ -405,6 +456,7 @@ export const products = [
     img: "/images/menu/sandwich-mediteraneo.png",
     bigImg: "/images/menu/large/sandwich-mediteraneo.avif",
     filter: [""],
+    price: [{ medium: 7.90 },]
   },
   {
     type: "dips",
@@ -412,6 +464,7 @@ export const products = [
     desc: "Fermented red cayenne peppers, spirit vinegar, water, salt, garlic powder",
     img: "/images/menu/dip-frank.png",
     filter: ["Spicy"],
+    price: [{ medium: 1.30 },]
   },
   {
     type: "dips",
@@ -419,6 +472,7 @@ export const products = [
     desc: "Rapeseed oil, water, spirit vinegar, sugar, MUSTARD seeds, pasteurised EGG yolk, MUSTARD flour, salt, honey powder (honey, maltodextrin), white wine vinegar, stabilisers (guar gum, xanthan gum), spices, modified potato starch, horseradish, MILK protein, MUSTARD bran, colour: plain caramel, preservative: potassium sorbate, natural colours (curcumin, annatto)",
     img: "/images/menu/dip-honey-mustard.png",
     filter: [""],
+    price: [{ medium: 1.30 },]
   },
   {
     type: "dips",
@@ -426,6 +480,7 @@ export const products = [
     desc: "Rapeseed Oil, Water, Spirit Vinegar, Pasteurised EGG Yolk, Sugar, Garlic , Herbs, Salt, Acidity Regulator: Lactic acid, MILK Protein, MUSTARD Flour, Lemon Juice Concentrate, Stabilisers (Guar Gum, Xanthan Gum), Preservative: Potassium Sorbate",
     img: "/images/menu/dip-garlic.png",
     filter: [""],
+    price: [{ medium: 1.30 },]
   },
   {
     type: "dips",
@@ -433,6 +488,7 @@ export const products = [
     desc: "Water, tomato paste, sugar, glucose syrup, vinegar, molasses, salt, modified maize starch, MUSTARD, caramel liquid smoke, spices, onion powder, potassium sorbate, garlic puree, ground CELERY, herbs, clove oil",
     img: "/images/menu/dip-bbq.png",
     filter: [""],
+    price: [{ medium: 1.30 },]
   },
   {
     type: "dips",
@@ -440,6 +496,7 @@ export const products = [
     desc: "Sugar, water, vinegar, red chilli puree, garlic puree, salt, vegetable oil, red pepper, stabilizer (xanthan gum, guar gum), spices, preservative (potassium sorbate)",
     img: "/images/menu/dip-sweet-chilli.png",
     filter: [""],
+    price: [{ medium: 1.30 },]
   },
   {
     type: "dips",
@@ -447,6 +504,7 @@ export const products = [
     desc: "Tomatoes, salt, sugar, spices, garlic powder",
     img: "/images/menu/dip-tomato.png",
     filter: [""],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "dips",
@@ -454,6 +512,7 @@ export const products = [
     desc: "Refined sunflower oil, water, cow’s MILK YOGHURT, fennel, salt, garlic powder, EGG mélange powder, acids: vinegar and lemon acid; emulsifiers: guar gum, xanthan gum; preservative: potassium sorbate",
     img: "/images/menu/dip-milk.png",
     filter: [""],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "dips",
@@ -461,6 +520,7 @@ export const products = [
     desc: "Sunflower oil, chipotle adobo, sugar, sweet MUSTARD, pasteurized whole EGGS , water, alcohol vinegar, garlic powder, salt, modified maize starch, concentrated lemon juice, potassium sorbate, natural flavouring.",
     img: "/images/menu/dip-chipotle.png",
     filter: ["Spicy"],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "dips",
@@ -468,6 +528,7 @@ export const products = [
     desc: "SOY oil, water, sour-milk product (skimmed MILK, MILK protein, palm oil, sour milk cultures), EGG yolk, vinegar, sugar, MUSTARD, salt, spices",
     img: "/images/menu/dip-ranch.png",
     filter: [""],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "dips",
@@ -475,6 +536,7 @@ export const products = [
     desc: "Ceaser dip",
     img: "/images/menu/dip-ceaser.png",
     filter: [""],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "dips",
@@ -482,6 +544,7 @@ export const products = [
     desc: "Balsamic dressing",
     img: "/images/menu/dip-balsamic.png",
     filter: [""],
+    price: [{ medium: 1.60 },]
   },
   {
     type: "desserts",
@@ -489,6 +552,7 @@ export const products = [
     desc: "Freshly oven baked puff pastry filled with Nutella spread and sprinkled with icing sugar",
     img: "/images/menu/dessert-choco-pie.png",
     filter: [""],
+    price: [{ medium: 6.90 },]
   },
   {
     type: "desserts",
@@ -496,6 +560,7 @@ export const products = [
     desc: "Chocolate brownie with white chocolate chips ",
     img: "/images/menu/dessert-brownie.png",
     filter: [""],
+    price: [{ medium: 3.90 },]
   },
   {
     type: "desserts",
@@ -503,6 +568,7 @@ export const products = [
     desc: "Chocolate lava cake filled with melted warm chocolate",
     img: "/images/menu/dessert-suffle.png",
     filter: [""],
+    price: [{ medium: 5.90 },]
   },
   {
     type: "desserts",
@@ -510,6 +576,7 @@ export const products = [
     desc: "Nirvana Pralines and Cream",
     img: "/images/menu/dessert-parlines.png",
     filter: [""],
+    price: [{ medium: 4.20 },]
   },
   {
     type: "desserts",
@@ -517,6 +584,7 @@ export const products = [
     desc: "Nirvana Cookies and Cream",
     img: "/images/menu/dessert-cookies.png",
     filter: [""],
+    price: [{ medium: 4.20 },]
   },
   {
     type: "desserts",
@@ -524,6 +592,7 @@ export const products = [
     desc: "Nirvana Chocolate and Choco Chips",
     img: "/images/menu/dessert-choco.png",
     filter: [""],
+    price: [{ medium: 4.20 },]
   },
   {
     type: "drinks",
@@ -531,6 +600,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-saqna.png",
     filter: [""],
+    price: [{ medium: 11.90 },]
   },
   {
     type: "drinks",
@@ -538,6 +608,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-red-bull.png",
     filter: ["New"],
+    price: [{ medium: 2.60 },]
   },
   {
     type: "drinks",
@@ -545,6 +616,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-red-bull-sugarfree.png",
     filter: ["New"],
+    price: [{ medium: 3.70 },]
   },
   {
     type: "drinks",
@@ -552,6 +624,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-coca-cola-zero.png",
     filter: [""],
+    price: [{ medium: 3.70 },]
   },
   {
     type: "drinks",
@@ -559,6 +632,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-coca-cola.png",
     filter: [""],
+    price: [{ medium: 2.60 },]
   },
   {
     type: "drinks",
@@ -566,6 +640,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-water.png",
     filter: [""],
+    price: [{ medium: 2.50 },]
   },
   {
     type: "drinks",
@@ -573,6 +648,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-fanta.png",
     filter: [""],
+    price: [{ medium: 2.60 },]
   },
   {
     type: "drinks",
@@ -580,6 +656,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-cappy.png",
     filter: [""],
+    price: [{ medium: 2.40 },]
   },
   {
     type: "drinks",
@@ -587,6 +664,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-fuzetea.png",
     filter: [""],
+    price: [{ medium: 2.50 },]
   },
   {
     type: "drinks",
@@ -594,6 +672,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-carlsbearg.png",
     filter: [""],
+    price: [{ medium: 3.20 },]
   },
   {
     type: "drinks",
@@ -601,6 +680,7 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-shumensko-half.png",
     filter: [""],
+    price: [{ medium: 2.50 },]
   },
   {
     type: "drinks",
@@ -608,5 +688,6 @@ export const products = [
     desc: "",
     img: "/images/menu/drinks-shumensko.png",
     filter: [""],
+    price: [{ medium: 2.80 },]
   },
 ];

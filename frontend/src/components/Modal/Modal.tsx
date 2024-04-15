@@ -56,7 +56,9 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
             </div>
           </div>
           <span
-            className={`close-modal ${modalType === "login" ? "close-modal-login" : ""}`}
+            className={`close-modal ${
+              modalType === "login" ? "close-modal-login" : modalType === "product" ? "close-modal-product" : ""
+            }`}
             onClick={() => setOpenModal(false)}
           ></span>
         </div>

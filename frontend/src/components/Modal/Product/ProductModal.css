@@ -3,6 +3,7 @@
   width: 80vw;
   white-space: none;
   overflow-y: auto;
+  box-shadow: 7px 4px 5px rgba(0, 0, 0, 0.1);
 }
 
 .pm-heading-image {
@@ -59,4 +60,18 @@
 
 .pm-options.active-option {
   border-bottom: 4px solid #0073aa;
+}
+
+.pm-pizza-crust-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.pm-pizza-crust-container div {
+  display: flex;
+  margin: 0;
+  position: relative;
 }

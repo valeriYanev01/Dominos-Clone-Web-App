@@ -1,0 +1,48 @@
+.pm-qty-weigh {
+  display: flex;
+  gap: 50px;
+}
+
+.weight-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.weight-img {
+  width: 60px;
+}
+
+.pm-weight-text {
+  position: absolute;
+  color: #fff;
+  bottom: 0;
+  font-weight: 100;
+  font-size: 16px;
+}
+
+.pm-add-btn {
+  color: #fff;
+  margin: 0;
+}
+
+.pm-order-img {
+  width: 30px;
+  margin: 0;
+}
+
+.pm-order-btn-container {
+  display: flex;
+  background-color: #609e29;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.pm-order-btn-container:hover {
+  background-color: #78ac36;
+}
