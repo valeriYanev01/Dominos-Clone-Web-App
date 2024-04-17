@@ -20,7 +20,7 @@ export const products = [
   {
     type: "pizza",
     name: "Margarita",
-    desc: "Mozzarella, tomato sauce, extra mozzarella",
+    desc: "Mozzarella, Tomato Sauce, Extra Mozzarella",
     img: "/images/menu/margarita.png",
     bigImg: "/images/menu/large/margarita.avif",
     filter: ["Vegetarian"],
@@ -29,7 +29,7 @@ export const products = [
   {
     type: "pizza",
     name: "Pulled Beef",
-    desc: "barbecue sauce, mozzarella, caramelized onion, cheddar, pulled beef",
+    desc: "BBQ Sauce, Mozzarella, Caramelized Onions, Cheddar Cheese, Pulled Beef",
     img: "/images/menu/pulled-beef.png",
     bigImg: "/images/menu/large/pulled-beef.avif",
     filter: ["Premium"],
@@ -38,7 +38,7 @@ export const products = [
   {
     type: "pizza",
     name: "Beast v.3",
-    desc: "tomato sauce, mozzarella, ham, bacon, ventricina",
+    desc: "Tomato Sauce, Mozzarella, Smoked Ham, Smoked Bacon, Ventrichina",
     img: "/images/menu/beast-v-3.png",
     bigImg: "/images/menu/large/beast-v-3.avif",
     filter: ["Spicy"],
@@ -47,7 +47,7 @@ export const products = [
   {
     type: "pizza",
     name: "Gyros pizza",
-    desc: "tomato sauce, onion, mozzarella, gyros chicken, extra gyros chicken, fresh tomatoes, yoghurt sauce",
+    desc: "Tomato Sauce, Onions, Mozzarella, Gyros, Extra Gyros, Fresh Tomato, Yoghurt Sauce",
     img: "/images/menu/gyros.png",
     bigImg: "/images/menu/large/gyros.avif",
     filter: [""],
@@ -56,7 +56,7 @@ export const products = [
   {
     type: "pizza",
     name: "Chickenita",
-    desc: "tomato sauce, mozzarella, chicken fillet, pepperoni, fresh tomatoes, emmental",
+    desc: "Tomato Sauce, Mozzarella, Chicken, Pepperoni, Fresh Tomato, emmental",
     img: "/images/menu/chickenita.png",
     bigImg: "/images/menu/large/chickenita.avif",
     filter: [""],
@@ -65,7 +65,7 @@ export const products = [
   {
     type: "pizza",
     name: "Mexicana",
-    desc: "tomato sauce, mozzarella, chicken fillet, jalapenos, green peppers, tomatoes, onion, chipotle sauce",
+    desc: "Tomato Sauce, Mozzarella, Chicken, Jalapenos Peppers, Fresh green peppers, Fresh tomato, Onions, Chipotle Sauce",
     img: "/images/menu/mexicana.png",
     bigImg: "/images/menu/large/mexicana.avif",
     filter: ["Spicy"],
@@ -74,7 +74,7 @@ export const products = [
   {
     type: "pizza",
     name: "Dominos Special",
-    desc: "Mozzarella, tomato sauce, ham, bacon, fresh mushrooms, fresh green peppers, onions",
+    desc: "Mozzarella, Tomato Sauce, Smoked Ham, Smoked Bacon, Fresh Mushrooms, Fresh green peppers, Onions",
     img: "/images/menu/special.png",
     bigImg: "/images/menu/large/special.avif",
     filter: [""],
@@ -83,7 +83,7 @@ export const products = [
   {
     type: "pizza",
     name: "Pizza Milano",
-    desc: "– rectangular pizza prepared in a pan; tomato sauce, mozzarella, Italian Milano salami, green peppers, fresh tomatoes",
+    desc: "– rectangular pizza prepared in a pan; Tomato Sauce, Mozzarella, Milano salamy, Fresh green peppers, Fresh Tomato",
     img: "/images/menu/milano.png",
     bigImg: "/images/menu/large/milano.avif",
     filter: ["New"],
@@ -92,7 +92,7 @@ export const products = [
   {
     type: "pizza",
     name: "Chick-Chi-Rick",
-    desc: "Tomato sauce, mozzarella, lean chicken, melted cheese, sweetcorn",
+    desc: "Tomato Sauce, Mozzarella, Chicken, Smoked Melted Cheese, Corn",
     img: "/images/menu/chick-chi-rick.png",
     bigImg: "/images/menu/large/chick-chi-rick.avif",
     filter: [""],
@@ -101,7 +101,7 @@ export const products = [
   {
     type: "pizza",
     name: "Pizza Parma",
-    desc: "– rectangular pizza prepared in a pan; tomato sauce, mozzarella, pepperoni, mushrooms, parmesan",
+    desc: "– rectangular pizza prepared in a pan; Tomato Sauce, Mozzarella, Pepperoni, Fresh Mushrooms, Parmesan",
     img: "/images/menu/parma.png",
     bigImg: "/images/menu/large/parma.avif",
     filter: ["New"],
@@ -110,7 +110,7 @@ export const products = [
   {
     type: "pizza",
     name: "Carbonara",
-    desc: "Fresh cream, mozzarella, bacon, mushrooms",
+    desc: "Fresh cream, Mozzarella, Smoked Bacon, Fresh Mushrooms",
     img: "/images/menu/carbonara.png",
     bigImg: "/images/menu/large/carbonara.avif",
     filter: [""],
@@ -119,7 +119,7 @@ export const products = [
   {
     type: "pizza",
     name: "American Hot",
-    desc: "Tomato sauce, mozzarella, pepperoni, spicy jalapeno peppers, onions",
+    desc: "Tomato Sauce, Mozzarella, Pepperoni, Jalapenos Peppers, Onions",
     img: "/images/menu/american-hot.png",
     bigImg: "/images/menu/large/american-hot.avif",
     filter: ["Spicy"],
@@ -128,7 +128,7 @@ export const products = [
   {
     type: "pizza",
     name: "Garden Classic",
-    desc: "Tomato sauce, mozzarella, olives, fresh green peppers, onions, mushrooms, fresh tomatoes",
+    desc: "Tomato Sauce, Mozzarella, Black Olives, Fresh green peppers, Onions, Fresh Mushrooms, Fresh Tomato",
     img: "/images/menu/garden-classic.png",
     bigImg: "/images/menu/large/garden-classic.avif",
     filter: ["Vegetarian"],
@@ -137,7 +137,7 @@ export const products = [
   {
     type: "pizza",
     name: "Chili sin Carne",
-    desc: "tomato sauce, vegan mozzarella, chili sin carne, corn, onion",
+    desc: "Tomato Sauce, Vegan Mozzarella, chili sin carne, Corn, Onions",
     img: "/images/menu/chilli-sin-carne.png",
     bigImg: "/images/menu/large/chilli-sin-carne.avif",
     filter: ["Spicy", "Vegetarian", "Fasting"],
@@ -146,7 +146,7 @@ export const products = [
   {
     type: "pizza",
     name: "Pepperoni Classic",
-    desc: "Mozzarella, tomato sauce, extra mozzarella, extra pepperoni",
+    desc: "Mozzarella, Tomato Sauce, Extra Mozzarella, Extra Pepperoni",
     img: "/images/menu/pepperoni.png",
     bigImg: "/images/menu/large/pepperoni.avif",
     filter: ["Spicy"],
@@ -155,7 +155,7 @@ export const products = [
   {
     type: "pizza",
     name: "Barbecue Chicken",
-    desc: "Mozzarella, barbecue sauce, tender chicken breast, bacon",
+    desc: "Mozzarella, BBQ Sauce, Chicken, Smoked Bacon",
     img: "/images/menu/bbq-chicken.png",
     bigImg: "/images/menu/large/bbq-chicken.avif",
     filter: [""],
@@ -164,7 +164,7 @@ export const products = [
   {
     type: "pizza",
     name: "Barbecue Classic",
-    desc: "Mozzarella, barbecue sauce, bacon, spicy beef",
+    desc: "Mozzarella, BBQ Sauce, Smoked Bacon, Spicy Beef",
     img: "/images/menu/bbq-classic.png",
     bigImg: "/images/menu/large/bbq-classic.avif",
     filter: [""],
@@ -173,7 +173,7 @@ export const products = [
   {
     type: "pizza",
     name: "New York",
-    desc: "Tomato sauce, mozzarella, bacon, cheddar, extra cheddar, fresh mushrooms",
+    desc: "Tomato Sauce, Mozzarella, Smoked Bacon, Cheddar Cheese, Extra Cheddar Cheese, Fresh Mushrooms",
     img: "/images/menu/new-york.png",
     bigImg: "/images/menu/large/new-york.avif",
     filter: [""],
@@ -182,7 +182,7 @@ export const products = [
   {
     type: "pizza",
     name: "Ham Classic",
-    desc: "tomato sauce, mozzarella, ham, green peppers, fresh mushrooms",
+    desc: "Tomato Sauce, Mozzarella, Smoked Ham, Fresh green peppers, Fresh Mushrooms",
     img: "/images/menu/ham-classic.png",
     bigImg: "/images/menu/large/ham-classic.avif",
     filter: [""],
@@ -191,7 +191,7 @@ export const products = [
   {
     type: "pizza",
     name: "Italian Classic",
-    desc: "Tomato sauce, mozzarella, pesto sauce, Grano Padano, fresh tomatoes, basil",
+    desc: "Tomato Sauce, Mozzarella, Pesto Sauce, Grano Padano, Fresh Tomato, Basil",
     img: "/images/menu/italian-classic.png",
     bigImg: "/images/menu/large/italian-classic.avif",
     filter: ["Vegetarian"],
@@ -200,7 +200,7 @@ export const products = [
   {
     type: "pizza",
     name: "Hawaii",
-    desc: "Tomato sauce, mozzarella, smoked ham, pineapple",
+    desc: "Tomato Sauce, Mozzarella, Smoked Ham, Pineapple",
     img: "/images/menu/hawaii.png",
     bigImg: "/images/menu/large/hawaii.avif",
     filter: [""],
@@ -209,7 +209,7 @@ export const products = [
   {
     type: "pizza",
     name: "4 Cheese",
-    desc: "Tomato sauce, mozzarella, cheddar, feta cheese, Parmesan",
+    desc: "Tomato Sauce, Mozzarella, Cheddar Cheese, Feta Cheese, Parmesan",
     img: "/images/menu/four-cheese.png",
     bigImg: "/images/menu/large/four-cheese.avif",
     filter: ["Vegetarian"],
@@ -218,7 +218,7 @@ export const products = [
   {
     type: "pizza",
     name: "Tuna Pizza",
-    desc: "Tomato sauce, mozzarella, tuna, fresh tomatoes, onions",
+    desc: "Tomato Sauce, Mozzarella, Tuna, Fresh Tomato, Onions",
     img: "/images/menu/tuna.png",
     bigImg: "/images/menu/large/tuna.avif",
     filter: [""],
@@ -227,7 +227,7 @@ export const products = [
   {
     type: "pizza",
     name: "Extravaganza",
-    desc: "Mozzarella, tomato sauce, smoked ham, pepperoni, onion, fresh green papers, fresh mushrooms, black olives",
+    desc: "Mozzarella, Tomato Sauce, Smoked Ham, Pepperoni, Onions, Fresh green papers, Fresh Mushrooms, Black Olives",
     img: "/images/menu/extravaganza.png",
     bigImg: "/images/menu/large/extravaganza.avif",
     filter: [""],
@@ -236,7 +236,7 @@ export const products = [
   {
     type: "pizza",
     name: "Burger Pizza",
-    desc: "burger sauce, mozzarella, fresh tomato, cheddar, cucumber pickles, spicy beef, onion",
+    desc: "Burger Sauce, Mozzarella, Fresh tomato, Cheddar Cheese, Pickles, Spicy Beef, Onions",
     img: "/images/menu/burger.png",
     bigImg: "/images/menu/large/burger.avif",
     filter: [""],
@@ -245,7 +245,7 @@ export const products = [
   {
     type: "pizza",
     name: "Master Burger Pizza",
-    desc: "barbecue sauce, mozzarella, caramelized onion, chicken fillet, tomatoes, burger sauce ",
+    desc: "BBQ Sauce, Mozzarella, Caramelized Onions, Chicken, Fresh tomato, Burger Sauce ",
     img: "/images/menu/master-burger.png",
     bigImg: "/images/menu/large/master-burger.avif",
     filter: [""],
@@ -254,7 +254,7 @@ export const products = [
   {
     type: "pizza",
     name: "Fasting v.2",
-    desc: "tomato sauce, vegan mozzarella, sun-dried tomatoes, fresh tomatoes, mushrooms, black olives",
+    desc: "Tomato Sauce, Vegan Mozzarella, Fresh tomato, Sun-dried tomatoes in oil, Fresh Mushrooms, Black Olives",
     img: "/images/menu/fasting-2.png",
     bigImg: "/images/menu/large/fasting-2.avif",
     filter: ["Vegetarian", "Fasting"],
@@ -263,7 +263,7 @@ export const products = [
   {
     type: "pizza",
     name: "Smokey Bacon",
-    desc: "cream, bacon, mozzarella, smoked melted cheese, black olives",
+    desc: "Cream, Smoked Bacon, Mozzarella, Smoked Melted Cheese, Black Olives",
     img: "/images/menu/smokey-bacon.png",
     bigImg: "/images/menu/large/smokey-bacon.avif",
     filter: [""],
@@ -272,7 +272,7 @@ export const products = [
   {
     type: "quesadilla",
     name: "Domino's Chicken quesadillas",
-    desc: "mozzarella, cheddar, green peppers, corn, chicken, accompanied by chipotle sauce",
+    desc: "Mozzarella, Cheddar Cheese, Fresh green peppers, Corn, Chicken, accompanied by chipotle sauce",
     img: "/images/menu/ques1.png",
     filter: ["New"],
     price: [{ medium: 9.90 }]
@@ -280,7 +280,7 @@ export const products = [
   {
     type: "quesadilla",
     name: "Domino's quesadilla Chili Sin Carne",
-    desc: "cheddar, chili sin carne, onion, corn, accompanied by chipotle sauce",
+    desc: "Cheddar Cheese, chili sin carne, Onion, Corn, accompanied by chipotle sauce",
     img: "/images/menu/ques2.png",
     filter: ["Spicy", "Vegetarian", "New"],
     price: [{ medium: 9.90 }]
@@ -288,7 +288,7 @@ export const products = [
   {
     type: "starters",
     name: "Cheesy Bread",
-    desc: "Freshly baked, topped with mozzarella and the special Domino's seasoning, served with tomato dip",
+    desc: "Freshly baked, topped with Mozzarella and the special Domino's seasoning, served with tomato dip",
     img: "/images/menu/cheesy-bread.png",
     filter: ["Vegetarian"],
     price: [{ medium: 4.50 },]
@@ -304,7 +304,7 @@ export const products = [
   {
     type: "starters",
     name: "Mozzarella Sticks",
-    desc: "five crispy mozzarella sticks with BBQ dip",
+    desc: "five crispy Mozzarella sticks with BBQ dip",
     img: "/images/menu/mozzarella-sticks.png",
     filter: [""],
     price: [{ medium: 7.50 },]
@@ -328,7 +328,7 @@ export const products = [
   {
     type: "chicken",
     name: "Buffalo Wings Single Portion",
-    desc: "8 freshly baked chicken wings covered in Domino's barbecue sauce",
+    desc: "8 freshly baked chicken wings covered in Domino's BBQ Sauce",
     img: "/images/menu/buffalo.png",
     filter: [""],
     price: [{ medium: 7.90 },]
@@ -344,7 +344,7 @@ export const products = [
   {
     type: "pasta",
     name: "Carbonara Pasta",
-    desc: "Rigatoni pasta, cream, fresh mushrooms, smoked bacon, parmesan",
+    desc: "Rigatoni pasta, cream, Fresh Mushrooms, smoked bacon, Parmesan",
     img: "/images/menu/pasta-carbonara.png",
     bigImg: "/images/menu/large/pasta-carbonara.avif",
     filter: [""],
@@ -353,7 +353,7 @@ export const products = [
   {
     type: "pasta",
     name: "Napoliten",
-    desc: "Rigatoni pasta, tomato sauce, pesto sauce, parmesan",
+    desc: "Rigatoni pasta, Tomato Sauce, Pesto Sauce, Parmesan",
     img: "/images/menu/pasta-napoliten.png",
     bigImg: "/images/menu/large/pasta-napoliten.avif",
     filter: [""],
@@ -362,7 +362,7 @@ export const products = [
   {
     type: "pasta",
     name: "Pasta Pepperoni",
-    desc: "Rigatoni pasta, cream, tomato sauce, pepperoni, parmesan",
+    desc: "Rigatoni pasta, cream, Tomato Sauce, pepperoni, Parmesan",
     img: "/images/menu/pasta-pepperoni.png",
     bigImg: "/images/menu/pasta-pepperoni.png",
     filter: ["Spicy"],
@@ -371,7 +371,7 @@ export const products = [
   {
     type: "pasta",
     name: "Mac and Cheese",
-    desc: "Rigatoni pasta, emmental, parmesan, cheddar, cream",
+    desc: "Rigatoni pasta, emmental, Parmesan, Cheddar Cheese, cream",
     img: "/images/menu/pasta-mac-and-cheese.png",
     bigImg: "/images/menu/large/pasta-mac-and-cheese.avif",
     filter: [""],
@@ -380,7 +380,7 @@ export const products = [
   {
     type: "salad",
     name: "Rocket Salad",
-    desc: "Iceberg lettuce, arugula, fresh tomatoes, parmesan, olive oil, Balsamic dressing",
+    desc: "Iceberg lettuce, arugula, Fresh Tomato, Parmesan, olive oil, Balsamic dressing",
     img: "/images/menu/salad-rocket.png",
     bigImg: "/images/menu/large/salad-rocket.avif",
     filter: ["Vegetarian"],
@@ -389,7 +389,7 @@ export const products = [
   {
     type: "salad",
     name: "Salad Tricolore",
-    desc: "Tomatoes, feta cheese, pesto sauce and olive oil",
+    desc: "Fresh tomato, Feta Cheese, Pesto Sauce and olive oil",
     img: "/images/menu/salad-tricolore.png",
     bigImg: "/images/menu/large/salad-tricolore.avif",
     filter: ["Vegetarian"],
@@ -398,7 +398,7 @@ export const products = [
   {
     type: "salad",
     name: "“Caesars Bacon”",
-    desc: "Iceberg, bacon, corn, croutons, parmesan, Caesar dressing",
+    desc: "Iceberg, bacon, Corn, croutons, Parmesan, Caesar dressing",
     img: "/images/menu/salad-ceasers-bacon.png",
     bigImg: "/images/menu/large/salad-ceasers-bacon.avif",
     filter: [""],
@@ -407,7 +407,7 @@ export const products = [
   {
     type: "salad",
     name: "“Caesars Chicken",
-    desc: "Iceberg, chicken, corn, croutons, parmesan, Caesar dressing",
+    desc: "Iceberg, chicken, Corn, croutons, Parmesan, Caesar dressing",
     img: "/images/menu/salad-ceasers-chicken.png",
     bigImg: "/images/menu/large/salad-ceasers-chicken.avif",
     filter: [""],
@@ -416,7 +416,7 @@ export const products = [
   {
     type: "salad",
     name: "Tuna Salad",
-    desc: "Iceberg lettuce, tuna, corn, olives, lemon and olive oil",
+    desc: "Iceberg lettuce, Tuna, Corn, Black Olives, lemon and olive oil",
     img: "/images/menu/salad-tuna.png",
     bigImg: "/images/menu/large/salad-tuna.avif",
     filter: [""],
@@ -425,7 +425,7 @@ export const products = [
   {
     type: "sandwich",
     name: "Sandwich Milano",
-    desc: "- available until 5 p.m. - tomato sauce, provolone, Milano salami, green peppers, fresh tomatoes",
+    desc: "- available until 5 p.m. - Tomato Sauce, provolone, Milano salami, Fresh green peppers, Fresh Tomato",
     img: "/images/menu/sandwich-milano.png",
     bigImg: "/images/menu/large/sandwich-milano.avif",
     filter: ["New"],
@@ -434,7 +434,7 @@ export const products = [
   {
     type: "sandwich",
     name: "Pepperoni Sandwich",
-    desc: "tomato sauce, provolone, Philadelphia cheese, pepperoni",
+    desc: "Tomato Sauce, provolone, Philadelphia cheese, pepperoni",
     img: "/images/menu/sandwich-pepperoni.png",
     bigImg: "/images/menu/sandwich-pepperoni.png",
     filter: [""],
@@ -443,7 +443,7 @@ export const products = [
   {
     type: "sandwich",
     name: "BBQ chicken sandwich",
-    desc: "barbecue sauce, provolone, chicken fillet, bacon",
+    desc: "BBQ Sauce, provolone, Chicken, bacon",
     img: "/images/menu/sandwich-bbq-chicken.png",
     bigImg: "/images/menu/large/sandwich-bbq-chicken.avif",
     filter: [""],
@@ -452,7 +452,7 @@ export const products = [
   {
     type: "sandwich",
     name: "Mediterraneo sandwich",
-    desc: "ranch sauce, provolone, white cheese, tomatoes, olives, green peppers",
+    desc: "ranch sauce, provolone, white cheese, Fresh tomato, Black Olives, Fresh green peppers",
     img: "/images/menu/sandwich-mediteraneo.png",
     bigImg: "/images/menu/large/sandwich-mediteraneo.avif",
     filter: [""],
@@ -501,7 +501,7 @@ export const products = [
   {
     type: "dips",
     name: "Tomato Dip",
-    desc: "Tomatoes, salt, sugar, spices, garlic powder",
+    desc: "Fresh tomato, salt, sugar, spices, garlic powder",
     img: "/images/menu/dip-tomato.png",
     filter: [""],
     price: [{ medium: 1.60 },]

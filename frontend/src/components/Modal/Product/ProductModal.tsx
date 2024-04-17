@@ -4,7 +4,9 @@ import "./ProductModal.css";
 import { ModalContext } from "../../../context/Modal.Context";
 import SinglePizzaSize from "./SinglePizzaSize";
 import { products } from "../../../data/products";
+import { allToppings } from "../../../data/toppings";
 import Quantity from "./Quantity";
+import { LoginContext } from "../../../context/LoginContext";
 
 interface Product {
   type: string;
@@ -22,8 +24,6 @@ interface Product {
 
 const ProductModal: React.FC = () => {
   const [size, setSize] = useState("Medium");
-  // const [isFavorite, setIsFavorite] = useState(false);
-  // const [favPizzaName, setFavPizzaName] = useState("");
   const [selectedCrust, setSelectedCrust] = useState<number>(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product>({
@@ -36,8 +36,14 @@ const ProductModal: React.FC = () => {
     price: [{ medium: 0 }, { large: 0 }, { jumbo: 0 }],
   });
   const [weigh, setWeigh] = useState<number>(385);
+  const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [modifiedToppings, setModifiedToppings] = useState<string[]>([]);
+  const [savedToppings, setSavedToppings] = useState<string[]>([]);
 
   const { product } = useContext(ModalContext);
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  if (!loggedIn) setLoggedIn(true); // only for testing <--------------------------------------------------------
 
   const premiumPizzaWeigh = 570;
 
@@ -52,6 +58,30 @@ const ProductModal: React.FC = () => {
   const name = product[0];
   const img = product[3];
   const desc = product[2];
+
+  const toppings = desc.split(", ");
+
+  const finalPizzaProduct = {
+    name: name,
+    size: size,
+    crust:
+      selectedCrust === 0
+        ? "Hand Tossed"
+        : selectedCrust === 1
+        ? "Italian Style"
+        : selectedCrust === 2
+        ? "Gluten Free"
+        : selectedCrust === 3
+        ? "With Philadelphia"
+        : selectedCrust === 4
+        ? "With Mozzarella"
+        : selectedCrust === 5
+        ? "With Pepperoni"
+        : "",
+    toppings: modifiedToppings,
+  };
+
+  console.log(finalPizzaProduct);
 
   const handTossed = {
     title: `Hand Tossed | ∅ ${size === "Medium" ? "25" : size === "Large" ? "30" : size === "Jumbo" ? "38" : ""}cm`,
@@ -119,6 +149,27 @@ const ProductModal: React.FC = () => {
     setSelectedCrust(index);
   };
 
+  const handleChangeToppings = (topping: string) => {
+    const newToppings = [...modifiedToppings];
+    const toppingIndex = newToppings.indexOf(topping);
+
+    if (toppingIndex === -1) {
+      newToppings.push(topping);
+    } else {
+      newToppings.splice(toppingIndex, 1);
+
+      if (!topping.includes("Extra")) {
+        const extraToppingIndex = newToppings.findIndex((t) => t.includes("Extra") && t.includes(topping));
+        if (extraToppingIndex !== -1) {
+          newToppings.splice(extraToppingIndex, 1);
+        }
+      }
+    }
+
+    setModifiedToppings(newToppings);
+    setSavedToppings(newToppings);
+  };
+
   return (
     <div className="product-modal-container">
       <div className="pm-heading-container">
@@ -131,11 +182,6 @@ const ProductModal: React.FC = () => {
             <img src="/svg/decorLeftRed.svg" className="deal-decor" />
             <p>{name}</p>
             <img src="/svg/decorRightRed.svg" className="deal-decor" />
-          </div>
-
-          <div>
-            <img />
-            <span>ADD TO FAVORITES</span>
           </div>
 
           <div className="pm-options-container">
@@ -232,8 +278,28 @@ const ProductModal: React.FC = () => {
 
           <div className="pm-desc-container">
             <div className="pm-desc">
-              <p>TOPPINGS</p>
-              <p>{desc}</p>
+              <div className="pm-toppings-btn" onClick={() => setModifiedToppings(toppings)}>
+                <p className="edit-toppings-text">TOPPINGS</p>
+                {loggedIn && (
+                  <div className="logged-topping-container">
+                    <div className="toppings-default" onClick={() => setModifiedToppings(toppings)}>
+                      DEFAULT
+                    </div>
+                    <div
+                      className="edit-toppings-container"
+                      onClick={() => {
+                        setShowEditPizzaToppings(!showEditPizzaToppings);
+                      }}
+                    >
+                      <span className="edit-toppings-btn">
+                        <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
+                        <p>CUSTOMIZE</p>
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <p>{savedToppings.length > 0 ? savedToppings.join(", ") : desc}</p>
             </div>
 
             <div className="pm-order-container">
@@ -244,11 +310,45 @@ const ProductModal: React.FC = () => {
                 size={size}
                 selectedCrust={selectedCrust}
                 weigh={weigh}
+                price={price}
+                setPrice={setPrice}
               />
             </div>
           </div>
         </div>
       </div>
+
+      {showEditPizzaToppings && (
+        <div className="toppings-container">
+          {allToppings.map((topping) => (
+            <div key={uuid()} className="all-toppings">
+              <h3 className="topping-name">{topping.name}</h3>
+              {topping.toppings.map((t, i) => (
+                <div key={uuid()} className="topping">
+                  <input
+                    type="checkbox"
+                    id={`${uuid()}`}
+                    checked={modifiedToppings.includes(t)}
+                    onChange={() => handleChangeToppings(t)}
+                  />
+                  <label htmlFor={`${uuid()}`}>{t}</label>
+                  {modifiedToppings.includes(t) && (
+                    <div className="additional-topping">
+                      <input
+                        type="checkbox"
+                        id={`${i}-additional ${uuid()}`}
+                        checked={modifiedToppings.includes(`Extra ${t}`)}
+                        onChange={() => handleChangeToppings(`Extra ${t}`)}
+                      />
+                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

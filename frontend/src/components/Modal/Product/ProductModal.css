@@ -75,3 +75,92 @@
   margin: 0;
   position: relative;
 }
+
+.pm-toppings-btn {
+  display: flex;
+}
+
+.edit-toppings-text {
+  flex: 1;
+}
+
+.edit-toppings-btn {
+  flex: 1;
+  width: fit-content;
+  display: flex;
+  gap: 5px;
+}
+
+.edit-toppings-btn img,
+.edit-toppings-btn p {
+  margin: 0;
+}
+
+.edit-toppings-container {
+  display: flex;
+  gap: 30px;
+  width: fit-content;
+  background-color: #0073aa;
+  color: #fff;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.logged-topping-container {
+  display: flex;
+  gap: 10px;
+}
+
+.toppings-default {
+  color: #fff;
+  background-color: #555;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-toppings-img {
+  width: 16px;
+}
+
+.toppings-container {
+  display: flex;
+
+  background-color: #555 !important;
+  color: #fff;
+}
+
+.toppings-container input {
+  width: 20px;
+  height: 20px;
+}
+
+.all-toppings {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: baseline;
+  margin: 0 auto auto auto;
+}
+
+.topping-name {
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: underline;
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.topping {
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+.topping input {
+  margin-right: 5px;
+}

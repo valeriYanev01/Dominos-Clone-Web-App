@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./Quantity.css";
 import { ModalContext } from "../../../context/Modal.Context";
 import { LoginContext } from "../../../context/LoginContext";
@@ -24,11 +24,49 @@ interface Props {
   selectedProduct: Product;
   selectedCrust: number;
   weigh: number;
+  price: number;
+  setPrice: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Quantity: React.FC<Props> = ({ quantity, setQuantity, selectedProduct, size, selectedCrust, weigh }) => {
+const Quantity: React.FC<Props> = ({
+  quantity,
+  setQuantity,
+  selectedProduct,
+  size,
+  selectedCrust,
+  weigh,
+  price,
+  setPrice,
+}) => {
   const { setModalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
+
+  useEffect(() => {
+    if (selectedProduct.price[0].medium && selectedProduct.price[1].large && selectedProduct.price[2].jumbo) {
+      if (size === "Medium") {
+        if (selectedCrust === 2) {
+          setPrice((selectedProduct.price[0].medium + 3.1) * quantity);
+        } else {
+          setPrice(selectedProduct.price[0].medium * quantity);
+        }
+      }
+      if (size === "Large") {
+        if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+          setPrice((selectedProduct.price[1].large + 2.5) * quantity);
+        } else {
+          setPrice(selectedProduct.price[1].large * quantity);
+        }
+      }
+
+      if (size === "Jumbo") {
+        setPrice(selectedProduct.price[2].jumbo * quantity);
+      }
+    }
+
+    if (selectedProduct.price[0].large) {
+      setPrice(selectedProduct.price[0].large * quantity);
+    }
+  }, [quantity, selectedCrust, size, selectedProduct.price, price, setPrice]);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -68,25 +106,11 @@ const Quantity: React.FC<Props> = ({ quantity, setQuantity, selectedProduct, siz
         <img src="/svg/basket.svg" className="pm-order-img" />
 
         {/* for the special pizzas with only one size and only one crust */}
-        {selectedProduct.price[0].large && (selectedProduct.price[0].large * quantity).toFixed(2)}
+        {selectedProduct.price[0].large && price.toFixed(2)}
 
         {/* for the regular pizzas */}
         {selectedProduct.price[0].medium && selectedProduct.price[1].large && selectedProduct.price[2].jumbo && (
-          <div className="pm-add-btn">
-            {size === "Medium"
-              ? (selectedCrust === 2
-                  ? (selectedProduct?.price[0].medium + 3.1) * quantity
-                  : selectedProduct?.price[0].medium * quantity
-                ).toFixed(2)
-              : size === "Large"
-              ? (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5
-                  ? (selectedProduct?.price[1].large + 2.5) * quantity
-                  : selectedProduct?.price[1].large * quantity
-                ).toFixed(2)
-              : size === "Jumbo"
-              ? (selectedProduct.price[2].jumbo * quantity).toFixed(2)
-              : null}
-          </div>
+          <div className="pm-add-btn">{price.toFixed(2)}</div>
         )}
       </div>
     </div>
