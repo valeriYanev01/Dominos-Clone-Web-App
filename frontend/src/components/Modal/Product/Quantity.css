@@ -21,16 +21,6 @@
   font-size: 16px;
 }
 
-.pm-add-btn {
-  color: #fff;
-  margin: 0;
-}
-
-.pm-order-img {
-  width: 30px;
-  margin: 0;
-}
-
 .pm-order-btn-container {
   display: flex;
   background-color: #609e29;
@@ -41,8 +31,18 @@
   margin-top: 20px;
   border-radius: 5px;
   width: 100%;
+  color: #fff;
 }
 
 .pm-order-btn-container:hover {
   background-color: #78ac36;
+}
+
+.pm-add-btn {
+  margin: 0;
+}
+
+.pm-order-img {
+  width: 30px;
+  margin: 0;
 }

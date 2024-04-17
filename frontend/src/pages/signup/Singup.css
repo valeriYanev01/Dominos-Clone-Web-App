@@ -1,0 +1,189 @@
+.signup {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
+}
+
+.signup-form-container {
+  background-color: #fff;
+  width: 70vw;
+  margin-top: 120px;
+  margin-bottom: 50px;
+  padding: 20px;
+  box-shadow: 10px -5px 70px rgba(0, 0, 0, 0.25);
+}
+
+.signup-heading-container {
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+}
+
+.signup-heading-container p {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.signup-form-upload-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.signup-form {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.signup-form-upload-img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.remove-img {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #555;
+  border-radius: 100%;
+  color: #fff;
+}
+
+.signup-form-upload-btn {
+  width: 100%;
+  background-color: #e2213d;
+  text-align: center;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 18px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.signup-form-text {
+  flex: 2.5;
+}
+
+.signup-form-text-name-container,
+.signup-form-text-name,
+.signup-form-text-surname,
+.signup-form-text-email,
+.signup-form-text-password,
+.signup-form-text-confirm-password {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: 0;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.signup-form-text-name-container input,
+.signup-form-text-name input,
+.signup-form-text-surname input,
+.signup-form-text-email input,
+.signup-form-text-password input,
+.signup-form-text-confirm-password input {
+  width: 100%;
+  padding: 5px;
+  color: #555;
+  font-size: 18px;
+  background-color: #f2f4f5;
+  border: 1px solid rgb(207, 207, 207);
+}
+
+.signup-form-text-name-container input:focus,
+.signup-form-text-name input:focus,
+.signup-form-text-surname input:focus,
+.signup-form-text-email input:focus,
+.signup-form-text-password input:focus,
+.signup-form-text-confirm-password input:focus {
+  outline: #337ab7 1px solid;
+}
+
+.signup-form-text-name-container label,
+.signup-form-text-name label,
+.signup-form-text-surname label,
+.signup-form-text-email label,
+.signup-form-text-password label,
+.signup-form-text-confirm-password label {
+  margin: 0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.signup-form-text-name-container {
+  flex-direction: row;
+  gap: 20px;
+}
+
+.signup-form-settings-container {
+  margin-top: 50px;
+}
+
+.signup-form-privacy-img {
+  width: 16px;
+}
+
+.signup-form-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: 20px;
+}
+
+.signup-form-settings-single {
+  display: flex;
+  gap: 20px;
+  justify-content: start;
+  margin: 0;
+}
+
+.signup-form-settings-single label {
+  margin: 0;
+}
+
+.signup-form-settings-single input[type="checkbox"] {
+  transform: scale(1.5);
+}
+
+.signup-form-settings-text {
+  cursor: pointer;
+}
+
+.signup-form-settings-text-span {
+  color: #337ab7;
+  font-weight: normal !important;
+}
+
+.signup-form-settings-text span {
+  font-weight: bold;
+}
+
+.signup-btn {
+  background-color: #609e29;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 25%;
+  margin-right: 0;
+  margin-top: 50px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.signup-btn:hover {
+  background-color: #78ac36;
+}

@@ -66,6 +66,11 @@ const Quantity: React.FC<Props> = ({ quantity, setQuantity, selectedProduct, siz
       </div>
       <div className="pm-order-btn-container" onClick={handleAddToBasket}>
         <img src="/svg/basket.svg" className="pm-order-img" />
+
+        {/* for the special pizzas with only one size and only one crust */}
+        {selectedProduct.price[0].large && (selectedProduct.price[0].large * quantity).toFixed(2)}
+
+        {/* for the regular pizzas */}
         {selectedProduct.price[0].medium && selectedProduct.price[1].large && selectedProduct.price[2].jumbo && (
           <div className="pm-add-btn">
             {size === "Medium"
@@ -75,8 +80,8 @@ const Quantity: React.FC<Props> = ({ quantity, setQuantity, selectedProduct, siz
                 ).toFixed(2)
               : size === "Large"
               ? (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5
-                  ? (selectedProduct.price[1].large + 2.5) * quantity
-                  : selectedProduct.price[1].large * quantity
+                  ? (selectedProduct?.price[1].large + 2.5) * quantity
+                  : selectedProduct?.price[1].large * quantity
                 ).toFixed(2)
               : size === "Jumbo"
               ? (selectedProduct.price[2].jumbo * quantity).toFixed(2)

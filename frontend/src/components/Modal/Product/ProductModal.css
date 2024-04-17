@@ -65,7 +65,7 @@
 .pm-pizza-crust-container {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 33%);
   gap: 10px;
   padding: 0 10px;
 }

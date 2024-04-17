@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import "./LoginModal.css";
+import { useContext } from "react";
+import { ModalContext } from "../../../context/Modal.Context";
 
 const LoginModal = () => {
+  const { setOpenModal } = useContext(ModalContext);
+
   return (
     <div className="login-modal-container">
       <div className="modal-title login-modal-title">
@@ -42,7 +46,11 @@ const LoginModal = () => {
       <div className="login-modal-signup-text">New member? Signup Now!</div>
 
       <div className="login-modal-register-container">
-        <div className="login-modal-register">Registerd</div>
+        <Link className="login-modal-register-link" to="/signup">
+          <div onClick={() => setOpenModal(false)} className="login-modal-register">
+            Register
+          </div>
+        </Link>
       </div>
     </div>
   );

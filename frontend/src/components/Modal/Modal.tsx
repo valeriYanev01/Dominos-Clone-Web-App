@@ -31,36 +31,38 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
     <>
       {openModal && (
         <div className="modal-container">
-          <div
-            className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
-            style={modalType === "product" ? { border: "none", background: "white", maskImage: "none" } : {}}
-          >
+          <div className="abra">
             <div
-              className={`${modalType !== "product" ? "inner-layer" : ""} ${
-                modalType === "login" ? "modal-login-inner-layer" : ""
-              }`}
+              className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
+              style={modalType === "product" ? { border: "none", background: "white", maskImage: "none" } : {}}
             >
-              {modalType === "selectStore" ? (
-                <SelectStoreModal />
-              ) : modalType === "delivery" ? (
-                <DeliveryModal />
-              ) : modalType === "carryOut" ? (
-                <CarryOutModal />
-              ) : modalType === "login" ? (
-                <LoginModal />
-              ) : modalType === "product" ? (
-                <ProductModal />
-              ) : (
-                ""
-              )}
+              <div
+                className={`${modalType !== "product" ? "inner-layer" : ""} ${
+                  modalType === "login" ? "modal-login-inner-layer" : ""
+                }`}
+              >
+                {modalType === "selectStore" ? (
+                  <SelectStoreModal />
+                ) : modalType === "delivery" ? (
+                  <DeliveryModal />
+                ) : modalType === "carryOut" ? (
+                  <CarryOutModal />
+                ) : modalType === "login" ? (
+                  <LoginModal />
+                ) : modalType === "product" ? (
+                  <ProductModal />
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
+            <span
+              className={`close-modal ${
+                modalType === "login" ? "close-modal-login" : modalType === "product" ? "close-modal-product" : ""
+              }`}
+              onClick={() => setOpenModal(false)}
+            ></span>
           </div>
-          <span
-            className={`close-modal ${
-              modalType === "login" ? "close-modal-login" : modalType === "product" ? "close-modal-product" : ""
-            }`}
-            onClick={() => setOpenModal(false)}
-          ></span>
         </div>
       )}
     </>
