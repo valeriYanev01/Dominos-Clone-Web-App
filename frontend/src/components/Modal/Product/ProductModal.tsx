@@ -39,13 +39,22 @@ const ProductModal: React.FC = () => {
   const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
   const [price, setPrice] = useState(0);
   const [modifiedToppings, setModifiedToppings] = useState<string[]>([]);
-  const [savedToppings, setSavedToppings] = useState<string[]>([]);
 
   const { product } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
   if (!loggedIn) setLoggedIn(true); // only for testing <--------------------------------------------------------
 
   const premiumPizzaWeigh = 570;
+
+  const name = product[0];
+  const img = product[3];
+  const desc = product[2];
+
+  const toppings = desc.split(", ");
+
+  useEffect(() => {
+    setModifiedToppings(toppings);
+  }, []);
 
   useEffect(() => {
     products.map((p) => {
@@ -54,12 +63,6 @@ const ProductModal: React.FC = () => {
       }
     });
   }, [product, selectedProduct]);
-
-  const name = product[0];
-  const img = product[3];
-  const desc = product[2];
-
-  const toppings = desc.split(", ");
 
   const finalPizzaProduct = {
     name: name,
@@ -79,6 +82,8 @@ const ProductModal: React.FC = () => {
         ? "With Pepperoni"
         : "",
     toppings: modifiedToppings,
+    quantity: quantity,
+    price: price.toFixed(2),
   };
 
   console.log(finalPizzaProduct);
@@ -149,7 +154,33 @@ const ProductModal: React.FC = () => {
     setSelectedCrust(index);
   };
 
-  const handleChangeToppings = (topping: string) => {
+  const handleChangeToppings = (topping: string, checked: boolean) => {
+    if (checked) {
+      if (modifiedToppings.length >= toppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price + 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price + 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price + 2.5 * quantity);
+        }
+      }
+    } else {
+      if (modifiedToppings.length > toppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price - 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price - 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price - 2.5 * quantity);
+        }
+      }
+    }
+
     const newToppings = [...modifiedToppings];
     const toppingIndex = newToppings.indexOf(topping);
 
@@ -167,7 +198,27 @@ const ProductModal: React.FC = () => {
     }
 
     setModifiedToppings(newToppings);
-    setSavedToppings(newToppings);
+  };
+
+  const handleDefault = () => {
+    setModifiedToppings(toppings);
+    if (size === "Medium") {
+      if (selectedCrust === 2) {
+        setPrice((Number(selectedProduct.price[0].medium) + 3.1) * quantity);
+      } else {
+        setPrice(Number(selectedProduct.price[0].medium) * quantity);
+      }
+    }
+    if (size === "Large") {
+      if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+        setPrice((Number(selectedProduct.price[1].large) + 2.5) * quantity);
+      } else {
+        setPrice(Number(selectedProduct.price[1].large) * quantity);
+      }
+    }
+    if (size === "Jumbo") {
+      setPrice(Number(selectedProduct.price[2].jumbo) * quantity);
+    }
   };
 
   return (
@@ -278,11 +329,11 @@ const ProductModal: React.FC = () => {
 
           <div className="pm-desc-container">
             <div className="pm-desc">
-              <div className="pm-toppings-btn" onClick={() => setModifiedToppings(toppings)}>
+              <div className="pm-toppings-btn">
                 <p className="edit-toppings-text">TOPPINGS</p>
                 {loggedIn && (
                   <div className="logged-topping-container">
-                    <div className="toppings-default" onClick={() => setModifiedToppings(toppings)}>
+                    <div className="toppings-default" onClick={handleDefault}>
                       DEFAULT
                     </div>
                     <div
@@ -291,7 +342,10 @@ const ProductModal: React.FC = () => {
                         setShowEditPizzaToppings(!showEditPizzaToppings);
                       }}
                     >
-                      <span className="edit-toppings-btn">
+                      <span
+                        className="edit-toppings-btn"
+                        onClick={() => setModifiedToppings(modifiedToppings.length > 0 ? modifiedToppings : toppings)}
+                      >
                         <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
                         <p>CUSTOMIZE</p>
                       </span>
@@ -299,7 +353,7 @@ const ProductModal: React.FC = () => {
                   </div>
                 )}
               </div>
-              <p>{savedToppings.length > 0 ? savedToppings.join(", ") : desc}</p>
+              <p>{modifiedToppings.length > 0 ? modifiedToppings.join(", ") : desc.split("")}</p>
             </div>
 
             <div className="pm-order-container">
@@ -312,6 +366,8 @@ const ProductModal: React.FC = () => {
                 weigh={weigh}
                 price={price}
                 setPrice={setPrice}
+                toppings={toppings}
+                modifiedToppings={modifiedToppings}
               />
             </div>
           </div>
@@ -329,7 +385,9 @@ const ProductModal: React.FC = () => {
                     type="checkbox"
                     id={`${uuid()}`}
                     checked={modifiedToppings.includes(t)}
-                    onChange={() => handleChangeToppings(t)}
+                    onChange={(e) => {
+                      handleChangeToppings(t, e.target.checked);
+                    }}
                   />
                   <label htmlFor={`${uuid()}`}>{t}</label>
                   {modifiedToppings.includes(t) && (
@@ -338,7 +396,7 @@ const ProductModal: React.FC = () => {
                         type="checkbox"
                         id={`${i}-additional ${uuid()}`}
                         checked={modifiedToppings.includes(`Extra ${t}`)}
-                        onChange={() => handleChangeToppings(`Extra ${t}`)}
+                        onChange={(e) => handleChangeToppings(`Extra ${t}`, e.target.checked)}
                       />
                       <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
                     </div>

@@ -26,6 +26,8 @@ interface Props {
   weigh: number;
   price: number;
   setPrice: React.Dispatch<React.SetStateAction<number>>;
+  toppings: string[];
+  modifiedToppings: string[];
 }
 
 const Quantity: React.FC<Props> = ({
@@ -37,6 +39,8 @@ const Quantity: React.FC<Props> = ({
   weigh,
   price,
   setPrice,
+  toppings,
+  modifiedToppings,
 }) => {
   const { setModalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -45,28 +49,34 @@ const Quantity: React.FC<Props> = ({
     if (selectedProduct.price[0].medium && selectedProduct.price[1].large && selectedProduct.price[2].jumbo) {
       if (size === "Medium") {
         if (selectedCrust === 2) {
-          setPrice((selectedProduct.price[0].medium + 3.1) * quantity);
+          setPrice(
+            (selectedProduct.price[0].medium + (modifiedToppings.length * 1.5 - toppings.length * 1.5) + 3.1) * quantity
+          );
         } else {
-          setPrice(selectedProduct.price[0].medium * quantity);
+          setPrice(
+            (selectedProduct.price[0].medium + (modifiedToppings.length * 1.5 - toppings.length * 1.5)) * quantity
+          );
         }
       }
       if (size === "Large") {
         if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
-          setPrice((selectedProduct.price[1].large + 2.5) * quantity);
+          setPrice(
+            (selectedProduct.price[1].large + (modifiedToppings.length * 2 - toppings.length * 2) + 2.5) * quantity
+          );
         } else {
-          setPrice(selectedProduct.price[1].large * quantity);
+          setPrice((selectedProduct.price[1].large + (modifiedToppings.length * 2 - toppings.length * 2)) * quantity);
         }
       }
 
       if (size === "Jumbo") {
-        setPrice(selectedProduct.price[2].jumbo * quantity);
+        setPrice((selectedProduct.price[2].jumbo + (modifiedToppings.length * 2.5 - toppings.length * 2.5)) * quantity);
       }
     }
 
     if (selectedProduct.price[0].large) {
-      setPrice(selectedProduct.price[0].large * quantity);
+      setPrice((selectedProduct.price[0].large + (modifiedToppings.length * 2 - toppings.length * 2)) * quantity);
     }
-  }, [quantity, selectedCrust, size, selectedProduct.price, price, setPrice]);
+  }, [quantity, selectedCrust, size, selectedProduct.price]);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);

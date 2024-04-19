@@ -128,8 +128,8 @@
 }
 
 .toppings-container {
-  display: flex;
-
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
   background-color: #555 !important;
   color: #fff;
 }
@@ -143,9 +143,7 @@
   font-size: 18px;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: baseline;
-  margin: 0 auto auto auto;
+  margin: 0;
 }
 
 .topping-name {
@@ -159,8 +157,17 @@
 .topping {
   margin: 0;
   padding-bottom: 5px;
+  width: max-content;
 }
 
 .topping input {
   margin-right: 5px;
+}
+
+.additional-topping {
+  margin-left: 10px;
+}
+
+.additional-topping input {
+  background-color: red;
 }
