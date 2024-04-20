@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import "./LoginModal.css";
 import { useContext } from "react";
 import { ModalContext } from "../../../context/Modal.Context";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginModal = () => {
   const { setOpenModal } = useContext(ModalContext);
+
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <div className="login-modal-container">
@@ -14,11 +17,11 @@ const LoginModal = () => {
         <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
       <div className="login-modal-oAuthLinks-container">
-        <Link to="/" className="login-modal-oAuthLink">
+        <Link to="/" className="login-modal-oAuthLink" onClick={() => loginWithRedirect()}>
           <img src="/svg/login/facebook.svg" className="login-modal-svg" />
           <span>Facebook</span>
         </Link>
-        <Link to="/" className="login-modal-oAuthLink">
+        <Link to="/" className="login-modal-oAuthLink" onClick={() => loginWithRedirect()}>
           <img src="/svg/login/google.svg" className="login-modal-svg" />
           <span>Google</span>
         </Link>

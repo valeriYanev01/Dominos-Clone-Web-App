@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 
 type LoggedIn = boolean;
 
@@ -14,6 +15,15 @@ export const LoginContext = createContext<LoggedInInterface>({
 
 export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const { isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, [isAuthenticated]);
 
   return <LoginContext.Provider value={{ loggedIn, setLoggedIn }}>{children}</LoginContext.Provider>;
 };

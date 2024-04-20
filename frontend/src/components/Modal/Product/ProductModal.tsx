@@ -41,8 +41,8 @@ const ProductModal: React.FC = () => {
   const [modifiedToppings, setModifiedToppings] = useState<string[]>([]);
 
   const { product } = useContext(ModalContext);
-  const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  if (!loggedIn) setLoggedIn(true); // only for testing <--------------------------------------------------------
+  const { loggedIn } = useContext(LoginContext);
+  // if (!loggedIn) setLoggedIn(true); // only for testing <--------------------------------------------------------
 
   const premiumPizzaWeigh = 570;
 
