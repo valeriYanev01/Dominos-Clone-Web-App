@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import "./Quantity.css";
-import { ModalContext } from "../../../context/Modal.Context";
+import { ModalContext } from "../../../context/ModalContext";
 import { LoginContext } from "../../../context/LoginContext";
 
 interface Product {

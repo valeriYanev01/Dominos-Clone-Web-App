@@ -15,6 +15,7 @@ export const LoginContext = createContext<LoggedInInterface>({
 
 export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+
   const { isAuthenticated } = useAuth0();
 
   useEffect(() => {

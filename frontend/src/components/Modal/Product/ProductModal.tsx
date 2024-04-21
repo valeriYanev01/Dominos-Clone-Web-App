@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./ProductModal.css";
-import { ModalContext } from "../../../context/Modal.Context";
+import { ModalContext } from "../../../context/ModalContext";
 import SinglePizzaSize from "./SinglePizzaSize";
 import { products } from "../../../data/products";
 import { allToppings } from "../../../data/toppings";

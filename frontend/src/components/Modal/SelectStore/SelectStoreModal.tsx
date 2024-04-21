@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./SelectStoreModal.css";
 import { useContext } from "react";
-import { ModalContext } from "../../../context/Modal.Context";
+import { ModalContext } from "../../../context/ModalContext";
 import { MenuContext } from "../../../context/MenuContext";
 
 const stores = [

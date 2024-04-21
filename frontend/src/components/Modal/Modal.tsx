@@ -5,7 +5,7 @@ import DeliveryModal from "./Delivery/DeliveryModal";
 import CarryOutModal from "./CarryOut/CarryOutModal";
 import LoginModal from "./Login/LoginModal";
 import "./Modal.css";
-import { ModalContext } from "../../context/Modal.Context";
+import { ModalContext } from "../../context/ModalContext";
 import ProductModal from "./Product/ProductModal";
 
 interface ModalInterface {

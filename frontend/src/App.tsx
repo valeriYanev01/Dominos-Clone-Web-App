@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Menu from "./pages/menu/Menu";
 import Modal from "./components/Modal/Modal";
-import { ModalContext, ModalContextProvider } from "./context/Modal.Context";
+import { ModalContext, ModalContextProvider } from "./context/ModalContext";
 import { useContext } from "react";
 import DominosMore from "./pages/more/DominosMore";
 import ScrollToTop from "./functions/scrollToTop";

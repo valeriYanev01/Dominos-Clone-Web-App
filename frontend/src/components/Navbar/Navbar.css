@@ -84,6 +84,7 @@
   flex-direction: row;
   list-style: none;
   gap: 10px;
+  position: relative;
 }
 
 .navigation-list-container-links > li {
@@ -128,4 +129,78 @@
   background-color: #df232d;
   box-shadow: inset 0 64px 40px -40px rgba(255, 255, 255, 10%), inset 0 -2px 0 rgba(0, 0, 0, 20%),
     0 1px 2px rgba(0, 0, 0, 15%);
+}
+
+.navigation-profile-img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.navigation-profile-menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  color: #555555b0;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #fff;
+  text-align: left;
+  padding: 10px 0 0 10px;
+  gap: 10px;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  border-radius: 10px;
+}
+
+.navigation-profile-menu li {
+  padding-right: 15px;
+  text-align: right;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  border-bottom: #5555554d solid 2px;
+  padding-bottom: 5px;
+}
+
+.navigation-profile-menu li:last-of-type {
+  padding-bottom: 0 !important;
+}
+
+.loggedin-navigation {
+  display: flex;
+  color: #fff;
+  background-color: #000000cf;
+  width: 100%;
+  position: fixed;
+  top: 99px;
+  z-index: 40;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.loggedin-navigation div {
+  display: flex;
+  margin: 0;
+  background-color: #e31837;
+  padding: 0 10px;
+  gap: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  letter-spacing: 1.5px;
+}
+
+.loggedin-navigation div:last-child {
+  background-color: #0078ae;
+}
+
+.loggedin-navigation-img {
+  width: 50px;
+  margin: 0;
 }

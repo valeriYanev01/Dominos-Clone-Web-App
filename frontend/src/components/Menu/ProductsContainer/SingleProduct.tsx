@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { ModalContext } from "../../../context/Modal.Context";
+import { ModalContext } from "../../../context/ModalContext";
 
 type Product = {
   product: {

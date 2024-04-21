@@ -1,13 +1,23 @@
 import { Link } from "react-router-dom";
 import "./LoginModal.css";
-import { useContext } from "react";
-import { ModalContext } from "../../../context/Modal.Context";
+import { useContext, useEffect } from "react";
+import { ModalContext } from "../../../context/ModalContext";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginModal = () => {
   const { setOpenModal } = useContext(ModalContext);
 
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setOpenModal(false);
+    }
+  }, [isAuthenticated]);
+
+  const handleGoogleLogin = () => {
+    loginWithRedirect({ authorizationParams: { connection: "google-oauth2" } });
+  };
 
   return (
     <div className="login-modal-container">
@@ -17,11 +27,11 @@ const LoginModal = () => {
         <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
       <div className="login-modal-oAuthLinks-container">
-        <Link to="/" className="login-modal-oAuthLink" onClick={() => loginWithRedirect()}>
+        <Link to="/" className="login-modal-oAuthLink">
           <img src="/svg/login/facebook.svg" className="login-modal-svg" />
           <span>Facebook</span>
         </Link>
-        <Link to="/" className="login-modal-oAuthLink" onClick={() => loginWithRedirect()}>
+        <Link to="/" className="login-modal-oAuthLink" onClick={handleGoogleLogin}>
           <img src="/svg/login/google.svg" className="login-modal-svg" />
           <span>Google</span>
         </Link>

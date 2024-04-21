@@ -1,7 +1,7 @@
 import "./SingleDeal.css";
 import { DealInfo } from "../../../types/Home";
 import React, { useContext } from "react";
-import { ModalContext } from "../../../context/Modal.Context";
+import { ModalContext } from "../../../context/ModalContext";
 import { LoginContext } from "../../../context/LoginContext";
 
 const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method, deal }) => {
