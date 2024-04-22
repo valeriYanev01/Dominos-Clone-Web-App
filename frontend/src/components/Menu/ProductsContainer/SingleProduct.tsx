@@ -24,7 +24,7 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
         ? true
         : false
     );
-  }, [productType[4]]);
+  }, [productType]);
 
   return (
     <div
