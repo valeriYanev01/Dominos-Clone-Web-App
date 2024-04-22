@@ -1,0 +1,16 @@
+.pas-heading {
+  padding: 50px 0 30px 0;
+  display: flex;
+  width: 80%;
+  font-size: 26px;
+  margin-top: 40px;
+  justify-content: center;
+  gap: 40px;
+  color: #000;
+}
+
+.pas-heading img,
+.pas-heading p {
+  align-self: center;
+  margin: 0;
+}

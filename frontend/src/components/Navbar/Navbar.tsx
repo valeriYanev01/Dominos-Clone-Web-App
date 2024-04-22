@@ -15,6 +15,7 @@ const Navbar = ({ page }: Page) => {
     navShadow: "none",
   });
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [activeProfileOption, setActiveProfileOption] = useState(false);
 
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
@@ -59,6 +60,15 @@ const Navbar = ({ page }: Page) => {
   const handleOpenModal = (modal: ModalType) => {
     setModalType(modal);
     setOpenModal(true);
+  };
+
+  const handleOrderBtn = () => {
+    setOpenModal(true);
+    if (loggedIn) {
+      setModalType("method");
+    } else {
+      setModalType("login");
+    }
   };
 
   return (
@@ -227,13 +237,7 @@ const Navbar = ({ page }: Page) => {
             </Link>
           </li>
           <li>
-            <span
-              onClick={() => {
-                setOpenModal(true);
-                setModalType("login");
-              }}
-              className="navigation-order"
-            >
+            <span onClick={handleOrderBtn} className="navigation-order">
               ORDER NOW
             </span>
           </li>
@@ -250,11 +254,21 @@ const Navbar = ({ page }: Page) => {
           )}
           {showProfileMenu ? (
             <ul className="navigation-profile-menu">
-              <li>MY PROFILE</li>
-              <li>MY ADDRESSES</li>
-              <li>MY ORDERS</li>
-              <li>MY COUPONS & GIFTS</li>
-              <li>PRIVACY SETTINGS</li>
+              <li onClick={() => setShowProfileMenu(false)}>
+                <Link to="/profile/account">MY PROFILE</Link>
+              </li>
+              <li onClick={() => setShowProfileMenu(false)}>
+                <Link to="/profile/addresses">MY ADDRESSES</Link>
+              </li>
+              <li onClick={() => setShowProfileMenu(false)}>
+                <Link to="/profile/orders">MY ORDERS</Link>
+              </li>
+              <li onClick={() => setShowProfileMenu(false)}>
+                <Link to="/profile/coupons">MY COUPONS & GIFTS</Link>
+              </li>
+              <li onClick={() => setShowProfileMenu(false)}>
+                <Link to="/profile/privacy-settings">PRIVACY SETTINGS</Link>
+              </li>
               <li onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>LOGOUT</li>
             </ul>
           ) : (
@@ -262,7 +276,7 @@ const Navbar = ({ page }: Page) => {
           )}
         </ul>
       </nav>
-      {loggedIn ? (
+      {loggedIn && page === "home" ? (
         <div className="loggedin-navigation">
           <div onClick={() => handleOpenModal("delivery")}>
             <img src="/images/delivery.png" className="loggedin-navigation-img" />
@@ -274,6 +288,67 @@ const Navbar = ({ page }: Page) => {
             <p>CARRY OUT</p>
           </div>
         </div>
+      ) : (
+        ""
+      )}
+
+      {loggedIn && page === "profile" ? (
+        <ul className="profile-nav">
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/account">MY PROFILE</Link>
+          </li>
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/addresses">MY ADDRESSES</Link>
+          </li>
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/orders">MY ORDERS</Link>
+          </li>
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/coupons">MY COUPONS & GIFTS</Link>
+          </li>
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/payment-methods">PAYMENT METHODS</Link>
+          </li>
+          <li
+            onClick={() => {
+              setShowProfileMenu(false);
+              setActiveProfileOption(true);
+            }}
+            className={`${activeProfileOption ? "active" : ""}`}
+          >
+            <Link to="/profile/privacy-settings">PRIVACY SETTINGS</Link>
+          </li>
+        </ul>
       ) : (
         ""
       )}

@@ -1,0 +1,91 @@
+.profile-account {
+  background-color: #fff;
+  width: 80%;
+  margin: auto;
+  color: #555;
+  box-shadow: 10px -5px 70px rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+}
+
+.pa-heading {
+  padding: 50px 0 30px 0;
+  display: flex;
+  width: 80%;
+  font-size: 26px;
+  margin-top: 40px;
+  justify-content: center;
+  gap: 40px;
+  color: #000;
+}
+
+.pa-heading img,
+.pa-heading p {
+  align-self: center;
+  margin: 0;
+}
+
+.pa-body {
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.pa-disabled {
+  cursor: not-allowed;
+}
+
+.pa-body div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.pa-name-container {
+  flex-direction: row !important;
+  gap: 20px;
+}
+
+.pa-name-container div {
+  width: 100%;
+}
+
+.pa-body div label,
+.pa-body div input {
+  margin: 0;
+}
+
+.pa-body input {
+  border: 1px solid #e3e4e5;
+  background-color: #e3e4e581;
+  padding: 10px;
+}
+
+.pa-body input:focus {
+  outline: 1px solid #0073aa;
+  box-shadow: 1px 1px 2px #0073aa;
+}
+
+.pa-body label {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.pa-btn {
+  background-color: #609e29;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 25%;
+  margin-right: 0;
+  margin-top: 50px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.pa-btn:hover {
+  background-color: #78ac36;
+}
