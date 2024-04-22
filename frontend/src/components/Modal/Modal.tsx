@@ -7,6 +7,7 @@ import LoginModal from "./Login/LoginModal";
 import "./Modal.css";
 import { ModalContext } from "../../context/ModalContext";
 import ProductModal from "./Product/ProductModal";
+import OrderMethod from "./OrderMethod/OrderMethod";
 
 interface ModalInterface {
   openModal: boolean;
@@ -51,6 +52,8 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                   <LoginModal />
                 ) : modalType === "product" ? (
                   <ProductModal />
+                ) : modalType === "method" ? (
+                  <OrderMethod />
                 ) : (
                   ""
                 )}
@@ -58,7 +61,13 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
             </div>
             <span
               className={`close-modal ${
-                modalType === "login" ? "close-modal-login" : modalType === "product" ? "close-modal-product" : ""
+                modalType === "login"
+                  ? "close-modal-login"
+                  : modalType === "product"
+                  ? "close-modal-product"
+                  : modalType === "method"
+                  ? "close-modal-method"
+                  : ""
               }`}
               onClick={() => setOpenModal(false)}
             ></span>
