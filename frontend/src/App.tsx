@@ -7,6 +7,13 @@ import { useContext } from "react";
 import DominosMore from "./pages/more/DominosMore";
 import ScrollToTop from "./functions/scrollToTop";
 import Signup from "./pages/signup/Signup";
+import Profile from "./pages/profile/Profile";
+import Account from "./components/Profile/Account/Account";
+import Addresses from "./components/Profile/Addresses/Addresses";
+import Orders from "./components/Profile/Orders/Orders";
+import Coupons from "./components/Profile/Coupons/Coupons";
+import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySettings";
+import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
 
 function App() {
   return (
@@ -27,9 +34,17 @@ function AppContent() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/menu/:store/*" element={<Menu />} />
-        <Route path="/dominos-more" element={<DominosMore />} />
+        <Route path="menu/:store/*" element={<Menu />} />
+        <Route path="dominos-more" element={<DominosMore />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="profile" element={<Profile />}>
+          <Route path={"account"} element={<Account />} />
+          <Route path={"addresses"} element={<Addresses />} />
+          <Route path={"orders"} element={<Orders />} />
+          <Route path={"coupons"} element={<Coupons />} />
+          <Route path={"privacy-settings"} element={<PrivacySettings />} />
+          <Route path={"payment-methods"} element={<PaymentMethods />} />
+        </Route>
       </Routes>
     </>
   );
