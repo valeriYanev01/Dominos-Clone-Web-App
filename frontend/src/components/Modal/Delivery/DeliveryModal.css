@@ -1,0 +1,6 @@
+.dm-heading {
+  display: flex;
+  gap: 20px;
+  font-size: 24px;
+  letter-spacing: 1.5px;
+}
