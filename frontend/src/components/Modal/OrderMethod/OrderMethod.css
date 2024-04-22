@@ -1,0 +1,31 @@
+.om-heading {
+  display: flex;
+  width: 75%;
+  font-size: 26px;
+  gap: 20px;
+  text-align: center;
+  letter-spacing: 1.2px;
+  margin-bottom: 20px;
+}
+
+.om-heading img {
+  margin: auto;
+}
+
+.om-methods-container {
+  display: flex;
+}
+
+.om-method {
+  color: #0d6490;
+  cursor: pointer;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+}
+
+.om-method img {
+  width: 100px;
+}
