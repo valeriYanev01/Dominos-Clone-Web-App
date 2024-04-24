@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-
 import SelectStoreModal from "./SelectStore/SelectStoreModal";
 import DeliveryModal from "./Delivery/DeliveryModal";
 import CarryOutModal from "./CarryOut/CarryOutModal";

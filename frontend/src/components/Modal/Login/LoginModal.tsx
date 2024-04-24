@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom";
 import "./LoginModal.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../../context/ModalContext";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+import { LoginContext } from "../../../context/LoginContext";
 
 const LoginModal = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const { setOpenModal } = useContext(ModalContext);
+  const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
 
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
@@ -17,6 +23,19 @@ const LoginModal = () => {
 
   const handleGoogleLogin = () => {
     loginWithRedirect({ authorizationParams: { connection: "google-oauth2" } });
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/users/login", { email, password });
+      console.log(response.data);
+      setOpenModal(false);
+      setLoggedIn(true);
+      setEmailLogin(response.data.email);
+      localStorage.setItem("user", String([response.data.email, response.data.token]));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -38,8 +57,8 @@ const LoginModal = () => {
       </div>
 
       <div className="login-modal-input-container">
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Password" type="password" />
+        <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
       <div className="login-modal-fp-ks">
@@ -52,7 +71,7 @@ const LoginModal = () => {
         </div>
       </div>
 
-      <div className="login-modal-login-container">
+      <div className="login-modal-login-container" onClick={handleLogin}>
         <div className="login-modal-login">Login</div>
       </div>
 

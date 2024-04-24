@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Singup.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import axios from "axios";
+import { LoginContext } from "../../context/LoginContext";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
   const [showPerks, setShowPerks] = useState(false);
@@ -13,6 +16,10 @@ const Signup: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
   const handleImgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setUploadImg(URL.createObjectURL(e.target.files[0]));
@@ -21,17 +28,21 @@ const Signup: React.FC = () => {
   };
 
   const handleRegister = async () => {
-    if (!showPerks) setError("You need to confirm with the privacy settings");
-    if (!confirmPassword) setError("Confirm Password is required");
-    if (!password) setError("Password is required");
-    if (!email) setError("Email is required");
-    if (!surname) setError("Surname is required");
-    if (!name) setError("Name is required");
+    try {
+      await axios.post("http://localhost:3000/api/users/signup", {
+        email,
+        password,
+        confirmPassword,
+        firstName: name,
+        lastName: surname,
+        img: uploadImg,
+      });
 
-    if (name && surname && email && password && confirmPassword && showPerks) setError("");
-
-    if (!error) {
-      console.log(uploadImg, name, surname, email, password, confirmPassword);
+      setLoggedIn(true);
+      setEmailLogin(email);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.response.data.error);
     }
   };
 

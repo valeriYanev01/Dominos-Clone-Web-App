@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { Link, useLocation } from "react-router-dom";
 import { NavColors, Page } from "../../types/Navbar";
@@ -19,9 +20,11 @@ const Navbar = ({ page }: Page) => {
 
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
-  const { loggedIn } = useContext(LoginContext);
+  const { loggedIn, setLoggedIn, emailLogin } = useContext(LoginContext);
 
-  const { logout } = useAuth0();
+  const navigate = useNavigate();
+
+  const { logout, user } = useAuth0();
 
   const inStore = useLocation().pathname.includes("/menu");
 
@@ -68,6 +71,19 @@ const Navbar = ({ page }: Page) => {
       setModalType("method");
     } else {
       setModalType("login");
+    }
+  };
+
+  const handleLogout = () => {
+    setShowProfileMenu(false);
+    setLoggedIn(false);
+    if (user) {
+      logout({ logoutParams: { returnTo: window.location.origin } });
+    }
+
+    if (emailLogin) {
+      localStorage.removeItem("user");
+      navigate("/");
     }
   };
 
@@ -269,7 +285,7 @@ const Navbar = ({ page }: Page) => {
               <li onClick={() => setShowProfileMenu(false)}>
                 <Link to="/profile/privacy-settings">PRIVACY SETTINGS</Link>
               </li>
-              <li onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>LOGOUT</li>
+              <li onClick={handleLogout}>LOGOUT</li>
             </ul>
           ) : (
             ""

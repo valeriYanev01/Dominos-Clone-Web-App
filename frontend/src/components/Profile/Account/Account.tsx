@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Account.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+import { LoginContext } from "../../../context/LoginContext";
 
 const Account: React.FC = () => {
   const [name, setName] = useState("");
@@ -9,18 +11,38 @@ const Account: React.FC = () => {
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [changeNameField, setChangeNameField] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const { emailLogin } = useContext(LoginContext);
 
   const { user } = useAuth0();
 
   useEffect(() => {
-    if (user?.given_name && user.family_name) {
+    if (user?.given_name && user.family_name && user.email) {
       setName(user.given_name);
       setSurname(user.family_name);
+      setEmail(user.email);
       setChangeNameField(false);
     } else {
       setChangeNameField(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (emailLogin) {
+      console.log("No google");
+      const fetchUserInformation = async () => {
+        console.log(emailLogin);
+        const data = await axios.get("http://localhost:3000/api/users", { params: { email: emailLogin } });
+        console.log(data);
+        setName(data.data.user.firstName);
+        setSurname(data.data.user.lastName);
+        setEmail(data.data.user.email);
+      };
+
+      fetchUserInformation();
+    }
+  }, [emailLogin]);
 
   return (
     <div className="profile-account">
@@ -54,7 +76,7 @@ const Account: React.FC = () => {
 
         <div>
           <label>E-MAIL *</label>
-          <input className="pa-disabled" defaultValue={"valeri.t.yanev@gmail.com"} disabled={true} />
+          <input className="pa-disabled" defaultValue={email} disabled={true} />
         </div>
 
         <div>

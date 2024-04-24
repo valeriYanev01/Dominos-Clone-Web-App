@@ -12,8 +12,8 @@ const Addresses: React.FC = () => {
 
       <div className="pas-body">
         <div>kvartiri</div>
-        <div></div>
-        <div></div>
+        <div>settings</div>
+        <div>save</div>
       </div>
     </div>
   );
