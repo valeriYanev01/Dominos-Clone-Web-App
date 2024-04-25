@@ -41,7 +41,7 @@ const Signup: React.FC = () => {
       setLoggedIn(true);
       setEmailLogin(email);
       navigate("/");
-    } catch (err: any) {
+    } catch (err) {
       setError(err.response.data.error);
     }
   };

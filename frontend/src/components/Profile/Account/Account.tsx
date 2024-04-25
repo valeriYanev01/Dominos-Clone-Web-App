@@ -12,8 +12,10 @@ const Account: React.FC = () => {
   const [confirmPass, setConfirmPass] = useState("");
   const [changeNameField, setChangeNameField] = useState(false);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [successfulChange, setSuccessfulChange] = useState(false);
 
-  const { emailLogin } = useContext(LoginContext);
+  const { emailLogin, token } = useContext(LoginContext);
 
   const { user } = useAuth0();
 
@@ -29,20 +31,50 @@ const Account: React.FC = () => {
   }, [user]);
 
   useEffect(() => {
-    if (emailLogin) {
-      console.log("No google");
+    console.log("get user");
+    if (emailLogin && token) {
       const fetchUserInformation = async () => {
-        console.log(emailLogin);
-        const data = await axios.get("http://localhost:3000/api/users", { params: { email: emailLogin } });
-        console.log(data);
-        setName(data.data.user.firstName);
-        setSurname(data.data.user.lastName);
-        setEmail(data.data.user.email);
+        try {
+          const data = await axios.get("http://localhost:3000/api/users", {
+            params: { email: emailLogin },
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setName(data.data.user.firstName);
+          setSurname(data.data.user.lastName);
+          setEmail(data.data.user.email);
+        } catch (err) {
+          localStorage.removeItem("user");
+          // window.location.reload();
+          setError(err.response.data.error);
+        }
       };
 
       fetchUserInformation();
     }
-  }, [emailLogin]);
+  }, [emailLogin, token]);
+
+  const handleUpdateDetails = async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/api/users/account/update",
+        {
+          email: emailLogin,
+          firstName: name,
+          lastName: surname,
+          currentPassword: currentPass,
+          newPassword: newPass,
+          confirmNewPassword: confirmPass,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setError("");
+      setSuccessfulChange(true);
+      window.scrollTo(0, 0);
+    } catch (err) {
+      setSuccessfulChange(false);
+      setError(err.response.data.error);
+    }
+  };
 
   return (
     <div className="profile-account">
@@ -109,7 +141,11 @@ const Account: React.FC = () => {
           />
         </div>
 
-        <div className="pa-btn">SAVE</div>
+        {error && <p>{error}</p>}
+        {successfulChange && <p>Successfully updated the information!</p>}
+        <div className="pa-btn" onClick={handleUpdateDetails}>
+          SAVE
+        </div>
       </div>
     </div>
   );

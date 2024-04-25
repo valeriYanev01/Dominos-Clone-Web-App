@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./LoginModal.css";
-import { useContext, useEffect, useState } from "react";
+import { MouseEvent, useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../../context/ModalContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -9,6 +9,8 @@ import { LoginContext } from "../../../context/LoginContext";
 const LoginModal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [keepLoggedIn, setKeepLoggedIn] = useState("1h");
 
   const { setOpenModal } = useContext(ModalContext);
   const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
@@ -26,15 +28,24 @@ const LoginModal = () => {
   };
 
   const handleLogin = async () => {
+    setError("");
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", { email, password });
-      console.log(response.data);
+      const response = await axios.post("http://localhost:3000/api/users/login", { email, password, keepLoggedIn });
+      localStorage.setItem("user", String([response.data.email, response.data.token]));
       setOpenModal(false);
       setLoggedIn(true);
       setEmailLogin(response.data.email);
-      localStorage.setItem("user", String([response.data.email, response.data.token]));
     } catch (err) {
-      console.log(err);
+      setError(err.response.data.error || "An error occurred");
+    }
+  };
+
+  const handleKeepSignedIn = (e: MouseEvent<HTMLInputElement, globalThis.MouseEvent>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.checked) {
+      setKeepLoggedIn("1d");
+    } else {
+      setKeepLoggedIn("1h");
     }
   };
 
@@ -66,7 +77,7 @@ const LoginModal = () => {
           forgot my password
         </Link>
         <div className="login-modal-ks">
-          <input type="checkbox" id="login-modal-ks" />
+          <input type="checkbox" id="login-modal-ks" onClick={(e) => handleKeepSignedIn(e)} />
           <label htmlFor="login-modal-ks">Keep me signed in</label>
         </div>
       </div>
@@ -74,6 +85,8 @@ const LoginModal = () => {
       <div className="login-modal-login-container" onClick={handleLogin}>
         <div className="login-modal-login">Login</div>
       </div>
+
+      {error && <p>{error}</p>}
 
       <div className="login-modal-signup-text">New member? Signup Now!</div>
 

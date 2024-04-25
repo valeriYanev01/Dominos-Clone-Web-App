@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Menu from "./pages/menu/Menu";
 import Modal from "./components/Modal/Modal";
 import { ModalContext, ModalContextProvider } from "./context/ModalContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import DominosMore from "./pages/more/DominosMore";
 import ScrollToTop from "./functions/scrollToTop";
 import Signup from "./pages/signup/Signup";
@@ -14,6 +14,7 @@ import Orders from "./components/Profile/Orders/Orders";
 import Coupons from "./components/Profile/Coupons/Coupons";
 import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySettings";
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
+import { LoginContext } from "./context/LoginContext";
 
 function App() {
   return (
@@ -27,6 +28,21 @@ function App() {
 
 function AppContent() {
   const { openModal } = useContext(ModalContext);
+  const { loggedIn } = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!localStorage.getItem("user") && location.pathname.includes("profile")) {
+      navigate("/");
+    }
+
+    if (localStorage.getItem("user") && location.pathname.includes("signup")) {
+      navigate("/");
+    }
+  }, [loggedIn, navigate, location]);
 
   return (
     <>

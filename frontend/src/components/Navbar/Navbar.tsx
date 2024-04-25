@@ -28,6 +28,8 @@ const Navbar = ({ page }: Page) => {
 
   const inStore = useLocation().pathname.includes("/menu");
 
+  console.log(emailLogin);
+
   useEffect(() => {
     if (page === "home") {
       const handleScroll = () => {
@@ -75,15 +77,19 @@ const Navbar = ({ page }: Page) => {
   };
 
   const handleLogout = () => {
-    setShowProfileMenu(false);
-    setLoggedIn(false);
     if (user) {
+      setShowProfileMenu(false);
+      setLoggedIn(false);
       logout({ logoutParams: { returnTo: window.location.origin } });
+      console.log("GOOGLE");
     }
 
-    if (emailLogin) {
+    if (!user) {
+      setShowProfileMenu(false);
       localStorage.removeItem("user");
+      setLoggedIn(false);
       navigate("/");
+      console.log("EMAIL");
     }
   };
 
