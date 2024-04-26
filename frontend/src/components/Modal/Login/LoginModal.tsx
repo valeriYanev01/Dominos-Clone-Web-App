@@ -36,7 +36,9 @@ const LoginModal = () => {
       setLoggedIn(true);
       setEmailLogin(response.data.email);
     } catch (err) {
-      setError(err.response.data.error || "An error occurred");
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || "An error occurred");
+      }
     }
   };
 

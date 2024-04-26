@@ -31,7 +31,6 @@ const Account: React.FC = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log("get user");
     if (emailLogin && token) {
       const fetchUserInformation = async () => {
         try {
@@ -43,9 +42,10 @@ const Account: React.FC = () => {
           setSurname(data.data.user.lastName);
           setEmail(data.data.user.email);
         } catch (err) {
-          localStorage.removeItem("user");
-          // window.location.reload();
-          setError(err.response.data.error);
+          if (axios.isAxiosError(err)) {
+            localStorage.removeItem("user");
+            setError(err.response?.data?.error || "An error occurred");
+          }
         }
       };
 
@@ -71,8 +71,14 @@ const Account: React.FC = () => {
       setSuccessfulChange(true);
       window.scrollTo(0, 0);
     } catch (err) {
-      setSuccessfulChange(false);
-      setError(err.response.data.error);
+      if (axios.isAxiosError(err)) {
+        setSuccessfulChange(false);
+        setError(err.response?.data?.error || "An error occurred");
+      }
+    } finally {
+      setCurrentPass("");
+      setNewPass("");
+      setConfirmPass("");
     }
   };
 
