@@ -30,31 +30,31 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.statics.signup = async function (email, password, confirmPassword, firstName, lastName, img) {
   if (!email) {
-    throw Error("Email is required");
+    throw new Error("Email is required");
   }
 
   if (!password) {
-    throw Error("Password is required");
+    throw new Error("Password is required");
   }
 
   if (!confirmPassword) {
-    throw Error("Confirm password is required");
+    throw new Error("Confirm password is required");
   }
 
   if (!firstName) {
-    throw Error("First name is required");
+    throw new Error("First name is required");
   }
 
   if (!lastName) {
-    throw Error("Last name is required");
+    throw new Error("Last name is required");
   }
 
   if (!validator.isEmail(email)) {
-    throw Error("Invalid email");
+    throw new Error("Invalid email");
   }
 
   if (password !== confirmPassword) {
-    throw Error("Passwords do not match");
+    throw new Error("Passwords do not match");
   }
 
   if (
@@ -66,13 +66,13 @@ UserSchema.statics.signup = async function (email, password, confirmPassword, fi
       minSymbols: 0,
     })
   ) {
-    throw Error("Password needs to be at least 8 characters with at least 1 number.");
+    throw new Error("Password needs to be at least 8 characters with at least 1 number.");
   }
 
   const userExists = await this.findOne({ email });
 
   if (userExists) {
-    throw Error("Email already taken");
+    throw new Error("Email already taken");
   }
 
   const saltRounds = 10;
@@ -86,22 +86,89 @@ UserSchema.statics.signup = async function (email, password, confirmPassword, fi
 
 UserSchema.statics.login = async function (email, password) {
   if (!email || !password) {
-    throw Error("All fields required");
+    throw new Error("All fields required");
   }
 
   const user = await this.findOne({ email });
 
   if (!user) {
-    throw Error("Wrong credentials");
+    throw new Error("Wrong credentials");
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordMatch) {
-    throw Error("Wrong credentials");
+    throw new Error("Wrong credentials");
   }
 
   return user;
+};
+
+UserSchema.statics.updateUser = async function (
+  email,
+  firstName,
+  lastName,
+  currentPassword,
+  newPassword,
+  confirmNewPassword
+) {
+  if (!currentPassword && !newPassword && !confirmNewPassword && firstName && lastName) {
+    try {
+      const updatedUser = await this.findOneAndUpdate(
+        { email },
+        { $set: { firstName: firstName, lastName: lastName } },
+        { new: true }
+      );
+
+      return updatedUser;
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  if (currentPassword && newPassword && confirmNewPassword) {
+    try {
+      if (currentPassword === newPassword) {
+        throw new Error("New password cannot be the same as the old password");
+      }
+
+      if (
+        !validator.isStrongPassword(newPassword, {
+          minLength: 8,
+          minNumbers: 1,
+          minLowercase: 0,
+          minUppercase: 0,
+          minSymbols: 0,
+        })
+      ) {
+        throw new Error("New password needs to be at least 8 characters with at least 1 number.");
+      }
+
+      if (newPassword !== confirmNewPassword) {
+        throw new Error("New password and confirm password do not match");
+      }
+
+      const user = await this.findOne({ email });
+
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+
+      if (!passwordMatch) {
+        throw new Error("Old password is wrong");
+      }
+
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hash = await bcrypt.hash(newPassword, salt);
+
+      const updatedUser = await this.findOneAndUpdate({ email }, { $set: { password: hash } }, { new: true });
+
+      return updatedUser;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  } else {
+    throw new Error("All password fields required to update the password");
+  }
 };
 
 export const UserModel = mongoose.model("User", UserSchema);
