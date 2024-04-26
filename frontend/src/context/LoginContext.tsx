@@ -51,6 +51,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     } else {
       setLoggedIn(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     const interval = setInterval(() => {
       if (typeof decodedToken !== "string" && decodedToken?.exp) {
         const expirationTokenDate = new Date(decodedToken.exp * 1000);
+
         if (new Date() > expirationTokenDate) {
           localStorage.removeItem("user");
           setLoggedIn(false);

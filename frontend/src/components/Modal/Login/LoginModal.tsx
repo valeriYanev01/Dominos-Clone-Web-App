@@ -21,6 +21,7 @@ const LoginModal = () => {
     if (isAuthenticated) {
       setOpenModal(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
   const handleGoogleLogin = () => {
