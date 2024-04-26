@@ -6,7 +6,7 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const createToken = (_id, expiration) => {
+const createToken = (_id, expiration = "1h") => {
   return jwt.sign({ _id }, JWT_SECRET, { expiresIn: expiration });
 };
 
@@ -62,5 +62,55 @@ export const updateUser = async (req, res) => {
     res.status(200).json({ updatedUser });
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+
+export const getAddresses = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const allAddresses = await UserModel.findOne({ email }).select("addresses");
+
+    return res.status(200).json({ allAddresses });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const addAddress = async (req, res) => {
+  const {
+    email,
+    name,
+    streetName,
+    streetNumber,
+    postCode,
+    municipality,
+    phoneNumber,
+    doorBell = "",
+    floor = "",
+    block = "",
+    apartment = "",
+    entrance = "",
+  } = req.body;
+
+  try {
+    const addAddress = await UserModel.addAddress(
+      email,
+      name,
+      streetName,
+      streetNumber,
+      postCode,
+      municipality,
+      phoneNumber,
+      doorBell,
+      floor,
+      block,
+      apartment,
+      entrance
+    );
+
+    return res.status(200).json({ addAddress });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
 };

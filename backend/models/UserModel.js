@@ -2,7 +2,49 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 
-const UserSchema = new mongoose.Schema(
+const addressSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  streetName: {
+    type: String,
+    required: true,
+  },
+  streetNumber: {
+    type: String,
+    required: true,
+  },
+  postCode: {
+    type: String,
+    required: true,
+  },
+  municipality: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  doorBell: {
+    type: String,
+  },
+  floor: {
+    type: String,
+  },
+  block: {
+    type: String,
+  },
+  apartment: {
+    type: String,
+  },
+  entrance: {
+    type: String,
+  },
+});
+
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -24,11 +66,12 @@ const UserSchema = new mongoose.Schema(
     img: {
       type: String,
     },
+    addresses: [addressSchema],
   },
   { timestamps: true }
 );
 
-UserSchema.statics.signup = async function (email, password, confirmPassword, firstName, lastName, img) {
+userSchema.statics.signup = async function (email, password, confirmPassword, firstName, lastName, img) {
   if (!email) {
     throw new Error("Email is required");
   }
@@ -84,7 +127,7 @@ UserSchema.statics.signup = async function (email, password, confirmPassword, fi
   return user;
 };
 
-UserSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw new Error("All fields required");
   }
@@ -104,7 +147,7 @@ UserSchema.statics.login = async function (email, password) {
   return user;
 };
 
-UserSchema.statics.updateUser = async function (
+userSchema.statics.updateUser = async function (
   email,
   firstName,
   lastName,
@@ -171,4 +214,71 @@ UserSchema.statics.updateUser = async function (
   }
 };
 
-export const UserModel = mongoose.model("User", UserSchema);
+userSchema.statics.addAddress = async function (
+  email,
+  name,
+  streetName,
+  streetNumber,
+  postCode,
+  municipality,
+  phoneNumber,
+  doorBell = "",
+  floor = "",
+  block = "",
+  apartment = "",
+  entrance = ""
+) {
+  if (!name) {
+    throw new Error("Enter a name for this address");
+  }
+
+  if (!streetName) {
+    throw new Error("Enter a street name");
+  }
+
+  if (!streetNumber) {
+    throw new Error("Enter a street number");
+  }
+
+  if (!postCode) {
+    throw new Error("Enter a post code");
+  }
+
+  if (!municipality) {
+    throw new Error("Enter a municipality");
+  }
+
+  if (!phoneNumber) {
+    throw new Error("Enter a phone number");
+  }
+
+  try {
+    const newAddress = await this.findOneAndUpdate(
+      { email },
+      {
+        $push: {
+          addresses: {
+            name,
+            streetName,
+            streetNumber,
+            postCode,
+            municipality,
+            phoneNumber,
+            doorBell,
+            floor,
+            block,
+            apartment,
+            entrance,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    return newAddress;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export const UserModel = mongoose.model("User", userSchema);

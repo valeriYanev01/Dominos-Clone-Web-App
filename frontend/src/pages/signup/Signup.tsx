@@ -42,7 +42,9 @@ const Signup: React.FC = () => {
       setEmailLogin(email);
       navigate("/");
     } catch (err) {
-      setError(err.response.data.error);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || "An error occurred");
+      }
     }
   };
 

@@ -20,15 +20,13 @@ const Navbar = ({ page }: Page) => {
 
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
-  const { loggedIn, setLoggedIn, emailLogin } = useContext(LoginContext);
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
   const { logout, user } = useAuth0();
 
   const inStore = useLocation().pathname.includes("/menu");
-
-  console.log(emailLogin);
 
   useEffect(() => {
     if (page === "home") {
