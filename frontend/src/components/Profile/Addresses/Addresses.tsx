@@ -63,7 +63,7 @@ const Addresses: React.FC = () => {
       const data = response.data.address;
 
       setName(data.name);
-      setFullAddress(data.streetName);
+      setFullAddress(data.fullAddress);
       setPhoneNumber(data.phoneNumber);
       setDoorBell(data.doorBell);
       setFloor(data.floor);
