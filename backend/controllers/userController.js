@@ -77,14 +77,31 @@ export const getAddresses = async (req, res) => {
   }
 };
 
+export const getSingleAddress = async (req, res) => {
+  const { name, email } = req.query;
+
+  let address;
+
+  try {
+    const addresses = await UserModel.findOne({ email }).select("addresses");
+
+    addresses.addresses.map((a) => {
+      if (a.name === name) {
+        address = a;
+      }
+    });
+
+    return res.status(200).json({ address });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
 export const addAddress = async (req, res) => {
   const {
     email,
     name,
-    streetName,
-    streetNumber,
-    postCode,
-    municipality,
+    fullAddress,
     phoneNumber,
     doorBell = "",
     floor = "",
@@ -97,10 +114,7 @@ export const addAddress = async (req, res) => {
     const addAddress = await UserModel.addAddress(
       email,
       name,
-      streetName,
-      streetNumber,
-      postCode,
-      municipality,
+      fullAddress,
       phoneNumber,
       doorBell,
       floor,

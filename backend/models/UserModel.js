@@ -5,21 +5,10 @@ import bcrypt from "bcrypt";
 const addressSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true,
   },
-  streetName: {
-    type: String,
-    required: true,
-  },
-  streetNumber: {
-    type: String,
-    required: true,
-  },
-  postCode: {
-    type: String,
-    required: true,
-  },
-  municipality: {
+  fullAddress: {
     type: String,
     required: true,
   },
@@ -217,10 +206,7 @@ userSchema.statics.updateUser = async function (
 userSchema.statics.addAddress = async function (
   email,
   name,
-  streetName,
-  streetNumber,
-  postCode,
-  municipality,
+  fullAddress,
   phoneNumber,
   doorBell = "",
   floor = "",
@@ -232,25 +218,21 @@ userSchema.statics.addAddress = async function (
     throw new Error("Enter a name for this address");
   }
 
-  if (!streetName) {
+  if (!fullAddress) {
     throw new Error("Enter a street name");
-  }
-
-  if (!streetNumber) {
-    throw new Error("Enter a street number");
-  }
-
-  if (!postCode) {
-    throw new Error("Enter a post code");
-  }
-
-  if (!municipality) {
-    throw new Error("Enter a municipality");
   }
 
   if (!phoneNumber) {
     throw new Error("Enter a phone number");
   }
+
+  const allAddresses = await this.findOne({ email }).select("addresses");
+
+  allAddresses.addresses.map((address) => {
+    if (address.name === name) {
+      throw new Error("Address name already exists");
+    }
+  });
 
   try {
     const newAddress = await this.findOneAndUpdate(
@@ -259,10 +241,7 @@ userSchema.statics.addAddress = async function (
         $push: {
           addresses: {
             name,
-            streetName,
-            streetNumber,
-            postCode,
-            municipality,
+            fullAddress,
             phoneNumber,
             doorBell,
             floor,

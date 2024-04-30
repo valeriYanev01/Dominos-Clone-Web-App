@@ -14,3 +14,7 @@
   align-self: center;
   margin: 0;
 }
+
+.leaflet-control-attribution {
+  display: none !important;
+}
