@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addAddress,
+  deleteAddress,
   getAddresses,
   getSingleAddress,
   getUser,
@@ -21,5 +22,6 @@ router.get("/", getUser);
 router.get("/get-addresses", getAddresses);
 router.get("/get-single-address", getSingleAddress);
 router.post("/add-address", addAddress);
+router.delete("/delete-address", deleteAddress);
 
 export { router as userRouter };

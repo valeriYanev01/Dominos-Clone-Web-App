@@ -9,6 +9,28 @@
   color: #000;
 }
 
+.pas-body {
+  display: flex;
+}
+
+.pas-addresses {
+  flex: 1;
+}
+
+.pas-edit {
+  flex: 1;
+}
+
+.pas-settings {
+  border-left: 2px dashed #5555556b;
+  padding-left: 30px;
+  flex: 10;
+}
+
+.pas-body input:focus {
+  outline: 1px solid #0278ae;
+}
+
 .pas-heading img,
 .pas-heading p {
   align-self: center;
@@ -17,4 +39,36 @@
 
 .leaflet-control-attribution {
   display: none !important;
+}
+
+.pas-body {
+  font-weight: bold;
+}
+
+#address-name,
+#address-streetName {
+  width: 100%;
+}
+
+#address-streetName {
+  margin-bottom: 20px;
+}
+
+.pas-edit-save,
+.pas-edit-delete {
+  padding: 20px 10px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  margin: 0 20px 0 20px;
+  cursor: pointer;
+}
+
+.pas-edit-save {
+  background-color: #5cb85c;
+  margin-bottom: 20px;
+}
+
+.pas-edit-delete {
+  background-color: #df232d;
 }

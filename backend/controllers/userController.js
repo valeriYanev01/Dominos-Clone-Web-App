@@ -128,3 +128,19 @@ export const addAddress = async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 };
+
+export const deleteAddress = async (req, res) => {
+  const { email, address } = req.query;
+
+  try {
+    const allAddresses = await UserModel.findOne({ email }).select("addresses");
+
+    allAddresses.addresses.forEach((ad) => {
+      if (ad.name === address) {
+        // to remove the current address
+      }
+    });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};

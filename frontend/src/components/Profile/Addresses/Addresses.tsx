@@ -16,6 +16,34 @@ type Address = {
   entrance: string;
 };
 
+interface SuggestedAddresses {
+  address: string;
+  center: [number, number];
+  context: {
+    id: string;
+    mapbox_id: string;
+    wikidata?: string;
+    short_code?: string;
+    text: string;
+  }[];
+  geometry: {
+    coordinates: [number, number];
+    type: string;
+  };
+  id: string;
+  matching_place_name: string;
+  matching_text: string;
+  place_name: string;
+  place_type: [string];
+  properties: {
+    accuracy: string;
+    mapbox_id: string;
+  };
+  relevance: number;
+  text: string;
+  type: string;
+}
+
 const Addresses: React.FC = () => {
   const [addresses, setAddresses] = useState([]);
   const [error, setError] = useState("");
@@ -29,6 +57,8 @@ const Addresses: React.FC = () => {
   const [entrance, setEntrance] = useState("");
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
+  const [suggestedAddresses, setSuggestedAddresses] = useState<SuggestedAddresses[]>();
+  const [selectedSuggestedAddress, setSelectedSuggestedAddress] = useState("");
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -70,6 +100,8 @@ const Addresses: React.FC = () => {
       setBlock(data.block);
       setApartment(data.apartment);
       setEntrance(data.entrance);
+
+      getSuggestion(data.fullAddress);
     } catch (err) {
       console.log(err);
     }
@@ -85,11 +117,25 @@ const Addresses: React.FC = () => {
           country: "BG",
         },
       });
+      setSuggestedAddresses(response.data.features);
 
       setLong(response.data.features[0].center[0]);
       setLat(response.data.features[0].center[1]);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleSaveAddress = () => {};
+
+  const handleDeleteAddress = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/api/users/delete-address`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { email: emailLogin, address: name },
+      });
+    } catch (err) {
+      console.log(err.response.data.error);
     }
   };
 
@@ -118,24 +164,42 @@ const Addresses: React.FC = () => {
         <div className="pas-settings">
           <div className="pas-settings-address-container">
             <>
-              <label htmlFor="address-name">FRIENDLY NAME</label>
+              <label htmlFor="address-name">ADDRESS NAME</label>
               <input id="address-name" value={name} onChange={(e) => setName(e.target.value)} />
             </>
 
             <div className="pas-settings-street-container">
-              <label htmlFor="address-streetName">STREET NAME</label>
+              <label htmlFor="address-streetName">ADDRESS</label>
               <input
                 id="address-streetName"
-                value={fullAddress}
+                value={selectedSuggestedAddress ? selectedSuggestedAddress : fullAddress}
                 onChange={(e) => {
                   getSuggestion(e.target.value);
                   setFullAddress(e.target.value);
+                  setSelectedSuggestedAddress("");
                 }}
               />
+              {suggestedAddresses && (
+                <div>
+                  {suggestedAddresses.map((address) => (
+                    <p
+                      key={address.place_name}
+                      onClick={() => {
+                        setLong(address.center[0]);
+                        setLat(address.center[1]);
+                        setSelectedSuggestedAddress(address.place_name);
+                        setSuggestedAddresses([]);
+                      }}
+                    >
+                      {address.place_name}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="address-map">
-              <Map long={long} lat={lat} />
+              <Map lat={lat} long={long} setLat={setLat} setLong={setLong} />
               <div>your store: store</div>
             </div>
 
@@ -160,9 +224,13 @@ const Addresses: React.FC = () => {
             </div>
           </div>
         </div>
-        <div>
-          <div>save</div>
-          <div>delete</div>
+        <div className="pas-edit">
+          <div className="pas-edit-save" onClick={handleSaveAddress}>
+            save
+          </div>
+          <div className="pas-edit-delete" onClick={handleDeleteAddress}>
+            delete
+          </div>
         </div>
       </div>
 
