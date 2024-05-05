@@ -26,3 +26,20 @@
 
 .ad-body {
 }
+
+.ad-add-address-btn {
+  background-color: #609e29;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 25%;
+  margin-right: 0;
+  margin-top: 50px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+.ad-add-address-btn:hover {
+  background-color: #78ac36;
+}
