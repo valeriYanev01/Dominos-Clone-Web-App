@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
 import Map from "../../Map/Map";
+import useGetSuggestion from "../../../hooks/useGetSuggestion";
+import { MapContext } from "../../../context/MapContext";
 
 type Address = {
   name: string;
@@ -16,51 +18,33 @@ type Address = {
   entrance: string;
 };
 
-interface SuggestedAddresses {
-  address: string;
-  center: [number, number];
-  context: {
-    id: string;
-    mapbox_id: string;
-    wikidata?: string;
-    short_code?: string;
-    text: string;
-  }[];
-  geometry: {
-    coordinates: [number, number];
-    type: string;
-  };
-  id: string;
-  matching_place_name: string;
-  matching_text: string;
-  place_name: string;
-  place_type: [string];
-  properties: {
-    accuracy: string;
-    mapbox_id: string;
-  };
-  relevance: number;
-  text: string;
-  type: string;
-}
-
 const Addresses: React.FC = () => {
   const [addresses, setAddresses] = useState([]);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
-  const [fullAddress, setFullAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [doorBell, setDoorBell] = useState("");
   const [floor, setFloor] = useState("");
   const [block, setBlock] = useState("");
   const [apartment, setApartment] = useState("");
   const [entrance, setEntrance] = useState("");
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
-  const [suggestedAddresses, setSuggestedAddresses] = useState<SuggestedAddresses[]>();
-  const [selectedSuggestedAddress, setSelectedSuggestedAddress] = useState("");
 
   const { token, emailLogin } = useContext(LoginContext);
+
+  const {
+    lat,
+    setLat,
+    long,
+    setLong,
+    suggestedAddresses,
+    setSuggestedAddresses,
+    selectedSuggestedAddress,
+    setSelectedSuggestedAddress,
+    fullAddress,
+    setFullAddress,
+  } = useContext(MapContext);
+
+  const getSuggestion = useGetSuggestion();
 
   const location = useLocation();
 
@@ -107,35 +91,20 @@ const Addresses: React.FC = () => {
     }
   };
 
-  const getSuggestion = async (inputValue: string) => {
-    try {
-      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json`, {
-        params: {
-          access_token: "pk.eyJ1IjoidmFsZXJpZGV2IiwiYSI6ImNsdmt2cHp0OTI2NGwyanA2ZzAwZ2wyd3UifQ.zLfzF0FydSNScvU6xLtN9A",
-          types: "address,poi",
-          autocomplete: true,
-          country: "BG",
-        },
-      });
-      setSuggestedAddresses(response.data.features);
-
-      setLong(response.data.features[0].center[0]);
-      setLat(response.data.features[0].center[1]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleSaveAddress = () => {};
 
   const handleDeleteAddress = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/users/delete-address`, {
+      const response = await axios.delete(`http://localhost:3000/api/users/delete-address`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { email: emailLogin, address: name },
       });
+
+      console.log(response.data.success);
     } catch (err) {
-      console.log(err.response.data.error);
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.data.error || "An error occurred");
+      }
     }
   };
 

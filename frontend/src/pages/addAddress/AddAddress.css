@@ -1,0 +1,28 @@
+.add-address-page {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
+}
+
+.ad-content {
+  background-color: #fff;
+  width: 70vw;
+  margin-top: 120px;
+  margin-bottom: 50px;
+  padding: 20px;
+  box-shadow: 10px -5px 70px rgba(0, 0, 0, 0.25);
+}
+
+.ad-title {
+  display: flex;
+  font-size: 26px;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.ad-title p,
+.ad-title img {
+  margin: 0;
+}
+
+.ad-body {
+}
