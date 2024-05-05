@@ -7,6 +7,7 @@ import useGetSuggestion from "../../hooks/useGetSuggestion";
 import { MapContext } from "../../context/MapContext";
 import { LoginContext } from "../../context/LoginContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddAddress: React.FC = () => {
   const [nextSteps, setNextSteps] = useState(false);
@@ -17,6 +18,9 @@ const AddAddress: React.FC = () => {
   const [block, setBlock] = useState("");
   const [apartment, setApartment] = useState("");
   const [entrance, setEntrance] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const {
     lat,
@@ -31,6 +35,8 @@ const AddAddress: React.FC = () => {
     setSuggestedAddresses,
   } = useContext(MapContext);
 
+  console.log(lat, long);
+
   const { emailLogin, token } = useContext(LoginContext);
 
   const getSuggestion = useGetSuggestion();
@@ -42,18 +48,35 @@ const AddAddress: React.FC = () => {
         {
           email: emailLogin,
           name: name,
-          fullAddress: fullAddress,
+          fullAddress: selectedSuggestedAddress,
           phoneNumber: phoneNumber,
           doorBell: doorBell,
           floor: floor,
           block: block,
           apartment: apartment,
           entrance: entrance,
+          coordinates: [lat, long],
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      setName("");
+      setFullAddress("");
+      setSelectedSuggestedAddress("");
+      setPhoneNumber("");
+      setDoorBell("");
+      setFloor("");
+      setBlock("");
+      setApartment("");
+      setEntrance("");
+      setError("");
+      setNextSteps(false);
+      navigate("/profile/addresses");
+      console.log("success");
     } catch (err) {
-      console.log(err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data.error);
+      }
     }
   };
 
@@ -97,7 +120,7 @@ const AddAddress: React.FC = () => {
               ))}
             </div>
           )}
-          <Map lat={lat} long={long} setLat={setLat} setLong={setLong} />
+          <Map />
         </div>
 
         {nextSteps && (
@@ -148,6 +171,7 @@ const AddAddress: React.FC = () => {
             <div className="ad-add-address-btn" onClick={handleAddAddress}>
               ADD
             </div>
+            {error && <p>{error}</p>}
           </div>
         )}
       </div>

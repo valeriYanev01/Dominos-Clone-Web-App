@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { MapContext } from "../context/MapContext";
 
 const useGetSuggestion = () => {
-  const { setSuggestedAddresses, setLong, setLat } = useContext(MapContext);
+  const { setSuggestedAddresses } = useContext(MapContext);
 
   const getSuggestion = async (inputValue: string) => {
     try {
@@ -18,9 +18,6 @@ const useGetSuggestion = () => {
       setSuggestedAddresses(response.data.features);
 
       console.log(response.data.features);
-
-      setLong(response.data.features[0].center[0]);
-      setLat(response.data.features[0].center[1]);
     } catch (err) {
       console.log(err);
     }

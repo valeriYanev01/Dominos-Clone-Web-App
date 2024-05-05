@@ -108,6 +108,7 @@ export const addAddress = async (req, res) => {
     block = "",
     apartment = "",
     entrance = "",
+    coordinates,
   } = req.body;
 
   try {
@@ -120,7 +121,8 @@ export const addAddress = async (req, res) => {
       floor,
       block,
       apartment,
-      entrance
+      entrance,
+      coordinates
     );
 
     return res.status(200).json({ addAddress });

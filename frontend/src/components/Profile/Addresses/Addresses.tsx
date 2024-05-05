@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Addresses.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
 import Map from "../../Map/Map";
@@ -32,9 +32,7 @@ const Addresses: React.FC = () => {
   const { token, emailLogin } = useContext(LoginContext);
 
   const {
-    lat,
     setLat,
-    long,
     setLong,
     suggestedAddresses,
     setSuggestedAddresses,
@@ -47,6 +45,10 @@ const Addresses: React.FC = () => {
   const getSuggestion = useGetSuggestion();
 
   const location = useLocation();
+
+  useEffect(() => {
+    setAddresses(addresses);
+  }, [addresses]);
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -84,6 +86,8 @@ const Addresses: React.FC = () => {
       setBlock(data.block);
       setApartment(data.apartment);
       setEntrance(data.entrance);
+      setLat(data.coordinates[0]);
+      setLong(data.coordinates[1]);
 
       getSuggestion(data.fullAddress);
     } catch (err) {
@@ -118,6 +122,7 @@ const Addresses: React.FC = () => {
         <div className="pas-addresses">
           {addresses.map((address: Address) => (
             <div
+              className="pas-single-address"
               key={address.name}
               onClick={(e) => {
                 const target = e.target as HTMLElement;
@@ -127,6 +132,19 @@ const Addresses: React.FC = () => {
               {address.name}
             </div>
           ))}
+          <Link
+            to="/add-address"
+            className="pas-addresses-add-new-container"
+            onClick={() => {
+              setFullAddress("");
+              setSuggestedAddresses([]);
+            }}
+          >
+            <div className="pas-addresses-add-new">
+              <span className="pas-addresses-add-new-plus">+</span>
+              <span className="pas-addresses-add-new-text">ADD A NEW ADDRESS</span>
+            </div>
+          </Link>
         </div>
         <div className="pas-settings">
           <div className="pas-settings-address-container">
@@ -152,8 +170,6 @@ const Addresses: React.FC = () => {
                     <p
                       key={address.place_name}
                       onClick={() => {
-                        setLong(address.center[0]);
-                        setLat(address.center[1]);
                         setSelectedSuggestedAddress(address.place_name);
                         setSuggestedAddresses([]);
                       }}
@@ -166,7 +182,7 @@ const Addresses: React.FC = () => {
             </div>
 
             <div className="address-map">
-              <Map lat={lat} long={long} setLat={setLat} setLong={setLong} />
+              <Map />
               <div>your store: store</div>
             </div>
 

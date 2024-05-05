@@ -1,13 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-
-interface MapProps {
-  lat: number;
-  setLat: React.Dispatch<React.SetStateAction<number>>;
-  long: number;
-  setLong: React.Dispatch<React.SetStateAction<number>>;
-}
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { MapContext } from "../../context/MapContext";
 
 interface PositionProps {
   position: [number, number];
@@ -20,7 +14,10 @@ interface MarkerCoordinates {
   };
 }
 
-const Map = ({ lat, setLat, long, setLong }: MapProps): JSX.Element => {
+const Map = (): JSX.Element => {
+  const { setLat, setLong, lat, long } = useContext(MapContext);
+
+  console.log(lat, long);
   const AddMarkerOnClickLocation = () => {
     useMapEvents({
       click(event) {

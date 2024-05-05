@@ -31,6 +31,9 @@ const addressSchema = new mongoose.Schema({
   entrance: {
     type: String,
   },
+  coordinates: {
+    type: [Number, Number],
+  },
 });
 
 const userSchema = new mongoose.Schema(
@@ -212,7 +215,8 @@ userSchema.statics.addAddress = async function (
   floor = "",
   block = "",
   apartment = "",
-  entrance = ""
+  entrance = "",
+  coordinates
 ) {
   if (!name) {
     throw new Error("Enter a name for this address");
@@ -248,6 +252,7 @@ userSchema.statics.addAddress = async function (
             block,
             apartment,
             entrance,
+            coordinates,
           },
         },
       },
