@@ -133,13 +133,9 @@ export const deleteAddress = async (req, res) => {
   const { email, address } = req.query;
 
   try {
-    const allAddresses = await UserModel.findOne({ email }).select("addresses");
+    await UserModel.updateOne({ email }, { $pull: { addresses: { name: address } } });
 
-    allAddresses.addresses.forEach((ad) => {
-      if (ad.name === address) {
-        // to remove the current address
-      }
-    });
+    return res.status(200).json({ success: "Address removed successfully" });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

@@ -5,6 +5,7 @@ import "./index.css";
 import { MenuContextProvider } from "./context/MenuContext.tsx";
 import { LoginContextProvider } from "./context/LoginContext.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { MapContextProvider } from "./context/MapContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     >
       <LoginContextProvider>
         <MenuContextProvider>
-          <App />
+          <MapContextProvider>
+            <App />
+          </MapContextProvider>
         </MenuContextProvider>
       </LoginContextProvider>
     </Auth0Provider>

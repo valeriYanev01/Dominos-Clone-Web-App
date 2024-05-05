@@ -15,6 +15,7 @@ import Coupons from "./components/Profile/Coupons/Coupons";
 import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySettings";
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
 import { LoginContext } from "./context/LoginContext";
+import AddAddress from "./pages/addAddress/AddAddress";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function AppContent() {
           <Route path={"privacy-settings"} element={<PrivacySettings />} />
           <Route path={"payment-methods"} element={<PaymentMethods />} />
         </Route>
+        <Route path="add-address" element={<AddAddress />} />
       </Routes>
     </>
   );
