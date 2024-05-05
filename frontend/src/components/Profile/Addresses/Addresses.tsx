@@ -95,12 +95,10 @@ const Addresses: React.FC = () => {
 
   const handleDeleteAddress = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/users/delete-address`, {
+      await axios.delete(`http://localhost:3000/api/users/delete-address`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { email: emailLogin, address: name },
       });
-
-      console.log(response.data.success);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(err.response?.data.error || "An error occurred");
