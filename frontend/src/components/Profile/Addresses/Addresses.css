@@ -34,28 +34,12 @@
 }
 
 .pas-addresses-add-new {
-  display: flex;
   margin: 0;
   background-color: #0d6490;
   color: #fff;
   align-items: center;
   cursor: pointer;
   border-radius: 5px;
-  padding: 5px 10px;
-  gap: px;
-}
-
-.pas-addresses-add-new-plus,
-.pas-addresses-add-new-text {
-  margin: 0;
-}
-
-.pas-addresses-add-new-plus {
-  flex: 1;
-  background-color: #fff;
-  border-radius: 50%;
-  color: #0d6490;
-  text-align: center;
 }
 
 .pas-addresses-add-new-text {

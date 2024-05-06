@@ -29,6 +29,7 @@ const Addresses: React.FC = () => {
   const [apartment, setApartment] = useState("");
   const [entrance, setEntrance] = useState("");
   const [id, setId] = useState("");
+  const [addressSelected, setAddressSelected] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -97,45 +98,53 @@ const Addresses: React.FC = () => {
   };
 
   const handleSaveAddress = async () => {
-    try {
-      await axios.put(
-        "http://localhost:3000/api/users/update-address",
-        {
-          email: emailLogin,
-          id: id,
-          name: name,
-          fullAddress: fullAddress,
-          phoneNumber: phoneNumber,
-          doorBell: doorBell,
-          floor: floor,
-          block: block,
-          apartment: apartment,
-          entrance: entrance,
-          coordinates: [lat, long],
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+    if (addressSelected) {
+      try {
+        await axios.put(
+          "http://localhost:3000/api/users/update-address",
+          {
+            email: emailLogin,
+            id: id,
+            name: name,
+            fullAddress: fullAddress,
+            phoneNumber: phoneNumber,
+            doorBell: doorBell,
+            floor: floor,
+            block: block,
+            apartment: apartment,
+            entrance: entrance,
+            coordinates: [lat, long],
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-      window.location.reload();
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(err.response?.data.error || "An error occurred");
+        window.location.reload();
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.data.error || "An error occurred");
+        }
       }
+    } else {
+      return;
     }
   };
 
   const handleDeleteAddress = async () => {
-    try {
-      await axios.delete(`http://localhost:3000/api/users/delete-address`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { email: emailLogin, address: name },
-      });
+    if (addressSelected) {
+      try {
+        await axios.delete(`http://localhost:3000/api/users/delete-address`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin, address: name },
+        });
 
-      window.location.reload();
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(err.response?.data.error || "An error occurred");
+        window.location.reload();
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.data.error || "An error occurred");
+        }
       }
+    } else {
+      return;
     }
   };
 
@@ -156,6 +165,7 @@ const Addresses: React.FC = () => {
               onClick={(e) => {
                 const target = e.target as HTMLElement;
                 fetchAddress(target.innerText);
+                setAddressSelected(true);
               }}
             >
               {address.name}
@@ -177,7 +187,6 @@ const Addresses: React.FC = () => {
                 setLong(23.313396);
               }}
             >
-              <span className="pas-addresses-add-new-plus">+</span>
               <span className="pas-addresses-add-new-text">ADD A NEW ADDRESS</span>
             </div>
           </Link>

@@ -92,8 +92,9 @@ const AddAddress: React.FC = () => {
         </div>
 
         <div className="ad-body">
-          <p>ADDRESS</p>
+          <p className="ad-body-text">ADDRESS</p>
           <input
+            className="ad-body-input"
             placeholder="ex: ulitsa dunav 6, sofia"
             value={selectedSuggestedAddress ? selectedSuggestedAddress : fullAddress}
             onChange={(e) => {
@@ -132,39 +133,36 @@ const AddAddress: React.FC = () => {
               <input id="ad-address-name" onChange={(e) => setName(e.target.value)} value={name} />
             </div>
 
-            <div className="ad-full-address-details">
-              <div className="ad-full-address">
-                <label htmlFor="ad-full-address">Full Address</label>
-                <input id="ad-full-address" value={fullAddress} disabled={true} />
-              </div>
-
-              <div className="ad-address-details">
-                <div>
+            <div className="address-settings-details-container">
+              <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-phone-number">Phone Number</label>
                   <input id="ad-phone-number" onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} />
                 </div>
 
-                <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-door-bell">Door Bell</label>
                   <input id="ad-door-bell" onChange={(e) => setDoorBell(e.target.value)} value={doorBell} />
                 </div>
 
-                <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-floor">Floor</label>
                   <input id="ad-floor" onChange={(e) => setFloor(e.target.value)} value={floor} />
                 </div>
+              </div>
 
-                <div>
+              <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-block">Block</label>
                   <input id="ad-block" onChange={(e) => setBlock(e.target.value)} value={block} />
                 </div>
 
-                <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-apartment">Apartment</label>
                   <input id="ad-apartment" onChange={(e) => setApartment(e.target.value)} value={apartment} />
                 </div>
 
-                <div>
+                <div className="address-info-container">
                   <label htmlFor="ad-entrance">Entrance</label>
                   <input id="ad-entrance" onChange={(e) => setEntrance(e.target.value)} value={entrance} />
                 </div>
