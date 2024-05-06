@@ -142,3 +142,28 @@ export const deleteAddress = async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 };
+
+export const updateAddress = async (req, res) => {
+  const { id, email, name, fullAddress, phoneNumber, doorBell, floor, block, apartment, entrance, coordinates } =
+    req.body;
+
+  try {
+    const newAddress = await UserModel.updateAddress(
+      id,
+      email,
+      name,
+      fullAddress,
+      phoneNumber,
+      doorBell,
+      floor,
+      block,
+      apartment,
+      entrance,
+      coordinates
+    );
+
+    return res.status(200).json({ newAddress });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};

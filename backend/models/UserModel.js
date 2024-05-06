@@ -265,4 +265,54 @@ userSchema.statics.addAddress = async function (
   }
 };
 
+userSchema.statics.updateAddress = async function (
+  id,
+  email,
+  name,
+  fullAddress,
+  phoneNumber,
+  doorBell = "",
+  floor = "",
+  block = "",
+  apartment = "",
+  entrance = "",
+  coordinates
+) {
+  if (!name) {
+    throw new Error("Enter a name for this address");
+  }
+
+  if (!fullAddress) {
+    throw new Error("Enter a street name");
+  }
+
+  if (!phoneNumber) {
+    throw new Error("Enter a phone number");
+  }
+
+  try {
+    const updatedAddress = await this.findOneAndUpdate(
+      { email, "addresses._id": id },
+      {
+        $set: {
+          "addresses.$.name": name,
+          "addresses.$.fullAddress": fullAddress,
+          "addresses.$.phoneNumber": phoneNumber,
+          "addresses.$.doorBell": doorBell,
+          "addresses.$.floor": floor,
+          "addresses.$.block": block,
+          "addresses.$.apartment": apartment,
+          "addresses.$.entrance": entrance,
+          "addresses.$.coordinates": coordinates,
+        },
+      },
+      { new: true }
+    );
+
+    return updatedAddress;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 export const UserModel = mongoose.model("User", userSchema);

@@ -19,7 +19,6 @@
   margin-top: 50px;
   text-align: center;
   color: #0d6490;
-  cursor: pointer;
   padding: 0 10px;
 }
 
@@ -27,6 +26,7 @@
   margin-bottom: 10px;
   text-align: left;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .pas-addresses-add-new-container {
@@ -70,8 +70,18 @@
 
 .pas-settings {
   border-left: 2px dashed #5555556b;
-  padding-left: 30px;
+  border-right: 2px dashed #5555556b;
+  padding: 0 30px;
   flex: 10;
+}
+
+.pas-settings-address-container input {
+  padding: 5px;
+  color: #555;
+  font-size: 18px;
+  background-color: #f2f4f5;
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
 }
 
 .pas-body input:focus {
@@ -99,6 +109,51 @@
 
 #address-streetName {
   margin-bottom: 20px;
+}
+
+.your-store-text {
+  margin: 10px 0;
+  padding: 10px 20px;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-radius: 5px;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.your-store-text2 {
+  font-weight: bold;
+}
+
+.address-settings-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.address-settings-details-container div {
+  display: flex;
+  margin: 0;
+  column-gap: 20px;
+}
+
+.address-info-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.address-info-container input {
+  padding: 5px;
+  color: #555;
+  font-size: 18px;
+  background-color: #f2f4f5;
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
+}
+
+.address-info-container label {
+  margin: 0;
 }
 
 .pas-edit-save,

@@ -5,6 +5,7 @@ import {
   getAddresses,
   getSingleAddress,
   getUser,
+  updateAddress,
   updateUser,
   userLogin,
   userSignup,
@@ -23,5 +24,6 @@ router.get("/get-addresses", getAddresses);
 router.get("/get-single-address", getSingleAddress);
 router.post("/add-address", addAddress);
 router.delete("/delete-address", deleteAddress);
+router.put("/update-address", updateAddress);
 
 export { router as userRouter };
