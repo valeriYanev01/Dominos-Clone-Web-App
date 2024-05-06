@@ -16,8 +16,6 @@ const useGetSuggestion = () => {
         },
       });
       setSuggestedAddresses(response.data.features);
-
-      console.log(response.data.features);
     } catch (err) {
       console.log(err);
     }

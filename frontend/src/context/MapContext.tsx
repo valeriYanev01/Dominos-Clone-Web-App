@@ -33,6 +33,8 @@ interface MapContextInterface {
   setLat: React.Dispatch<React.SetStateAction<number>>;
   long: number;
   setLong: React.Dispatch<React.SetStateAction<number>>;
+  zoom: number;
+  setZoom: React.Dispatch<React.SetStateAction<number>>;
   suggestedAddresses: SuggestedAddresses[];
   setSuggestedAddresses: React.Dispatch<React.SetStateAction<SuggestedAddresses[]>>;
   selectedSuggestedAddress: string;
@@ -42,10 +44,12 @@ interface MapContextInterface {
 }
 
 export const MapContext = createContext<MapContextInterface>({
-  lat: 0,
+  lat: 42.693942,
   setLat: () => {},
-  long: 0,
+  long: 23.313396,
   setLong: () => {},
+  zoom: 12,
+  setZoom: () => {},
   suggestedAddresses: [],
   setSuggestedAddresses: () => {},
   selectedSuggestedAddress: "",
@@ -55,8 +59,9 @@ export const MapContext = createContext<MapContextInterface>({
 });
 
 export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
+  const [lat, setLat] = useState(42.693942);
+  const [long, setLong] = useState(23.313396);
+  const [zoom, setZoom] = useState(12);
   const [suggestedAddresses, setSuggestedAddresses] = useState<SuggestedAddresses[]>([]);
   const [selectedSuggestedAddress, setSelectedSuggestedAddress] = useState("");
   const [fullAddress, setFullAddress] = useState("");
@@ -68,6 +73,8 @@ export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children
         setLat,
         long,
         setLong,
+        zoom,
+        setZoom,
         suggestedAddresses,
         setSuggestedAddresses,
         selectedSuggestedAddress,

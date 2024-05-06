@@ -27,6 +27,7 @@ const AddAddress: React.FC = () => {
     long,
     setLat,
     setLong,
+    setZoom,
     selectedSuggestedAddress,
     setSelectedSuggestedAddress,
     fullAddress,
@@ -110,6 +111,7 @@ const AddAddress: React.FC = () => {
                   onClick={() => {
                     setLong(address.center[0]);
                     setLat(address.center[1]);
+                    setZoom(20);
                     setSelectedSuggestedAddress(address.place_name);
                     setSuggestedAddresses([]);
                     setNextSteps(true);
