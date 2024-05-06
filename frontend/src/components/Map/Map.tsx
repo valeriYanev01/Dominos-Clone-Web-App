@@ -15,9 +15,8 @@ interface MarkerCoordinates {
 }
 
 const Map = (): JSX.Element => {
-  const { setLat, setLong, lat, long } = useContext(MapContext);
+  const { setLat, setLong, lat, long, zoom } = useContext(MapContext);
 
-  console.log(lat, long);
   const AddMarkerOnClickLocation = () => {
     useMapEvents({
       click(event) {
@@ -31,7 +30,7 @@ const Map = (): JSX.Element => {
 
   const CenterMap = ({ position }: PositionProps) => {
     const map = useMap();
-    map.setView(position);
+    map.setView(position, zoom);
 
     return null;
   };
@@ -67,7 +66,7 @@ const Map = (): JSX.Element => {
   };
 
   return (
-    <MapContainer center={[lat, long]} zoom={20} style={{ height: "400px" }} scrollWheelZoom={false}>
+    <MapContainer center={[lat, long]} zoom={zoom} style={{ height: "400px" }} scrollWheelZoom={false}>
       <AddMarkerOnClickLocation />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <DraggableMarker />
