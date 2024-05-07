@@ -7,6 +7,7 @@ import "./Modal.css";
 import { ModalContext } from "../../context/ModalContext";
 import ProductModal from "./Product/ProductModal";
 import OrderMethod from "./OrderMethod/OrderMethod";
+import DeleteAccount from "./DeleteAccount/DeleteAccount";
 
 interface ModalInterface {
   openModal: boolean;
@@ -53,6 +54,8 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                   <ProductModal />
                 ) : modalType === "method" ? (
                   <OrderMethod />
+                ) : modalType === "delete" ? (
+                  <DeleteAccount />
                 ) : (
                   ""
                 )}

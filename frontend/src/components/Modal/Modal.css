@@ -6,10 +6,14 @@
   z-index: 100;
 }
 
-.modall {
+.abra {
   position: fixed;
-  top: 50%;
   left: 50%;
+  top: 50%;
+}
+
+.modall {
+  position: relative;
   z-index: 30 !important;
   border: 2px solid lightgray;
   background: radial-gradient(circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
@@ -55,41 +59,19 @@
 }
 
 .close-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  position: absolute;
+  top: -55%;
+  right: 48%;
   z-index: 30;
-  transform: translate(310px, -140px);
   cursor: pointer;
 }
 
 .close-modal:before {
   position: absolute;
   content: "\2716";
-  top: -5px;
   right: -5px;
   color: white;
   padding: 5px 10px;
   background-color: #0d6490;
   border-radius: 50%;
-}
-
-.close-modal-login {
-  transform: translate(320px, -300px);
-}
-
-.close-modal-product {
-  top: 20px;
-  right: 100px;
-  transform: none;
-}
-
-.close-modal-product:before {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-}
-
-.close-modal-method:before {
-  transform: translate(-30%, -220%);
 }
