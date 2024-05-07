@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./PrivacySettings.css";
 import Heading from "../../Heading/Heading";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
+import { ModalContext } from "../../../context/ModalContext";
 
 const PrivacySettings: React.FC = () => {
   const [delivery, setDelivery] = useState(false);
@@ -12,10 +13,52 @@ const PrivacySettings: React.FC = () => {
   const [deals, setDeals] = useState(false);
   const [updates, setUpdates] = useState(false);
   const [more, setMore] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const { token, emailLogin, setLoggedIn } = useContext(LoginContext);
+  const { setOpenModal, setModalType } = useContext(ModalContext);
 
-  const handleUpdateConsent = async () => {};
+  useEffect(() => {
+    if (token) {
+      const fetchConsents = async () => {
+        const response = await axios.get("http://localhost:3000/api/users", {
+          params: { email: emailLogin },
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setDelivery(response.data.user.consents[0].delivery === "true" ? true : false);
+        setDeals(response.data.user.consents[0].deals === "true" ? true : false);
+        setUpdates(response.data.user.consents[0].updates === "true" ? true : false);
+        setConfidentiality(response.data.user.consents[0].confidentiality === "true" ? true : false);
+        setTermsOfUse(response.data.user.consents[0].termsOfUse === "true" ? true : false);
+        setMore(response.data.user.consents[0].more === "true" ? true : false);
+      };
+
+      fetchConsents();
+    }
+  }, [emailLogin, token]);
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }
+  }, [success]);
+
+  const handleUpdateConsent = async () => {
+    try {
+      await axios.put(
+        "http://localhost:3000/api/users/update-consent",
+        { email: emailLogin, delivery, confidentiality, termsOfUse, deals, updates, more },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setSuccess(true);
+      window.scrollTo(0, 0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleDeleteAccount = async () => {
     try {
@@ -138,9 +181,17 @@ const PrivacySettings: React.FC = () => {
         </div>
       </div>
 
-      <div className="delete-account-btn" onClick={handleDeleteAccount}>
+      <div
+        className="delete-account-btn"
+        onClick={() => {
+          setModalType("delete");
+          setOpenModal(true);
+        }}
+      >
         Delete account
       </div>
+
+      {success && <div className="ps-success">Changes successfully saved</div>}
     </div>
   );
 };

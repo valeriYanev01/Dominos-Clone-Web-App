@@ -15,6 +15,9 @@ const Signup: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [delivery, setDelivery] = useState(false);
+  const [deals, setDeals] = useState(false);
+  const [updates, setUpdates] = useState(false);
 
   const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
 
@@ -29,17 +32,21 @@ const Signup: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:3000/api/users/signup", {
+      const response = await axios.post("http://localhost:3000/api/users/signup", {
         email,
         password,
         confirmPassword,
         firstName: name,
         lastName: surname,
         img: uploadImg,
+        delivery,
+        deals,
+        updates,
       });
 
       setLoggedIn(true);
       setEmailLogin(email);
+      localStorage.setItem("user", String([response.data.user.email, response.data.token]));
       navigate("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -117,7 +124,10 @@ const Signup: React.FC = () => {
               <input
                 type="checkbox"
                 checked={showPerks}
-                onChange={() => setShowPerks(!showPerks)}
+                onChange={() => {
+                  setDelivery(!delivery);
+                  setShowPerks(!showPerks);
+                }}
                 id="perks"
                 required={true}
               />
@@ -130,14 +140,14 @@ const Signup: React.FC = () => {
             {showPerks && (
               <>
                 <div className="signup-form-settings-single hidden">
-                  <input type="checkbox" id="perks-hidden1" />
+                  <input type="checkbox" id="perks-hidden1" onChange={() => setDeals(!deals)} checked={deals} />
                   <label className="signup-form-settings-text" htmlFor="perks-hidden1">
                     Get in touch with our lates <span>cool deals</span> and <span>new hot products</span> using my
                     provided contact details (email,sms or multimedia messages).
                   </label>
                 </div>
                 <div className="signup-form-settings-single hidden">
-                  <input type="checkbox" id="perks-hidden2" />
+                  <input type="checkbox" id="perks-hidden2" onChange={() => setUpdates(!updates)} checked={updates} />
                   <label className="signup-form-settings-text" htmlFor="perks-hidden2">
                     Get in touch with our <span>corporate updates</span> using my provided contact details.
                   </label>

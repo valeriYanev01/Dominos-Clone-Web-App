@@ -11,10 +11,20 @@ const createToken = (_id, expiration = "1h") => {
 };
 
 export const userSignup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, img } = req.body;
+  const { email, password, confirmPassword, firstName, lastName, img, delivery, deals, updates } = req.body;
 
   try {
-    const user = await UserModel.signup(email, password, confirmPassword, firstName, lastName, img);
+    const user = await UserModel.signup(
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      img,
+      delivery,
+      deals,
+      updates
+    );
     const token = createToken(user._id);
 
     res.status(200).json({ user, token });
@@ -163,6 +173,38 @@ export const updateAddress = async (req, res) => {
     );
 
     return res.status(200).json({ newAddress });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    await UserModel.findOneAndDelete({ email });
+
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateConsent = async (req, res) => {
+  const { email, delivery, confidentiality, termsOfUse, deals, updates, more } = req.body;
+
+  try {
+    const newConsents = await UserModel.updateConsents(
+      email,
+      delivery,
+      confidentiality,
+      termsOfUse,
+      deals,
+      updates,
+      more
+    );
+
+    return res.status(200).json({ newConsents });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

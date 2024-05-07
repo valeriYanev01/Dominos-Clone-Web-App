@@ -1,0 +1,47 @@
+.dm-warning {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 33px 67px 33px;
+  border-color: transparent transparent #a94442 transparent;
+  transform: rotate(0deg);
+  border-radius: 5px;
+  position: relative;
+}
+
+.dm-warning p {
+  color: #fff;
+  font-size: 48px;
+  position: absolute;
+  transform: translateX(-40%);
+}
+
+.dm-text {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.dm-btn-container {
+  display: flex;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.dm-btn-cancel,
+.dm-btn-delete {
+  width: 100%;
+  padding: 10px;
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.dm-btn-cancel {
+  background-color: #e2213d;
+}
+
+.dm-btn-delete {
+  background-color: #609e29;
+}

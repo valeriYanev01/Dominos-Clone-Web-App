@@ -36,6 +36,33 @@ const addressSchema = new mongoose.Schema({
   },
 });
 
+const consentSchema = new mongoose.Schema({
+  delivery: {
+    type: String,
+    required: true,
+  },
+
+  confidentiality: {
+    type: String,
+  },
+
+  termsOfUse: {
+    type: String,
+  },
+
+  deals: {
+    type: String,
+  },
+
+  updates: {
+    type: String,
+  },
+
+  more: {
+    type: String,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -59,11 +86,23 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     addresses: [addressSchema],
+    consents: [consentSchema],
   },
   { timestamps: true }
 );
 
-userSchema.statics.signup = async function (email, password, confirmPassword, firstName, lastName, img) {
+userSchema.statics.signup = async function (
+  email,
+  password,
+  confirmPassword,
+  firstName,
+  lastName,
+  img,
+  delivery,
+  deals,
+  updates
+) {
+  console.log(delivery, deals, updates);
   if (!email) {
     throw new Error("Email is required");
   }
@@ -114,7 +153,15 @@ userSchema.statics.signup = async function (email, password, confirmPassword, fi
   const salt = await bcrypt.genSalt(saltRounds);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash, confirmPassword: hash, firstName, lastName, img });
+  const user = await this.create({
+    email,
+    password: hash,
+    confirmPassword: hash,
+    firstName,
+    lastName,
+    img,
+    consents: { delivery, deals, updates },
+  });
 
   return user;
 };
@@ -313,6 +360,33 @@ userSchema.statics.updateAddress = async function (
   } catch (err) {
     throw new Error(err);
   }
+};
+
+userSchema.statics.updateConsents = async function (
+  email,
+  delivery,
+  confidentiality,
+  termsOfUse,
+  deals,
+  updates,
+  more
+) {
+  const updatedConsents = await this.findOneAndUpdate(
+    { email },
+    {
+      $set: {
+        "consents.$[].delivery": delivery,
+        "consents.$[].confidentiality": confidentiality,
+        "consents.$[].termsOfUse": termsOfUse,
+        "consents.$[].deals": deals,
+        "consents.$[].updates": updates,
+        "consents.$[].more": more,
+      },
+    },
+    { new: true }
+  );
+
+  return updatedConsents;
 };
 
 export const UserModel = mongoose.model("User", userSchema);

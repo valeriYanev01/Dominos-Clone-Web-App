@@ -6,6 +6,7 @@ import {
   getSingleAddress,
   getUser,
   updateAddress,
+  updateConsent,
   updateUser,
   userLogin,
   userSignup,
@@ -25,5 +26,6 @@ router.get("/get-single-address", getSingleAddress);
 router.post("/add-address", addAddress);
 router.delete("/delete-address", deleteAddress);
 router.put("/update-address", updateAddress);
+router.put("/update-consent", updateConsent);
 
 export { router as userRouter };

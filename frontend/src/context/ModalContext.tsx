@@ -2,7 +2,7 @@ import { ReactNode, createContext, useState } from "react";
 
 type OpenModal = boolean;
 
-export type ModalType = "" | "selectStore" | "delivery" | "carryOut" | "login" | "product" | "method";
+export type ModalType = "" | "selectStore" | "delivery" | "carryOut" | "login" | "product" | "method" | "delete";
 
 type Product = string[];
 

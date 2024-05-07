@@ -88,3 +88,34 @@
   margin-top: 30px;
   border-radius: 5px;
 }
+
+.ps-success {
+  position: fixed;
+  z-index: 99999;
+  left: 100px;
+  bottom: 10px;
+  background-color: #5cb85c;
+  color: #fff;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  animation: success 3s both;
+}
+
+@keyframes success {
+  0% {
+    left: -500px;
+  }
+  25% {
+    left: 100px;
+  }
+  50% {
+    left: 100px;
+  }
+  75% {
+    left: 100px;
+  }
+  100% {
+    left: -500px;
+  }
+}
