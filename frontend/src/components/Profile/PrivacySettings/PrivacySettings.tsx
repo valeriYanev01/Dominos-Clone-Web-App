@@ -15,7 +15,7 @@ const PrivacySettings: React.FC = () => {
   const [more, setMore] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const { token, emailLogin, setLoggedIn } = useContext(LoginContext);
+  const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
 
   useEffect(() => {
@@ -57,22 +57,6 @@ const PrivacySettings: React.FC = () => {
       window.scrollTo(0, 0);
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      await axios.delete("http://localhost:3000/api/users/account-delete", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { email: emailLogin },
-      });
-
-      setLoggedIn(false);
-      localStorage.removeItem("user");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(err.response?.data.error);
-      }
     }
   };
 

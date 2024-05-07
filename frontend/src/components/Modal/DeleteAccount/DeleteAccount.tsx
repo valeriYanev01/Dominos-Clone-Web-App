@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./DeleteAccount.css";
+import axios from "axios";
+import { LoginContext } from "../../../context/LoginContext";
+import { ModalContext } from "../../../context/ModalContext";
 
 const DeleteAccount: React.FC = () => {
+  const { emailLogin, setLoggedIn, token } = useContext(LoginContext);
+  const { setModalType, setOpenModal } = useContext(ModalContext);
+
+  const handleDeleteAccount = async () => {
+    try {
+      await axios.delete("http://localhost:3000/api/users/account-delete", {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { email: emailLogin },
+      });
+
+      setLoggedIn(false);
+      setModalType("");
+      setOpenModal(false);
+      localStorage.removeItem("user");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+      }
+    }
+  };
+
   return (
     <div className="delete-modal">
       <div className="dm-warning">
@@ -12,8 +36,18 @@ const DeleteAccount: React.FC = () => {
         order history, won coupons, favorite orders etc.) Are you sure you wish to proceed?
       </p>
       <div className="dm-btn-container">
-        <div className="dm-btn-cancel">Cancel</div>
-        <div className="dm-btn-delete">Yes, Delete my account</div>
+        <div
+          className="dm-btn-cancel"
+          onClick={() => {
+            setModalType("");
+            setOpenModal(false);
+          }}
+        >
+          Cancel
+        </div>
+        <div className="dm-btn-delete" onClick={handleDeleteAccount}>
+          Yes, Delete my account
+        </div>
       </div>
     </div>
   );

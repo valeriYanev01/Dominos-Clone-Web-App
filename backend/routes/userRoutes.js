@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addAddress,
+  deleteAccount,
   deleteAddress,
   getAddresses,
   getSingleAddress,
@@ -19,13 +20,14 @@ router.post("/signup", userSignup);
 router.post("/login", userLogin);
 
 router.use(verifyToken);
-router.post("/account/update", updateUser);
 router.get("/", getUser);
 router.get("/get-addresses", getAddresses);
 router.get("/get-single-address", getSingleAddress);
+router.post("/account/update", updateUser);
 router.post("/add-address", addAddress);
-router.delete("/delete-address", deleteAddress);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
+router.delete("/delete-address", deleteAddress);
+router.delete("/account-delete", deleteAccount);
 
 export { router as userRouter };

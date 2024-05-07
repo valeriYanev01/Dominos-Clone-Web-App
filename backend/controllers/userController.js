@@ -181,6 +181,8 @@ export const updateAddress = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   const { email } = req.query;
 
+  console.log(email);
+
   try {
     await UserModel.findOneAndDelete({ email });
 
