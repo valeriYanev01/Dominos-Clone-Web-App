@@ -1,0 +1,90 @@
+.ps-options-container {
+  margin-left: 20px;
+}
+
+.ps-options-container h3,
+.ps-personal-data-container h3,
+.ps-opt-out h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.ps-options {
+  display: flex;
+  margin: 0 0 20px 30px;
+  gap: 20px;
+}
+
+.ps-options label {
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+  cursor: pointer;
+}
+
+.ps-options input,
+.ps-options label {
+  align-self: center;
+}
+
+.ps-options input {
+  width: 20px;
+  height: 20px;
+}
+
+.ps-option-link {
+  color: #23527c;
+  text-decoration: none;
+}
+
+.ps-option-bold {
+  font-weight: bold;
+}
+
+.ps-personal-data-container,
+.ps-opt-out {
+  margin-left: 20px;
+  padding-top: 20px;
+}
+
+.ps-personal-data {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  row-gap: 10px;
+}
+
+.ps-personal-data-option {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.ps-personal-data-option img,
+.ps-personal-data-option p {
+  margin: 0;
+}
+
+.ps-opt-out-btn {
+  background-color: #df223d;
+  color: #fff;
+  text-align: center;
+  width: calc(30%);
+  font-size: 26px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px 20px;
+  box-shadow: 0px 1.5px 2px rgba(0, 0, 0, 0.7);
+  margin-top: 30px;
+}
+
+.delete-account-btn {
+  background-color: #ddd;
+  color: #fff;
+  cursor: pointer;
+  width: fit-content;
+  padding: 5px 20px;
+  text-align: center;
+  margin-right: 30px;
+  margin-top: 30px;
+  border-radius: 5px;
+}

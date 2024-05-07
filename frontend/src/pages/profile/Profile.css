@@ -4,7 +4,8 @@
 }
 
 .profile-account,
-.profile-addresses {
+.profile-addresses,
+.profile-privacy-settings {
   background-color: #fff;
   width: 80%;
   margin: auto;
