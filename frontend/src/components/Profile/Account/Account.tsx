@@ -3,6 +3,7 @@ import "./Account.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
+import Heading from "../../Heading/Heading";
 
 const Account: React.FC = () => {
   const [name, setName] = useState("");
@@ -84,11 +85,7 @@ const Account: React.FC = () => {
 
   return (
     <div className="profile-account">
-      <div className="pa-heading">
-        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
-        <p>MY PROFILE</p>
-        <img src="/svg/decorRightRed.svg" className="deal-decor" />
-      </div>
+      <Heading text={"MY PROFILE"} />
 
       <div className="pa-body">
         <div className="pa-name-container">

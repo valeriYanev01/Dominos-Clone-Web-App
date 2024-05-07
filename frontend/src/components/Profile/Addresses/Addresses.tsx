@@ -6,6 +6,7 @@ import { LoginContext } from "../../../context/LoginContext";
 import Map from "../../Map/Map";
 import useGetSuggestion from "../../../hooks/useGetSuggestion";
 import { MapContext } from "../../../context/MapContext";
+import Heading from "../../Heading/Heading";
 
 type Address = {
   name: string;
@@ -150,11 +151,7 @@ const Addresses: React.FC = () => {
 
   return (
     <div className="profile-addresses">
-      <div className="pas-heading">
-        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
-        <p>MODIFY YOUR DETAILS, ADD OR DELETE AN ADDRESS</p>
-        <img src="/svg/decorRightRed.svg" className="deal-decor" />
-      </div>
+      <Heading text={"MODIFY YOUR DETAILS, ADD OR DELETE AN ADDRESS"} />
 
       <div className="pas-body">
         <div className="pas-addresses">
