@@ -36,8 +36,6 @@ const AddAddress: React.FC = () => {
     setSuggestedAddresses,
   } = useContext(MapContext);
 
-  console.log(lat, long);
-
   const { emailLogin, token } = useContext(LoginContext);
 
   const getSuggestion = useGetSuggestion();
