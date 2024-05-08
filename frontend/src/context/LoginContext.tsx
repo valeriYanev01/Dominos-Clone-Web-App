@@ -1,10 +1,24 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import axios from "axios";
 
 type LoggedIn = boolean;
 type EmailLogin = string;
 type Token = string;
+
+interface GoogleLogin {
+  email: string;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  locale: string;
+  name: string;
+  nickname: string;
+  picture: string;
+  sub: string;
+  updated_at: string;
+}
 
 interface LoggedInInterface {
   loggedIn: LoggedIn;
@@ -13,6 +27,8 @@ interface LoggedInInterface {
   setEmailLogin: React.Dispatch<React.SetStateAction<EmailLogin>>;
   token: Token;
   setToken: React.Dispatch<React.SetStateAction<Token>>;
+  googleLogin: GoogleLogin;
+  setGoogleLogin: React.Dispatch<React.SetStateAction<GoogleLogin>>;
 }
 
 export const LoginContext = createContext<LoggedInInterface>({
@@ -22,18 +38,73 @@ export const LoginContext = createContext<LoggedInInterface>({
   setEmailLogin: () => {},
   token: "",
   setToken: () => {},
+  googleLogin: {
+    email: "",
+    email_verified: false,
+    family_name: "",
+    given_name: "",
+    locale: "",
+    name: "",
+    nickname: "",
+    picture: "",
+    sub: "",
+    updated_at: "",
+  },
+  setGoogleLogin: () => {},
 });
 
 export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState("");
   const [token, setToken] = useState("");
+  const [googleLogin, setGoogleLogin] = useState<GoogleLogin>({
+    email: "",
+    email_verified: false,
+    family_name: "",
+    given_name: "",
+    locale: "",
+    name: "",
+    nickname: "",
+    picture: "",
+    sub: "",
+    updated_at: "",
+  });
 
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user: googleUser } = useAuth0();
 
   const user = localStorage.getItem("user");
 
   const email = user?.split(",")[0] || "";
+
+  useEffect(() => {
+    if (googleUser) {
+      const signGoogleUser = async () => {
+        try {
+          const response = await axios.post("http://localhost:3000/api/users/google", {
+            email: googleUser?.email,
+            firstName: googleUser?.given_name,
+            lastName: googleUser?.family_name,
+            password: "",
+            confirmPassword: "",
+            img: googleUser?.picture,
+            addresses: [],
+            consents: [
+              { delivery: true, deals: false, updates: false, confidentiality: true, termsOfUse: true, more: false },
+            ],
+          });
+          localStorage.setItem("user", String([response.data.user.email, response.data.token]));
+          setToken(response.data.token);
+          setEmailLogin(response.data.user.email);
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err.response?.data.error);
+          }
+        }
+      };
+
+      signGoogleUser();
+    }
+  }, [googleUser]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,7 +112,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     } else {
       setLoggedIn(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, googleUser]);
 
   useEffect(() => {
     if (user) {
@@ -74,7 +145,9 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [token]);
 
   return (
-    <LoginContext.Provider value={{ loggedIn, setLoggedIn, emailLogin, setEmailLogin, token, setToken }}>
+    <LoginContext.Provider
+      value={{ loggedIn, setLoggedIn, emailLogin, setEmailLogin, token, setToken, googleLogin, setGoogleLogin }}
+    >
       {children}
     </LoginContext.Provider>
   );

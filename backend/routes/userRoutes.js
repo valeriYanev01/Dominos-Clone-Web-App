@@ -6,6 +6,7 @@ import {
   getAddresses,
   getSingleAddress,
   getUser,
+  googleLogin,
   updateAddress,
   updateConsent,
   updateUser,
@@ -18,6 +19,7 @@ const router = express.Router();
 
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
+router.post("/google", googleLogin);
 
 router.use(verifyToken);
 router.get("/", getUser);

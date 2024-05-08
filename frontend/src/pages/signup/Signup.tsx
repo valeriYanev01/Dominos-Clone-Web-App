@@ -39,9 +39,15 @@ const Signup: React.FC = () => {
         firstName: name,
         lastName: surname,
         img: uploadImg,
-        delivery,
-        deals,
-        updates,
+        addresses: [],
+        consents: [
+          { delivery: true },
+          { deals: false },
+          { updates: false },
+          { confidentiality: true },
+          { termsOfUse: true },
+          { more: false },
+        ],
       });
 
       setLoggedIn(true);

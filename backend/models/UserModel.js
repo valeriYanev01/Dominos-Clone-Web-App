@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import cryptoRandomString from "crypto-random-string";
 
 const addressSchema = new mongoose.Schema({
   name: {
@@ -39,7 +40,6 @@ const addressSchema = new mongoose.Schema({
 const consentSchema = new mongoose.Schema({
   delivery: {
     type: String,
-    required: true,
   },
 
   confidentiality: {
@@ -98,11 +98,9 @@ userSchema.statics.signup = async function (
   firstName,
   lastName,
   img,
-  delivery,
-  deals,
-  updates
+  addresses,
+  consents
 ) {
-  console.log(delivery, deals, updates);
   if (!email) {
     throw new Error("Email is required");
   }
@@ -160,7 +158,8 @@ userSchema.statics.signup = async function (
     firstName,
     lastName,
     img,
-    consents: { delivery, deals, updates },
+    addresses,
+    consents,
   });
 
   return user;
@@ -387,6 +386,43 @@ userSchema.statics.updateConsents = async function (
   );
 
   return updatedConsents;
+};
+
+userSchema.statics.googleLogin = async function (
+  email,
+  firstName,
+  lastName,
+  img,
+  password,
+  confirmPassword,
+  addresses,
+  consents
+) {
+  const user = await this.findOne({ email });
+
+  password = cryptoRandomString({ length: 30, type: "ascii-printable" });
+  confirmPassword = password;
+
+  const saltRounds = 10;
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hash = await bcrypt.hash(password, salt);
+
+  if (user) {
+    return user;
+  } else {
+    const newUser = await this.create({
+      email,
+      password: hash,
+      confirmPassword: hash,
+      firstName,
+      lastName,
+      img,
+      addresses,
+      consents,
+    });
+
+    return newUser;
+  }
 };
 
 export const UserModel = mongoose.model("User", userSchema);

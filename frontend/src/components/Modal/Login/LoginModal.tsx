@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./LoginModal.css";
-import { MouseEvent, useContext, useEffect, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 import { ModalContext } from "../../../context/ModalContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -15,16 +15,9 @@ const LoginModal = () => {
   const { setOpenModal } = useContext(ModalContext);
   const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
 
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      setOpenModal(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
-
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     loginWithRedirect({ authorizationParams: { connection: "google-oauth2" } });
   };
 

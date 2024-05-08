@@ -11,7 +11,7 @@ const createToken = (_id, expiration = "1h") => {
 };
 
 export const userSignup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, img, delivery, deals, updates } = req.body;
+  const { email, password, confirmPassword, firstName, lastName, img, addresses, consents } = req.body;
 
   try {
     const user = await UserModel.signup(
@@ -21,9 +21,8 @@ export const userSignup = async (req, res) => {
       firstName,
       lastName,
       img,
-      delivery,
-      deals,
-      updates
+      addresses,
+      consents
     );
     const token = createToken(user._id);
 
@@ -207,6 +206,28 @@ export const updateConsent = async (req, res) => {
     );
 
     return res.status(200).json({ newConsents });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const googleLogin = async (req, res) => {
+  const { email, firstName, lastName, img, password, confirmPassword, addresses, consents } = req.body;
+
+  try {
+    const user = await UserModel.googleLogin(
+      email,
+      firstName,
+      lastName,
+      img,
+      password,
+      confirmPassword,
+      addresses,
+      consents
+    );
+    const token = createToken(user._id);
+
+    return res.status(200).json({ user, token });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

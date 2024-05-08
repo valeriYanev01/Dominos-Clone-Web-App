@@ -74,12 +74,13 @@ const Navbar = ({ page }: Page) => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (user) {
       setShowProfileMenu(false);
-      setLoggedIn(false);
       logout({ logoutParams: { returnTo: window.location.origin } });
-      console.log("GOOGLE");
+      localStorage.removeItem("user");
+      setLoggedIn(false);
+      navigate("/");
     }
 
     if (!user) {
@@ -87,7 +88,6 @@ const Navbar = ({ page }: Page) => {
       localStorage.removeItem("user");
       setLoggedIn(false);
       navigate("/");
-      console.log("EMAIL");
     }
   };
 

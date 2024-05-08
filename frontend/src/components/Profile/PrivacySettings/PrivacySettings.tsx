@@ -25,6 +25,8 @@ const PrivacySettings: React.FC = () => {
           params: { email: emailLogin },
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        console.log(response);
         setDelivery(response.data.user.consents[0].delivery === "true" ? true : false);
         setDeals(response.data.user.consents[0].deals === "true" ? true : false);
         setUpdates(response.data.user.consents[0].updates === "true" ? true : false);
