@@ -37,6 +37,21 @@ const addressSchema = new mongoose.Schema({
   },
 });
 
+const ordersSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  quantity: {
+    type: Number,
+  },
+  modifications: {
+    removed: {
+      type: [String],
+    },
+    added: [String],
+  },
+});
+
 const consentSchema = new mongoose.Schema({
   delivery: {
     type: String,
@@ -86,6 +101,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     addresses: [addressSchema],
+    orders: [ordersSchema],
     consents: [consentSchema],
   },
   { timestamps: true }
@@ -99,6 +115,7 @@ userSchema.statics.signup = async function (
   lastName,
   img,
   addresses,
+  orders,
   consents
 ) {
   if (!email) {
@@ -159,6 +176,7 @@ userSchema.statics.signup = async function (
     lastName,
     img,
     addresses,
+    orders,
     consents,
   });
 
@@ -394,18 +412,17 @@ userSchema.statics.googleLogin = async function (
   lastName,
   img,
   password,
-  confirmPassword,
   addresses,
+  orders,
   consents
 ) {
-  const user = await this.findOne({ email });
-
   password = cryptoRandomString({ length: 30, type: "ascii-printable" });
-  confirmPassword = password;
 
   const saltRounds = 10;
   const salt = await bcrypt.genSalt(saltRounds);
   const hash = await bcrypt.hash(password, salt);
+
+  const user = await this.findOne({ email });
 
   if (user) {
     return user;
@@ -413,11 +430,11 @@ userSchema.statics.googleLogin = async function (
     const newUser = await this.create({
       email,
       password: hash,
-      confirmPassword: hash,
       firstName,
       lastName,
       img,
       addresses,
+      orders,
       consents,
     });
 

@@ -40,6 +40,7 @@ const Signup: React.FC = () => {
         lastName: surname,
         img: uploadImg,
         addresses: [],
+        orders: [],
         consents: [
           { delivery: true },
           { deals: false },

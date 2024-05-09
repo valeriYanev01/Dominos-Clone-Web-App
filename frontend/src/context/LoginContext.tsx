@@ -85,9 +85,9 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
             firstName: googleUser?.given_name,
             lastName: googleUser?.family_name,
             password: "",
-            confirmPassword: "",
             img: googleUser?.picture,
             addresses: [],
+            orders: [],
             consents: [
               { delivery: true, deals: false, updates: false, confidentiality: true, termsOfUse: true, more: false },
             ],
