@@ -37,20 +37,29 @@ const addressSchema = new mongoose.Schema({
   },
 });
 
-const ordersSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: true,
   },
   quantity: {
     type: Number,
+    required: true,
   },
-  modifications: {
-    removed: {
-      type: [String],
+  modifications: [
+    {
+      added: [String],
+      removed: [String],
     },
-    added: [String],
-  },
+  ],
 });
+
+const ordersSchema = new mongoose.Schema(
+  {
+    products: [productSchema],
+  },
+  { timestamps: true }
+);
 
 const consentSchema = new mongoose.Schema({
   delivery: {
@@ -439,6 +448,30 @@ userSchema.statics.googleLogin = async function (
     });
 
     return newUser;
+  }
+};
+
+userSchema.statics.newOrder = async function (email, products) {
+  try {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const productObjects = products.map((product) => ({
+      name: product.name,
+      quantity: product.quantity,
+      modifications: product.modifications,
+    }));
+
+    user.orders.push({ products: productObjects });
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  } catch (err) {
+    throw new Error(err);
   }
 };
 

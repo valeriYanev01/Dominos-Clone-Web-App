@@ -224,3 +224,27 @@ export const googleLogin = async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 };
+
+export const newOrder = async (req, res) => {
+  const { email, products } = req.body;
+
+  try {
+    const order = await UserModel.newOrder(email, products);
+
+    return res.status(200).json({ order });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const getOrders = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const allOrders = await UserModel.findOne({ email }).select("orders");
+
+    return res.status(200).json({ allOrders });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
