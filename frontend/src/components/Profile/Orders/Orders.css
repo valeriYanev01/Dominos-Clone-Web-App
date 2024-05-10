@@ -1,0 +1,61 @@
+.po-all-orders-container {
+  padding-top: 50px;
+}
+
+.po-order-description-container {
+  margin-left: 100px;
+}
+
+.po-order-container {
+  display: flex;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  align-items: center;
+  border-bottom: 1px solid #fe7e7e42;
+}
+
+.po-order-date {
+  margin: 0;
+  margin-left: 50px;
+  color: #0073aa;
+  font-size: 16px;
+}
+
+.po-order-description {
+  display: inline;
+  margin-right: 10px;
+}
+
+.po-order-quantity {
+  color: #e31837;
+}
+
+.po-order-product-name {
+  color: #0073aa;
+}
+
+.po-order-product-modifications {
+  color: #555555cb;
+  font-size: 16px;
+}
+
+.po-order-again-img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  margin: 0;
+  margin-right: 50px;
+}
+
+.po-order-again-img:hover {
+  animation: roll 0.75s reverse ease-in-out;
+}
+
+@keyframes roll {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
