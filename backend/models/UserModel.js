@@ -65,27 +65,34 @@ const consentSchema = new mongoose.Schema({
   delivery: {
     type: String,
   },
-
   confidentiality: {
     type: String,
   },
-
   termsOfUse: {
     type: String,
   },
-
   deals: {
     type: String,
   },
-
   updates: {
     type: String,
   },
-
   more: {
     type: String,
   },
 });
+
+const couponsSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+    },
+    validity: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
 const userSchema = new mongoose.Schema(
   {
@@ -112,6 +119,7 @@ const userSchema = new mongoose.Schema(
     addresses: [addressSchema],
     orders: [ordersSchema],
     consents: [consentSchema],
+    coupons: [couponsSchema],
   },
   { timestamps: true }
 );
@@ -125,7 +133,8 @@ userSchema.statics.signup = async function (
   img,
   addresses,
   orders,
-  consents
+  consents,
+  coupons
 ) {
   if (!email) {
     throw new Error("Email is required");
@@ -187,6 +196,7 @@ userSchema.statics.signup = async function (
     addresses,
     orders,
     consents,
+    coupons,
   });
 
   return user;
@@ -423,7 +433,8 @@ userSchema.statics.googleLogin = async function (
   password,
   addresses,
   orders,
-  consents
+  consents,
+  coupons
 ) {
   password = cryptoRandomString({ length: 30, type: "ascii-printable" });
 
@@ -445,6 +456,7 @@ userSchema.statics.googleLogin = async function (
       addresses,
       orders,
       consents,
+      coupons,
     });
 
     return newUser;
@@ -470,6 +482,30 @@ userSchema.statics.newOrder = async function (email, products) {
     const updatedUser = await user.save();
 
     return updatedUser;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+userSchema.statics.addCoupon = async function (email, coupon) {
+  try {
+    const user = await this.findOneAndUpdate(
+      { email },
+      {
+        $push: {
+          coupons: {
+            name: coupon,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
   } catch (err) {
     throw new Error(err);
   }

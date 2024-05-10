@@ -11,7 +11,7 @@ const createToken = (_id, expiration = "1h") => {
 };
 
 export const userSignup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, img, addresses, orders, consents } = req.body;
+  const { email, password, confirmPassword, firstName, lastName, img, addresses, orders, consents, coupons } = req.body;
 
   try {
     const user = await UserModel.signup(
@@ -23,7 +23,8 @@ export const userSignup = async (req, res) => {
       img,
       addresses,
       orders,
-      consents
+      consents,
+      coupons
     );
     const token = createToken(user._id);
 
@@ -244,6 +245,30 @@ export const getOrders = async (req, res) => {
     const allOrders = await UserModel.findOne({ email }).select("orders");
 
     return res.status(200).json({ allOrders });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const addCoupon = async (req, res) => {
+  const { email, coupon } = req.body;
+
+  try {
+    const newCoupon = await UserModel.addCoupon(email, coupon);
+
+    return res.status(200).json({ newCoupon });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const getCoupons = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const coupons = await UserModel.findOne({ email }).select("coupons");
+
+    return res.status(200).json({ coupons });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

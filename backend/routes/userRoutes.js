@@ -1,9 +1,11 @@
 import express from "express";
 import {
   addAddress,
+  addCoupon,
   deleteAccount,
   deleteAddress,
   getAddresses,
+  getCoupons,
   getOrders,
   getSingleAddress,
   getUser,
@@ -28,8 +30,10 @@ router.get("/", getUser);
 router.get("/get-addresses", getAddresses);
 router.get("/get-single-address", getSingleAddress);
 router.get("/get-orders", getOrders);
+router.get("/get-coupons", getCoupons);
 router.post("/account/update", updateUser);
 router.post("/add-address", addAddress);
+router.post("/add-coupon", addCoupon);
 router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
