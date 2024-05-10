@@ -49,6 +49,7 @@ const Signup: React.FC = () => {
           { termsOfUse: true },
           { more: false },
         ],
+        coupons: [],
       });
 
       setLoggedIn(true);

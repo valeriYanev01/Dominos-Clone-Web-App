@@ -91,6 +91,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
             consents: [
               { delivery: true, deals: false, updates: false, confidentiality: true, termsOfUse: true, more: false },
             ],
+            coupons: [],
           });
           localStorage.setItem("user", String([response.data.user.email, response.data.token]));
           setToken(response.data.token);
