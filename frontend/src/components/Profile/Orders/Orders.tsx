@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Orders.css";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
+import Heading from "../../Heading/Heading";
 
 type Order = {
   products: {
@@ -39,6 +40,7 @@ const Orders: React.FC = () => {
 
   return (
     <div className="profile-orders">
+      <Heading text="MY ORDERS" />
       {allOrders && (
         <div className="po-all-orders-container">
           {allOrders.map((products, i) => (
