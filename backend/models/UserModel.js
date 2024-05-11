@@ -88,7 +88,7 @@ const couponsSchema = new mongoose.Schema(
       type: String,
     },
     validity: {
-      type: String,
+      type: Number,
     },
   },
   { timestamps: true }
@@ -487,7 +487,7 @@ userSchema.statics.newOrder = async function (email, products) {
   }
 };
 
-userSchema.statics.addCoupon = async function (email, coupon) {
+userSchema.statics.addCoupon = async function (email, coupon, validity) {
   try {
     const user = await this.findOneAndUpdate(
       { email },
@@ -495,6 +495,7 @@ userSchema.statics.addCoupon = async function (email, coupon) {
         $push: {
           coupons: {
             name: coupon,
+            validity: validity,
           },
         },
       },

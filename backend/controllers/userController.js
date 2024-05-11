@@ -251,10 +251,10 @@ export const getOrders = async (req, res) => {
 };
 
 export const addCoupon = async (req, res) => {
-  const { email, coupon } = req.body;
+  const { email, coupon, validity } = req.body;
 
   try {
-    const newCoupon = await UserModel.addCoupon(email, coupon);
+    const newCoupon = await UserModel.addCoupon(email, coupon, validity);
 
     return res.status(200).json({ newCoupon });
   } catch (err) {
