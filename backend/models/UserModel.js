@@ -91,7 +91,7 @@ const couponsSchema = new mongoose.Schema(
       type: Number,
     },
     used: {
-      type: boolean,
+      type: Boolean,
     },
   },
   { timestamps: true }
