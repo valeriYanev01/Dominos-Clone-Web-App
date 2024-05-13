@@ -90,6 +90,9 @@ const couponsSchema = new mongoose.Schema(
     validity: {
       type: Number,
     },
+    used: {
+      type: boolean,
+    },
   },
   { timestamps: true }
 );
@@ -487,7 +490,7 @@ userSchema.statics.newOrder = async function (email, products) {
   }
 };
 
-userSchema.statics.addCoupon = async function (email, coupon, validity) {
+userSchema.statics.addCoupon = async function (email, coupon, validity, used) {
   try {
     const user = await this.findOneAndUpdate(
       { email },
@@ -496,6 +499,7 @@ userSchema.statics.addCoupon = async function (email, coupon, validity) {
           coupons: {
             name: coupon,
             validity: validity,
+            used: used,
           },
         },
       },
