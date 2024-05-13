@@ -118,7 +118,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     if (user) {
       setLoggedIn(true);
-      setToken(user.split(",")[1]);
+      // setToken(user.split(",")[1]);
       setEmailLogin(email);
     } else {
       setLoggedIn(false);

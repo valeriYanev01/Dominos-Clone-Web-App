@@ -6,7 +6,8 @@
 .profile-account,
 .profile-addresses,
 .profile-orders,
-.profile-privacy-settings {
+.profile-privacy-settings,
+.pc-body {
   background-color: #fff;
   width: 80%;
   margin: auto;
