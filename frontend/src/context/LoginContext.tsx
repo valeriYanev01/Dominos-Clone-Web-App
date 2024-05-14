@@ -98,7 +98,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
           setEmailLogin(response.data.user.email);
         } catch (err) {
           if (axios.isAxiosError(err)) {
-            console.log(err.response?.data.error);
+            console.log(err);
           }
         }
       };

@@ -36,9 +36,9 @@
   font-weight: normal;
   color: #fff;
   font-size: 16px;
-  background: radial-gradient(circle at right, transparent 4px, lightgray 4px 4px, #c7b39b 0 0, #c7b39b 0 0),
-    radial-gradient(circle at left, transparent 4px, lightgray 4px 4px, transparent 0 0, transparent 0 0);
-  background-size: 100% 15px;
+  background: radial-gradient(circle at 0%, transparent 4px, lightgray 4px 4px, #c7b39b 0 0, #c7b39b 0 0);
+  background: radial-gradient(circle at 100%, transparent 4px, lightgray 4px 4px, #c7b39b 0 0, #c7b39b 0 0);
+  background-size: 100% 12px;
 }
 
 .pc-coupon p:last-child {
