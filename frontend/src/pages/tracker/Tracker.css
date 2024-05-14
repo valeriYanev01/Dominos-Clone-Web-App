@@ -7,5 +7,19 @@
   width: 80%;
   background-color: #fff;
   margin-top: 100px;
-  margin-bottom: 150px;
+  margin-bottom: 50px;
+  box-shadow: 10px -5px 70px rgba(0, 0, 0, 0.25);
+}
+
+.tracker-svg-container {
+  text-align: center;
+}
+
+.tracker-svg-text {
+  font-size: 18px;
+  color: #898989;
+}
+
+.tracker-circle {
+  width: 500px;
 }
