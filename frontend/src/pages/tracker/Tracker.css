@@ -1,0 +1,11 @@
+.tracker {
+  padding-top: 20px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
+}
+
+.tracker-body {
+  width: 80%;
+  background-color: #fff;
+  margin-top: 100px;
+  margin-bottom: 150px;
+}

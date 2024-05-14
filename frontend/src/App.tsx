@@ -16,6 +16,7 @@ import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySetting
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
 import { LoginContext } from "./context/LoginContext";
 import AddAddress from "./pages/addAddress/AddAddress";
+import Tracker from "./pages/tracker/Tracker";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function AppContent() {
           <Route path={"payment-methods"} element={<PaymentMethods />} />
         </Route>
         <Route path="add-address" element={<AddAddress />} />
+        <Route path="tracker" element={<Tracker />} />
       </Routes>
     </>
   );
