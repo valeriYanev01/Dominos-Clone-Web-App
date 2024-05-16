@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Addresses.css";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
 import Map from "../../Map/Map";
 import useGetSuggestion from "../../../hooks/useGetSuggestion";
 import { MapContext } from "../../../context/MapContext";
 import Heading from "../../Heading/Heading";
+import AddNewAddress from "../../Buttons/AddNewAddress";
 
 type Address = {
   name: string;
@@ -168,25 +169,7 @@ const Addresses: React.FC = () => {
               {address.name}
             </div>
           ))}
-          <Link
-            to="/add-address"
-            className="pas-addresses-add-new-container"
-            onClick={() => {
-              setFullAddress("");
-              setSelectedSuggestedAddress("");
-            }}
-          >
-            <div
-              className="pas-addresses-add-new"
-              onClick={() => {
-                setZoom(12);
-                setLat(42.693942);
-                setLong(23.313396);
-              }}
-            >
-              <span className="pas-addresses-add-new-text">ADD A NEW ADDRESS</span>
-            </div>
-          </Link>
+          <AddNewAddress />
         </div>
         <div className="pas-settings">
           <div className="pas-settings-address-container">
