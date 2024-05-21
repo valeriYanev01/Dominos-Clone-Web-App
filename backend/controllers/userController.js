@@ -227,10 +227,10 @@ export const googleLogin = async (req, res) => {
 };
 
 export const newOrder = async (req, res) => {
-  const { email, products } = req.body;
+  const { email, products, address } = req.body;
 
   try {
-    const order = await UserModel.newOrder(email, products);
+    const order = await UserModel.newOrder(email, products, address);
 
     return res.status(200).json({ order });
   } catch (err) {

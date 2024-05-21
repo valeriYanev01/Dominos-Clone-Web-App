@@ -57,6 +57,7 @@ const productSchema = new mongoose.Schema({
 const ordersSchema = new mongoose.Schema(
   {
     products: [productSchema],
+    address: addressSchema,
   },
   { timestamps: true }
 );
@@ -469,7 +470,7 @@ userSchema.statics.googleLogin = async function (
   }
 };
 
-userSchema.statics.newOrder = async function (email, products) {
+userSchema.statics.newOrder = async function (email, products, address) {
   try {
     const user = await this.findOne({ email });
 
@@ -483,7 +484,7 @@ userSchema.statics.newOrder = async function (email, products) {
       modifications: product.modifications,
     }));
 
-    user.orders.push({ products: productObjects });
+    user.orders.push({ products: productObjects, address: address });
 
     const updatedUser = await user.save();
 
