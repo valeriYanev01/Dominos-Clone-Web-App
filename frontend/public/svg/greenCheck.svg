@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="tiny" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" xml:space="preserve">
+<circle fill="#FFFFFF" cx="250" cy="250" r="214"/>
+<g>
+	<path fill="#8DC63F" d="M250,5C114.7,5,5,114.7,5,250c0,135.3,109.7,245,245,245c135.3,0,245-109.7,245-245   C495,114.7,385.3,5,250,5z M215.3,365.5L99.9,250l46.2-46.2l69.3,69.3l138.6-138.6l46.2,46.2L215.3,365.5z"/>
+</g>
+</svg>

@@ -6,6 +6,8 @@ import { MenuContextProvider } from "./context/MenuContext.tsx";
 import { LoginContextProvider } from "./context/LoginContext.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { MapContextProvider } from "./context/MapContext.tsx";
+import { OrderContextProvider } from "./context/OrderContext.tsx";
+import { AddressContextProvider } from "./context/AddressContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,11 +17,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       authorizationParams={{ redirect_uri: "http://localhost:5173" }}
     >
       <LoginContextProvider>
-        <MenuContextProvider>
-          <MapContextProvider>
-            <App />
-          </MapContextProvider>
-        </MenuContextProvider>
+        <AddressContextProvider>
+          <OrderContextProvider>
+            <MenuContextProvider>
+              <MapContextProvider>
+                <App />
+              </MapContextProvider>
+            </MenuContextProvider>
+          </OrderContextProvider>
+        </AddressContextProvider>
       </LoginContextProvider>
     </Auth0Provider>
   </React.StrictMode>

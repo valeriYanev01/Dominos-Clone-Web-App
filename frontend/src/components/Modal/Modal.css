@@ -6,8 +6,15 @@
   z-index: 100000;
 }
 
+.abra {
+  width: 40%;
+  height: 100%;
+  position: relative;
+}
+
 .modall {
   position: fixed;
+  width: inherit;
   top: 50%;
   left: 50%;
   z-index: 30 !important;
@@ -29,9 +36,9 @@
   box-shadow: 5px 20px 15px 10px rgba(0, 0, 0, 0.2);
 }
 
-.modal-login-width {
+/* .modal-login-width {
   width: 40% !important;
-}
+} */
 
 .inner-layer {
   background-image: radial-gradient(10px circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
@@ -55,11 +62,11 @@
 }
 
 .close-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  position: absolute;
+  /* top: 12%; */
+  right: 0;
   z-index: 30;
-  transform: translate(310px, -140px);
+  /* transform: translate(310px, -140px); */
   cursor: pointer;
 }
 
@@ -75,7 +82,7 @@
 }
 
 .close-modal-login {
-  transform: translate(320px, -300px);
+  /* transform: translate(30px, 20px); */
 }
 
 .close-modal-product {
@@ -91,5 +98,12 @@
 }
 
 .close-modal-method:before {
-  transform: translate(-30%, -220%);
+  transform: translateY(110px);
 }
+
+/* .close-modal-delivery {
+  top: 0;
+  right: 0;
+  transform: translate(0, 0);
+  position: absolute;
+} */

@@ -79,6 +79,9 @@ const AddAddress: React.FC = () => {
     }
   };
 
+  console.log(fullAddress);
+  console.log(selectedSuggestedAddress);
+
   return (
     <div className="add-address-page">
       <Navbar page="add-address" />

@@ -8,17 +8,7 @@ import useGetSuggestion from "../../../hooks/useGetSuggestion";
 import { MapContext } from "../../../context/MapContext";
 import Heading from "../../Heading/Heading";
 import AddNewAddress from "../../Buttons/AddNewAddress";
-
-type Address = {
-  name: string;
-  fullAddress: string;
-  phoneNumber: string;
-  doorBell: string;
-  floor: string;
-  block: string;
-  apartment: string;
-  entrance: string;
-};
+import { Address } from "../../../types/Address";
 
 const Addresses: React.FC = () => {
   const [addresses, setAddresses] = useState([]);

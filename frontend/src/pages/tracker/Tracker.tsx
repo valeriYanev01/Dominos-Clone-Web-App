@@ -1,9 +1,13 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import "./Tracker.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Heading from "../../components/Heading/Heading";
+import axios from "axios";
+import { LoginContext } from "../../context/LoginContext";
+import { OrderContext } from "../../context/OrderContext";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reducer = (state: any, action: { type: string }) => {
   switch (action.type) {
     case "path1":
@@ -59,18 +63,51 @@ const Tracker: React.FC = () => {
     path5: "#f2f4f5",
   });
 
+  const { token, emailLogin } = useContext(LoginContext);
+  const { setOrderTime, setActiveOrder, activeOrder } = useContext(OrderContext);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSecond((prevState) => prevState + 1);
-    }, 1000);
-    if (currentSecond === 5) dispatch({ type: "path1" });
-    if (currentSecond === 10) dispatch({ type: "path2" });
-    if (currentSecond === 15) dispatch({ type: "path3" });
-    if (currentSecond === 20) dispatch({ type: "path4" });
-    if (currentSecond === 25) dispatch({ type: "path5" });
-    if (currentSecond === 30) dispatch({ type: "path6" });
-    return () => clearInterval(interval);
-  }, [currentSecond]);
+    if (activeOrder) {
+      const interval = setInterval(() => {
+        setCurrentSecond((prevState) => prevState + 1);
+      }, 1000);
+      if (currentSecond >= 0) dispatch({ type: "path1" });
+      if (currentSecond >= 5) dispatch({ type: "path2" });
+      if (currentSecond >= 10) dispatch({ type: "path3" });
+      if (currentSecond >= 15) dispatch({ type: "path4" });
+      if (currentSecond >= 20) dispatch({ type: "path5" });
+      if (currentSecond >= 30) dispatch({ type: "path6" });
+      return () => clearInterval(interval);
+    }
+  }, [currentSecond, activeOrder]);
+
+  useEffect(() => {
+    if (token && emailLogin) {
+      const getAllOrders = async () => {
+        const response = await axios.get("http://localhost:3000/api/users/get-orders", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
+
+        const allOrders = response.data.allOrders.orders;
+        const lastOrder = new Date(allOrders[allOrders.length - 1].createdAt);
+        if (new Date() < new Date(lastOrder.getTime() + 120 * 60 * 1000)) {
+          setActiveOrder(true);
+          setOrderTime(lastOrder);
+        }
+        // const finishOrder = new Date(lastOrder.getTime() + 30 * 60 * 1000); // add * 60
+
+        // need to get the lastOrder.createdAt and to check the formula 30m / 5 * n -> where n is the step(path) and to update
+        // the circle tracker. Will update with seconds -> 30 minutes * 60 seconds to make it 1800 seconds. Now -> 1800 / 5 * n and for every
+        // n need to update the next path's color.
+
+        //  x % y === 0
+        // 5 % 5 === 0 // true
+        // 5 % 2 === 0 // false -> 1
+      };
+      getAllOrders();
+    }
+  }, [emailLogin, setOrderTime, token, setActiveOrder]);
 
   return (
     <div className="tracker">

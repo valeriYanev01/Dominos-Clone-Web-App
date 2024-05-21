@@ -1,5 +1,8 @@
 .pas-addresses-add-new-container {
   text-decoration: none;
+  text-align: center;
+  display: block;
+  width: fit-content;
 }
 
 .pas-addresses-add-new {
@@ -9,6 +12,8 @@
   align-items: center;
   cursor: pointer;
   border-radius: 5px;
+  width: fit-content;
+  padding: 10px 20px;
 }
 
 .pas-addresses-add-new-text {

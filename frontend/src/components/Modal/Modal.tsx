@@ -32,7 +32,7 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
     <>
       {openModal && (
         <div className="modal-container">
-          <div className="abra">
+          <div className="abra" style={modalType === "product" ? { width: "80vw" } : {}}>
             <div
               className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
               style={modalType === "product" ? { border: "none", background: "white", maskImage: "none" } : {}}
@@ -69,6 +69,8 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                   ? "close-modal-product"
                   : modalType === "method"
                   ? "close-modal-method"
+                  : modalType === "delivery"
+                  ? "close-modal-delivery"
                   : ""
               }`}
               onClick={() => setOpenModal(false)}
