@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import ScrollToTop from "./functions/scrollToTop";
 import Home from "./pages/home/Home";
 import Menu from "./pages/menu/Menu";
 import Modal from "./components/Modal/Modal";
-import { ModalContext, ModalContextProvider } from "./context/ModalContext";
-import { useContext, useEffect } from "react";
+import { ModalContext } from "./context/ModalContext";
+import { LoginContext } from "./context/LoginContext";
 import DominosMore from "./pages/more/DominosMore";
-import ScrollToTop from "./functions/scrollToTop";
 import Signup from "./pages/signup/Signup";
 import Profile from "./pages/profile/Profile";
 import Account from "./components/Profile/Account/Account";
@@ -14,21 +15,10 @@ import Orders from "./components/Profile/Orders/Orders";
 import Coupons from "./components/Profile/Coupons/Coupons";
 import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySettings";
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
-import { LoginContext } from "./context/LoginContext";
 import AddAddress from "./pages/addAddress/AddAddress";
 import Tracker from "./pages/tracker/Tracker";
 
 function App() {
-  return (
-    <ModalContextProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </ModalContextProvider>
-  );
-}
-
-function AppContent() {
   const { openModal } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
 
