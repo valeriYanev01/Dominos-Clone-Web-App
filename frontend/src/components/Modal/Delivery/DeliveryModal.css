@@ -99,6 +99,7 @@
 
 .dm-address-new-address-btn {
   margin-top: 20px;
+  width: fit-content;
 }
 
 .dm-address-store-closed {
