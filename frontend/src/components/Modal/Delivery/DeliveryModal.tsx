@@ -20,8 +20,8 @@ const DeliveryModal: React.FC = () => {
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
 
-  const deliveryHours = [
-    isOpenForDelivery && "NOW",
+  const initialDeliveryHours = [
+    isOpenForDelivery ? "NOW" : "11:30",
     "11:30",
     "11:40",
     "11:50",
@@ -91,17 +91,45 @@ const DeliveryModal: React.FC = () => {
     "22:30",
   ];
 
+  const deliveryHours = initialDeliveryHours.map((hour) => {
+    if (hour !== "NOW") {
+      const h = parseInt(hour.split(":")[0]);
+      const m = parseInt(hour.split(":")[1]);
+
+      const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
+      const dateForDeliveryCopy = new Date(dateForDelivery);
+
+      const thirthyMinAhead1 = new Date(dateForDeliveryCopy.setMinutes(dateForDeliveryCopy.getMinutes() + 30));
+
+      const now = new Date();
+      if (thirthyMinAhead1.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
+        return undefined;
+      } else {
+        return String(
+          `${thirthyMinAhead1.getHours()}:${
+            String(thirthyMinAhead1.getMinutes()).length === 1 ? "00" : thirthyMinAhead1.getMinutes()
+          }`
+        );
+      }
+    } else {
+      return "NOW";
+    }
+  });
+
+  const deliveryHoursFiltered = deliveryHours.filter((hour) => {
+    return hour !== undefined;
+  });
+
   useEffect(() => {
     if (emailLogin && token) {
-      try {
-        const getAllOrders = async () => {
+      const getAllOrders = async () => {
+        try {
           const response = await axios.get("http://localhost:3000/api/users/get-orders", {
             headers: { Authorization: `Bearer ${token}` },
             params: { email: emailLogin },
           });
 
           const allOrders = response.data.allOrders.orders;
-          console.log(allOrders);
 
           if (allOrders.length < 1) {
             setShowRecentAddress(false);
@@ -113,17 +141,17 @@ const DeliveryModal: React.FC = () => {
             setLastOrderAddressName(lastOrder.address.name);
             setShowAddresses(true);
             setShowRecentAddress(true);
+            setSelectedAddress(lastOrder);
           }
-        };
-
-        getAllOrders();
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          console.log(err.message);
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err.message);
+          }
         }
-      }
+      };
+      getAllOrders();
     }
-  }, [emailLogin, token]);
+  }, [emailLogin, token, otherAddresses]);
 
   useEffect(() => {
     if (emailLogin && token) {
@@ -141,9 +169,9 @@ const DeliveryModal: React.FC = () => {
           if (newAddresses.length < 1) {
             setShowOtherAddresses(false);
           } else {
-            setOtherAddresses(newAddresses);
             setShowOtherAddresses(true);
             setShowAddresses(true);
+            setOtherAddresses(newAddresses);
           }
         } catch (err) {
           if (axios.isAxiosError(err)) {
@@ -154,8 +182,7 @@ const DeliveryModal: React.FC = () => {
 
       getAllAddresses();
     }
-    setSelectedAddress(lastOrderAddress);
-  }, [emailLogin, token, lastOrderAddressName, lastOrderAddress, showRecentAddress]);
+  }, [emailLogin, token, lastOrderAddressName]);
 
   useEffect(() => {
     if (new Date().getHours() >= 11) {
@@ -289,7 +316,7 @@ const DeliveryModal: React.FC = () => {
       <div className="dm-address-delivery-time">
         <p>DELIVERY TIME</p>
         <select>
-          {deliveryHours.map((hour, i) => (
+          {deliveryHoursFiltered.map((hour, i) => (
             <option key={i}>{hour}</option>
           ))}
         </select>
