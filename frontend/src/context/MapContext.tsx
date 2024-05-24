@@ -50,6 +50,8 @@ interface MapContextInterface {
   setClosestStore: React.Dispatch<React.SetStateAction<ClosestStore>>;
   showStore: boolean;
   setShowStore: React.Dispatch<React.SetStateAction<boolean>>;
+  deliveryStore: string;
+  setDeliveryStore: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const MapContext = createContext<MapContextInterface>({
@@ -69,6 +71,8 @@ export const MapContext = createContext<MapContextInterface>({
   setClosestStore: () => {},
   showStore: false,
   setShowStore: () => {},
+  deliveryStore: "",
+  setDeliveryStore: () => {},
 });
 
 export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -80,6 +84,7 @@ export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children
   const [fullAddress, setFullAddress] = useState("");
   const [closestStore, setClosestStore] = useState({ city: "", name: "" });
   const [showStore, setShowStore] = useState(false);
+  const [deliveryStore, setDeliveryStore] = useState("");
 
   return (
     <MapContext.Provider
@@ -100,6 +105,8 @@ export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children
         setClosestStore,
         showStore,
         setShowStore,
+        deliveryStore,
+        setDeliveryStore,
       }}
     >
       {children}

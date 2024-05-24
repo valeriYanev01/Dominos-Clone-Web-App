@@ -22,6 +22,7 @@ const Addresses: React.FC = () => {
   const [entrance, setEntrance] = useState("");
   const [id, setId] = useState("");
   const [addressSelected, setAddressSelected] = useState(false);
+  const [store, setStore] = useState("");
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -73,6 +74,8 @@ const Addresses: React.FC = () => {
 
       const data = response.data.address;
 
+      console.log(data);
+
       setId(data._id);
       setName(data.name);
       setFullAddress(data.fullAddress);
@@ -83,6 +86,7 @@ const Addresses: React.FC = () => {
       setBlock(data.block);
       setApartment(data.apartment);
       setEntrance(data.entrance);
+      setStore(data.store);
       setLat(data.coordinates[0]);
       setLong(data.coordinates[1]);
       setZoom(20);
@@ -101,6 +105,7 @@ const Addresses: React.FC = () => {
             id: id,
             name: name,
             fullAddress: fullAddress,
+            store: `${closestStore.city} - ${closestStore.name}`,
             phoneNumber: phoneNumber,
             doorBell: doorBell,
             floor: floor,
@@ -185,6 +190,9 @@ const Addresses: React.FC = () => {
                     <p
                       key={address.place_name}
                       onClick={() => {
+                        setLong(address.center[0]);
+                        setLat(address.center[1]);
+                        setZoom(20);
                         setSelectedSuggestedAddress(address.place_name);
                         setSuggestedAddresses([]);
                       }}
@@ -198,12 +206,13 @@ const Addresses: React.FC = () => {
 
             <div className="address-map">
               <Map />
-              {showStore &&
-              (closestStore.city === "Sofia" ||
-                closestStore.city === "Plovdiv" ||
-                closestStore.city === "Pernik" ||
-                closestStore.city === "Varna" ||
-                closestStore.city === "Burgas") ? (
+              {store ||
+              (showStore &&
+                (closestStore.city === "Sofia" ||
+                  closestStore.city === "Plovdiv" ||
+                  closestStore.city === "Pernik" ||
+                  closestStore.city === "Varna" ||
+                  closestStore.city === "Burgas")) ? (
                 <p className="your-store-text">
                   Your Store:{" "}
                   <span className="your-store-text2">

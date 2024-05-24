@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./AddAddress.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
@@ -35,11 +35,17 @@ const AddAddress: React.FC = () => {
     suggestedAddresses,
     setSuggestedAddresses,
     closestStore,
+    deliveryStore,
+    setDeliveryStore,
   } = useContext(MapContext);
 
   const { emailLogin, token } = useContext(LoginContext);
 
   const getSuggestion = useGetSuggestion();
+
+  useEffect(() => {
+    setDeliveryStore(`${closestStore.city} - ${closestStore.name}`);
+  }, [closestStore, setDeliveryStore]);
 
   const handleAddAddress = async () => {
     try {
@@ -49,6 +55,7 @@ const AddAddress: React.FC = () => {
           email: emailLogin,
           name,
           fullAddress: selectedSuggestedAddress,
+          store: deliveryStore,
           phoneNumber,
           doorBell,
           floor,
@@ -62,6 +69,7 @@ const AddAddress: React.FC = () => {
 
       setName("");
       setFullAddress("");
+      setDeliveryStore("");
       setSelectedSuggestedAddress("");
       setPhoneNumber("");
       setDoorBell("");
