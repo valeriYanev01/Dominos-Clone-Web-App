@@ -42,6 +42,8 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/step1" element={<Home />}/>
+        <Route path="/step2" element={<Home />}/>
         <Route path="menu/:store/*" element={<Menu />} />
         <Route path="dominos-more" element={<DominosMore />} />
         <Route path="signup" element={<Signup />} />

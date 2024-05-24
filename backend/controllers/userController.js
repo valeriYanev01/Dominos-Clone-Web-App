@@ -155,8 +155,19 @@ export const deleteAddress = async (req, res) => {
 };
 
 export const updateAddress = async (req, res) => {
-  const { id, email, name, fullAddress, phoneNumber, doorBell, floor, block, apartment, entrance, coordinates } =
-    req.body;
+  const {
+    id,
+    email,
+    name,
+    fullAddress,
+    phoneNumber,
+    doorBell,
+    floor,
+    block,
+    apartment,
+    entrance,
+    coordinates,
+  } = req.body;
 
   try {
     const newAddress = await UserModel.updateAddress(

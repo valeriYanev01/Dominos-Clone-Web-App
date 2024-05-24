@@ -37,6 +37,8 @@ const Addresses: React.FC = () => {
     setSelectedSuggestedAddress,
     fullAddress,
     setFullAddress,
+    closestStore,
+    showStore,
   } = useContext(MapContext);
 
   const getSuggestion = useGetSuggestion();
@@ -196,9 +198,21 @@ const Addresses: React.FC = () => {
 
             <div className="address-map">
               <Map />
-              <p className="your-store-text">
-                Your Store: <span className="your-store-text2">store</span>
-              </p>
+              {showStore &&
+              (closestStore.city === "Sofia" ||
+                closestStore.city === "Plovdiv" ||
+                closestStore.city === "Pernik" ||
+                closestStore.city === "Varna" ||
+                closestStore.city === "Burgas") ? (
+                <p className="your-store-text">
+                  Your Store:{" "}
+                  <span className="your-store-text2">
+                    {closestStore.city} - {closestStore.name}
+                  </span>
+                </p>
+              ) : (
+                <p>We don't deliver to your address!</p>
+              )}
             </div>
 
             <div className="address-settings-details-container">

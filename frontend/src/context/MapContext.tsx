@@ -28,6 +28,11 @@ interface SuggestedAddresses {
   type: string;
 }
 
+interface ClosestStore {
+  city: string;
+  name: string;
+}
+
 interface MapContextInterface {
   lat: number;
   setLat: React.Dispatch<React.SetStateAction<number>>;
@@ -41,6 +46,10 @@ interface MapContextInterface {
   setSelectedSuggestedAddress: React.Dispatch<React.SetStateAction<string>>;
   fullAddress: string;
   setFullAddress: React.Dispatch<React.SetStateAction<string>>;
+  closestStore: ClosestStore;
+  setClosestStore: React.Dispatch<React.SetStateAction<ClosestStore>>;
+  showStore: boolean;
+  setShowStore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const MapContext = createContext<MapContextInterface>({
@@ -56,6 +65,10 @@ export const MapContext = createContext<MapContextInterface>({
   setSelectedSuggestedAddress: () => {},
   fullAddress: "",
   setFullAddress: () => {},
+  closestStore: { city: "", name: "" },
+  setClosestStore: () => {},
+  showStore: false,
+  setShowStore: () => {},
 });
 
 export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -65,6 +78,8 @@ export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children
   const [suggestedAddresses, setSuggestedAddresses] = useState<SuggestedAddresses[]>([]);
   const [selectedSuggestedAddress, setSelectedSuggestedAddress] = useState("");
   const [fullAddress, setFullAddress] = useState("");
+  const [closestStore, setClosestStore] = useState({ city: "", name: "" });
+  const [showStore, setShowStore] = useState(false);
 
   return (
     <MapContext.Provider
@@ -81,6 +96,10 @@ export const MapContextProvider: React.FC<{ children: ReactNode }> = ({ children
         setSelectedSuggestedAddress,
         fullAddress,
         setFullAddress,
+        closestStore,
+        setClosestStore,
+        showStore,
+        setShowStore,
       }}
     >
       {children}

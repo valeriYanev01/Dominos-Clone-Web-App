@@ -34,6 +34,7 @@ const AddAddress: React.FC = () => {
     setFullAddress,
     suggestedAddresses,
     setSuggestedAddresses,
+    closestStore,
   } = useContext(MapContext);
 
   const { emailLogin, token } = useContext(LoginContext);
@@ -46,14 +47,14 @@ const AddAddress: React.FC = () => {
         "http://localhost:3000/api/users/add-address",
         {
           email: emailLogin,
-          name: name,
+          name,
           fullAddress: selectedSuggestedAddress,
-          phoneNumber: phoneNumber,
-          doorBell: doorBell,
-          floor: floor,
-          block: block,
-          apartment: apartment,
-          entrance: entrance,
+          phoneNumber,
+          doorBell,
+          floor,
+          block,
+          apartment,
+          entrance,
           coordinates: [lat, long],
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -78,9 +79,6 @@ const AddAddress: React.FC = () => {
       }
     }
   };
-
-  console.log(fullAddress);
-  console.log(selectedSuggestedAddress);
 
   return (
     <div className="add-address-page">
@@ -129,6 +127,12 @@ const AddAddress: React.FC = () => {
 
         {nextSteps && (
           <div>
+            <p className="your-store-text">
+              Your Store:{" "}
+              <span className="your-store-text2">
+                {closestStore.city} - {closestStore.name}
+              </span>
+            </p>
             <div className="ad-address-name">
               <label htmlFor="ad-address-name">Address Name</label>
               <input id="ad-address-name" onChange={(e) => setName(e.target.value)} value={name} />

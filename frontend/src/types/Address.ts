@@ -1,5 +1,6 @@
 export type Address = {
   apartament: string;
+  closestStore: string;
   block: string;
   coordinates: [number, number];
   doorBell: string;

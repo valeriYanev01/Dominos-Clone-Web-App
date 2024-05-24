@@ -32,7 +32,6 @@ export const AddressContextProvider: React.FC<{ children: ReactNode }> = ({ chil
             params: { email: emailLogin },
           });
           setAddresses(response.data.allAddresses.addresses);
-          console.log(response);
         } catch (err) {
           if (axios.isAxiosError(err)) {
             setError(err.response?.data.error || "An error occurred");
