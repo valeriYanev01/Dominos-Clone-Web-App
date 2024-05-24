@@ -13,6 +13,9 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  store: {
+    type: String,
+  },
   phoneNumber: {
     type: String,
     required: true,
@@ -300,6 +303,7 @@ userSchema.statics.addAddress = async function (
   email,
   name,
   fullAddress,
+  store,
   phoneNumber,
   doorBell = "",
   floor = "",
@@ -336,6 +340,7 @@ userSchema.statics.addAddress = async function (
           addresses: {
             name,
             fullAddress,
+            store,
             phoneNumber,
             doorBell,
             floor,
@@ -360,6 +365,7 @@ userSchema.statics.updateAddress = async function (
   email,
   name,
   fullAddress,
+  store,
   phoneNumber,
   doorBell = "",
   floor = "",
@@ -368,6 +374,7 @@ userSchema.statics.updateAddress = async function (
   entrance = "",
   coordinates
 ) {
+  console.log(store);
   if (!name) {
     throw new Error("Enter a name for this address");
   }
@@ -387,6 +394,7 @@ userSchema.statics.updateAddress = async function (
         $set: {
           "addresses.$.name": name,
           "addresses.$.fullAddress": fullAddress,
+          "addresses.$.store": store,
           "addresses.$.phoneNumber": phoneNumber,
           "addresses.$.doorBell": doorBell,
           "addresses.$.floor": floor,
