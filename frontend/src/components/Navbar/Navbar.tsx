@@ -7,6 +7,7 @@ import { MenuContext } from "../../context/MenuContext";
 import { ModalContext, ModalType } from "../../context/ModalContext";
 import { LoginContext } from "../../context/LoginContext";
 import { useAuth0 } from "@auth0/auth0-react";
+import { OrderContext } from "../../context/OrderContext";
 
 const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
@@ -21,6 +22,7 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  const { activeOrder, orderStore } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -197,7 +199,6 @@ const Navbar = ({ page }: Page) => {
             </Link>
           </li>
         </ul>
-
         <ul className="navigation-list-container-links">
           <li>
             <span style={{ color: navColors.link, transition: "all 0.4s" }}>BG | </span>
@@ -256,11 +257,13 @@ const Navbar = ({ page }: Page) => {
               DOMINO'S MORE
             </Link>
           </li>
-          <li>
-            <span onClick={handleOrderBtn} className="navigation-order">
-              ORDER NOW
-            </span>
-          </li>
+          {!JSON.parse(localStorage.getItem("active-order") as string) && (
+            <li>
+              <span onClick={handleOrderBtn} className="navigation-order">
+                ORDER NOW
+              </span>
+            </li>
+          )}
           {loggedIn ? (
             <li>
               <img
@@ -272,6 +275,7 @@ const Navbar = ({ page }: Page) => {
           ) : (
             ""
           )}
+
           {showProfileMenu ? (
             <ul className="navigation-profile-menu">
               <li onClick={() => setShowProfileMenu(false)}>
@@ -295,22 +299,61 @@ const Navbar = ({ page }: Page) => {
             ""
           )}
         </ul>
+        {activeOrder && page !== "home" && (
+          <ul className="navbar-active-order-container">
+            <li>
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).type}{" "}
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).time}
+            </li>
+            <li>
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressName}
+            </li>
+            <li>Menu</li>
+            <li>Complete your Order</li>
+          </ul>
+        )}
+        {loggedIn && page === "home" && !localStorage.getItem("active-order") ? (
+          <div className="loggedin-navigation">
+            <div onClick={() => handleOpenModal("delivery")}>
+              <img src="/images/delivery.png" className="loggedin-navigation-img" />
+              <p>DELIVERY</p>
+            </div>
+            <img src="/images/or_image.png" className="loggedin-navigation-img" />
+            <div onClick={() => handleOpenModal("carryOut")}>
+              <img src="/images/carryOut.png" className="loggedin-navigation-img" />
+              <p>CARRY OUT</p>
+            </div>
+          </div>
+        ) : loggedIn && page === "home" && localStorage.getItem("active-order") ? (
+          <div className="loggedin-navigation">
+            <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
+            <Link to={`/menu/${orderStore}/pizza`}>
+              <img src="/svg/orderBasket.svg" className="loggedin-navigation-basket-img" />
+            </Link>
+          </div>
+        ) : (
+          <ul className="navbar-active-order-container">
+            <li>
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).type}{" "}
+              {localStorage.getItem("order-time") && JSON.parse(localStorage.getItem("order-time") as string)}
+            </li>
+            <li>
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
+              {localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressName}
+            </li>
+            <li>Menu</li>
+            <li>Complete your Order</li>
+          </ul>
+        )}
       </nav>
-      {loggedIn && page === "home" ? (
-        <div className="loggedin-navigation">
-          <div onClick={() => handleOpenModal("delivery")}>
-            <img src="/images/delivery.png" className="loggedin-navigation-img" />
-            <p>DELIVERY</p>
-          </div>
-          <img src="/images/or_image.png" className="loggedin-navigation-img" />
-          <div onClick={() => handleOpenModal("carryOut")}>
-            <img src="/images/carryOut.png" className="loggedin-navigation-img" />
-            <p>CARRY OUT</p>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
 
       {loggedIn && page === "profile" ? (
         <ul className="profile-nav">

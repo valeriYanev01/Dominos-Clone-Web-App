@@ -5,6 +5,8 @@ import { LoginContext } from "../../../context/LoginContext";
 import AddNewAddress from "../../Buttons/AddNewAddress";
 import { Address } from "../../../types/Address";
 import { ModalContext } from "../../../context/ModalContext";
+import { OrderContext } from "../../../context/OrderContext";
+import { useNavigate } from "react-router-dom";
 
 const DeliveryModal: React.FC = () => {
   const [lastOrderFullAddress, setLastOrderFullAddress] = useState();
@@ -19,6 +21,18 @@ const DeliveryModal: React.FC = () => {
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
+  const {
+    setOrderType,
+    orderStore,
+    setOrderStore,
+    orderAddress,
+    setOrderAddress,
+    orderTime,
+    setOrderTime,
+    setActiveOrder,
+  } = useContext(OrderContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (emailLogin && token) {
@@ -39,6 +53,7 @@ const DeliveryModal: React.FC = () => {
             setLastOrderAddress(lastOrder);
             setLastOrderFullAddress(lastOrder.address.fullAddress);
             setLastOrderAddressName(lastOrder.address.name);
+            setOrderStore(lastOrder.address.store);
             setShowAddresses(true);
             setShowRecentAddress(true);
             setSelectedAddress(lastOrder);
@@ -91,6 +106,10 @@ const DeliveryModal: React.FC = () => {
       setIsOpenForDelivery(true);
     }
   }, []);
+
+  useEffect(() => {
+    setOrderAddress(selectedAddress?.address);
+  }, [selectedAddress, setOrderAddress]);
 
   const deliveryHoursOpenedStore = [
     isOpenForDelivery ? "NOW" : "11:30",
@@ -236,54 +255,84 @@ const DeliveryModal: React.FC = () => {
     "22:30",
   ];
 
-  const deliveryHoursOpen = deliveryHoursOpenedStore.map((hour) => {
-    if (hour !== "NOW") {
-      const h = parseInt(hour.split(":")[0]);
-      const m = parseInt(hour.split(":")[1]);
+  const deliveryHoursOpen = deliveryHoursOpenedStore
+    .map((hour) => {
+      if (hour !== "NOW") {
+        const h = parseInt(hour.split(":")[0]);
+        const m = parseInt(hour.split(":")[1]);
 
-      const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
+        const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
 
-      const now = new Date();
+        const now = new Date();
 
-      if (dateForDelivery.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
-        return undefined;
+        if (dateForDelivery.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
+          return undefined;
+        } else {
+          return String(
+            `${dateForDelivery.getHours()}:${
+              String(dateForDelivery.getMinutes()).length === 1 ? "00" : dateForDelivery.getMinutes()
+            }`
+          );
+        }
       } else {
-        return String(
-          `${dateForDelivery.getHours()}:${
-            String(dateForDelivery.getMinutes()).length === 1 ? "00" : dateForDelivery.getMinutes()
-          }`
-        );
+        return "NOW";
       }
-    } else {
-      return "NOW";
-    }
-  });
+    })
+    .filter((hour) => hour !== undefined);
 
-  const deliveryHoursClose = deliveryHoursClosedStore.map((hour) => {
-    if (hour !== "NOW") {
-      const h = parseInt(hour.split(":")[0]);
-      const m = parseInt(hour.split(":")[1]);
+  const deliveryHoursClose = deliveryHoursClosedStore
+    .map((hour) => {
+      if (hour !== "NOW") {
+        const h = parseInt(hour.split(":")[0]);
+        const m = parseInt(hour.split(":")[1]);
 
-      const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
+        const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
 
-      const now = new Date();
+        const now = new Date();
 
-      if (dateForDelivery.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
-        return undefined;
+        if (dateForDelivery.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
+          return undefined;
+        } else {
+          return String(
+            `${dateForDelivery.getHours()}:${
+              String(dateForDelivery.getMinutes()).length === 1 ? "00" : dateForDelivery.getMinutes()
+            }`
+          );
+        }
       } else {
-        return String(
-          `${dateForDelivery.getHours()}:${
-            String(dateForDelivery.getMinutes()).length === 1 ? "00" : dateForDelivery.getMinutes()
-          }`
-        );
+        return "NOW";
       }
-    } else {
-      return "NOW";
+    })
+    .filter((hour) => hour !== undefined);
+
+  useEffect(() => {
+    if (isOpenForDelivery && deliveryHoursOpen[0]) {
+      setOrderTime(deliveryHoursOpen[0]);
     }
-  });
+
+    if (!isOpenForDelivery && deliveryHoursClose[0]) {
+      setOrderTime(deliveryHoursClose[0]);
+    }
+  }, [isOpenForDelivery]);
 
   const handleSelectedAddress = (address: Address) => {
     setSelectedAddress(address);
+  };
+
+  const handleOrder = () => {
+    setOrderType("delivery");
+    setActiveOrder(true);
+    navigate(`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`);
+    localStorage.setItem("active-order", "true");
+    localStorage.setItem(
+      "order-details",
+      JSON.stringify({
+        type: "delivery",
+        addressLocation: orderAddress.fullAddress,
+        addressName: orderAddress.name,
+        store: orderStore,
+      })
+    );
   };
 
   return (
@@ -334,7 +383,7 @@ const DeliveryModal: React.FC = () => {
                     style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                   />
                   <p>
-                    Your Store: <span className="dm-address-store-name">Store</span>
+                    Your Store: <span className="dm-address-store-name">{orderStore}</span>
                   </p>
                 </div>
               </div>
@@ -407,14 +456,19 @@ const DeliveryModal: React.FC = () => {
 
       <div className="dm-address-delivery-time">
         <p>DELIVERY TIME</p>
-        <select>
+        <select onChange={(e) => setOrderTime(e.target.value)} value={orderTime}>
           {isOpenForDelivery
             ? deliveryHoursOpen.map((hour, i) => <option key={i}>{hour}</option>)
             : deliveryHoursClose.map((hour, i) => <option key={i}>{hour}</option>)}
         </select>
       </div>
 
-      <div className={`dm-address-order-btn ${!showAddresses ? "dm-address-order-btn-disabled" : ""}`}>ORDER NOW!</div>
+      <div
+        className={`dm-address-order-btn ${!showAddresses ? "dm-address-order-btn-disabled" : ""}`}
+        onClick={handleOrder}
+      >
+        ORDER NOW!
+      </div>
     </div>
   );
 };

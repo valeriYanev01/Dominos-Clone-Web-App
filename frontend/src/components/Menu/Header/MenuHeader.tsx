@@ -3,6 +3,7 @@ import "./MenuHeader.css";
 import { Link, useLocation } from "react-router-dom";
 import { MenuContext } from "../../../context/MenuContext";
 import { products } from "../../../data/products";
+import { OrderContext } from "../../../context/OrderContext";
 
 interface SelectedFilters {
   setSelectedFilters: React.Dispatch<React.SetStateAction<FilterOption[]>>;
@@ -17,6 +18,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
   const [checked, setChecked] = useState<string[]>([]);
 
   const { selectedItem, setSelectedItem } = useContext(MenuContext);
+  const { activeOrder } = useContext(OrderContext);
 
   const itemNameUrl = useLocation().pathname.split("/")[3];
 
@@ -90,7 +92,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   return (
     <div className="menu-header-container">
-      <div className="menu-header">
+      <div className="menu-header" style={activeOrder ? { paddingTop: "130px" } : { paddingTop: "110px" }}>
         <div className="menu-header-item">
           {menuHeaderItems.map((item) =>
             item !== "deals" ? (
