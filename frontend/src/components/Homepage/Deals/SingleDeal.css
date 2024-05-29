@@ -1,20 +1,20 @@
 .single-deal-container {
   position: relative;
-  width: 280px;
-  height: 560px;
+  width: 17.5rem;
+  height: 35rem;
   background: #fff;
 }
 
 .deal-header-img {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  width: 287px;
-  height: 184px;
+  width: 18rem;
+  height: 11.5rem;
 }
 
 .deal-svg {
-  width: 150px;
-  height: 36px;
+  width: 9.4rem;
+  height: 2.25rem;
   position: absolute;
   left: 0;
   right: 0;
@@ -22,12 +22,12 @@
 }
 
 .deal-heading {
-  font-size: 18px;
-  height: 55px;
+  font-size: 1.125rem;
+  height: 3.5rem;
   font-weight: bold;
   text-align: center;
   color: #0073aa;
-  margin-top: 30px;
+  margin-top: 2rem;
 }
 
 .single-deal-breakline {
@@ -37,9 +37,9 @@
 }
 
 .deal-desc {
-  margin-bottom: 55px;
-  height: 90px;
-  font-size: 16px;
+  margin-bottom: 3.45rem;
+  height: 5.625rem;
+  font-size: 1rem;
   font-weight: bold;
   letter-spacing: 0.5px;
   text-align: center;
@@ -59,12 +59,12 @@
   font-weight: 600;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .deal-method-container,
 .deal-method-container-space-around {
-  margin: 10px 0;
+  margin: 0.6225rem 0;
   border-top: 2px solid #d7d7d7;
   color: #0073aa;
 }
@@ -81,6 +81,7 @@
 
 .deal-method {
   display: flex;
+  gap: 0.3125rem;
   margin: 0 !important;
 }
 
@@ -89,6 +90,6 @@
 }
 
 .deal-delivery-svg {
-  width: 25px;
-  height: 40px;
+  width: 1.6rem;
+  height: 2.5rem;
 }

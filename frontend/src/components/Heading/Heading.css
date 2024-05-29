@@ -1,11 +1,10 @@
 .heading {
-  padding: 50px 0 30px 0;
+  padding: 3.125rem 0 1.875rem 0;
   display: flex;
   width: 80%;
-  font-size: 26px;
-  margin-top: 40px;
+  margin-top: 2.5rem;
   justify-content: center;
-  gap: 40px;
+  gap: 2.5rem;
   color: #000;
 }
 
@@ -13,4 +12,8 @@
 .heading p {
   margin: 0;
   align-self: center;
+}
+
+.heading p {
+  font-size: 1.5rem;
 }
