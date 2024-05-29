@@ -21,16 +21,8 @@ const DeliveryModal: React.FC = () => {
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
-  const {
-    setOrderType,
-    orderStore,
-    setOrderStore,
-    orderAddress,
-    setOrderAddress,
-    orderTime,
-    setOrderTime,
-    setActiveOrder,
-  } = useContext(OrderContext);
+  const { setOrderType, orderStore, setOrderStore, setOrderAddress, orderTime, setOrderTime, setActiveOrder } =
+    useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -47,6 +39,7 @@ const DeliveryModal: React.FC = () => {
 
           if (allOrders.length < 1) {
             setShowRecentAddress(false);
+            console.log(otherAddresses);
             setSelectedAddress(otherAddresses[0]);
           } else {
             const lastOrder = allOrders[allOrders.length - 1];
@@ -56,7 +49,7 @@ const DeliveryModal: React.FC = () => {
             setOrderStore(lastOrder.address.store);
             setShowAddresses(true);
             setShowRecentAddress(true);
-            setSelectedAddress(lastOrder);
+            setSelectedAddress(lastOrder.address);
           }
         } catch (err) {
           if (axios.isAxiosError(err)) {
@@ -66,6 +59,7 @@ const DeliveryModal: React.FC = () => {
       };
       getAllOrders();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailLogin, token, otherAddresses]);
 
   useEffect(() => {
@@ -108,85 +102,11 @@ const DeliveryModal: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setOrderAddress(selectedAddress?.address);
+    if (selectedAddress) setOrderAddress(selectedAddress);
   }, [selectedAddress, setOrderAddress]);
 
   const deliveryHoursOpenedStore = [
     isOpenForDelivery ? "NOW" : "11:30",
-    "11:30",
-    "11:40",
-    "11:50",
-    "12:00",
-    "12:10",
-    "12:20",
-    "12:30",
-    "12:40",
-    "12:50",
-    "13:00",
-    "13:10",
-    "13:20",
-    "13:30",
-    "13:40",
-    "13:50",
-    "14:00",
-    "14:10",
-    "14:20",
-    "14:30",
-    "14:40",
-    "14:50",
-    "15:00",
-    "15:10",
-    "15:20",
-    "15:30",
-    "15:40",
-    "15:50",
-    "16:00",
-    "16:10",
-    "16:20",
-    "16:30",
-    "16:40",
-    "16:50",
-    "17:00",
-    "17:10",
-    "17:20",
-    "17:30",
-    "17:40",
-    "17:50",
-    "18:00",
-    "18:10",
-    "18:20",
-    "18:30",
-    "18:40",
-    "18:50",
-    "19:00",
-    "19:10",
-    "19:20",
-    "19:30",
-    "19:40",
-    "19:50",
-    "20:00",
-    "20:10",
-    "20:20",
-    "20:30",
-    "20:40",
-    "20:50",
-    "21:00",
-    "21:10",
-    "21:20",
-    "21:30",
-    "21:40",
-    "21:50",
-    "22:00",
-    "22:10",
-    "22:20",
-    "22:30",
-  ];
-
-  const deliveryHoursClosedStore = [
-    "11:00",
-    "11:10",
-    "11:20",
-    "11:30",
     "11:40",
     "11:50",
     "12:00",
@@ -280,56 +200,31 @@ const DeliveryModal: React.FC = () => {
     })
     .filter((hour) => hour !== undefined);
 
-  const deliveryHoursClose = deliveryHoursClosedStore
-    .map((hour) => {
-      if (hour !== "NOW") {
-        const h = parseInt(hour.split(":")[0]);
-        const m = parseInt(hour.split(":")[1]);
-
-        const dateForDelivery = new Date(new Date(new Date(new Date().setHours(h)).setMinutes(m)).setSeconds(0));
-
-        const now = new Date();
-
-        if (dateForDelivery.getTime() < new Date(now.getTime()).setMinutes(now.getMinutes() + 20)) {
-          return undefined;
-        } else {
-          return String(
-            `${dateForDelivery.getHours()}:${
-              String(dateForDelivery.getMinutes()).length === 1 ? "00" : dateForDelivery.getMinutes()
-            }`
-          );
-        }
-      } else {
-        return "NOW";
-      }
-    })
-    .filter((hour) => hour !== undefined);
-
   useEffect(() => {
     if (isOpenForDelivery && deliveryHoursOpen[0]) {
       setOrderTime(deliveryHoursOpen[0]);
     }
 
-    if (!isOpenForDelivery && deliveryHoursClose[0]) {
-      setOrderTime(deliveryHoursClose[0]);
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenForDelivery]);
 
   const handleSelectedAddress = (address: Address) => {
-    setSelectedAddress(address);
+    setSelectedAddress(address.address ? address.address : address);
   };
 
   const handleOrder = () => {
     setOrderType("delivery");
     setActiveOrder(true);
     navigate(`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`);
+    setOpenModal(false);
+    setModalType("");
     localStorage.setItem("active-order", "true");
     localStorage.setItem(
       "order-details",
       JSON.stringify({
         type: "delivery",
-        addressLocation: orderAddress.fullAddress,
-        addressName: orderAddress.name,
+        addressLocation: selectedAddress?.fullAddress,
+        addressName: selectedAddress?.name,
         store: orderStore,
       })
     );
@@ -352,17 +247,19 @@ const DeliveryModal: React.FC = () => {
               <p className="dm-addresses-heading">Recently Selected</p>
               <div
                 onClick={() => handleSelectedAddress(lastOrderAddress as Address)}
-                className={`address-container ${selectedAddress === lastOrderAddress ? "selected-address" : ""}`}
+                className={`address-container ${
+                  selectedAddress === lastOrderAddress?.address ? "selected-address" : ""
+                }`}
               >
                 <img
                   src="/svg/edit.svg"
                   className="dm-address-edit-img"
-                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                 />
                 <img
                   src="/svg/greenCheck.svg"
                   className="dm-address-check-img"
-                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                 />
 
                 <p className="dm-address-name">{lastOrderAddressName}</p>
@@ -371,7 +268,7 @@ const DeliveryModal: React.FC = () => {
                   <img
                     src="/svg/addressLocation.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                   />
                   <p>{lastOrderFullAddress}</p>
                 </div>
@@ -380,7 +277,7 @@ const DeliveryModal: React.FC = () => {
                   <img
                     src="/svg/addressStore.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                   />
                   <p>
                     Your Store: <span className="dm-address-store-name">{orderStore}</span>
@@ -457,9 +354,9 @@ const DeliveryModal: React.FC = () => {
       <div className="dm-address-delivery-time">
         <p>DELIVERY TIME</p>
         <select onChange={(e) => setOrderTime(e.target.value)} value={orderTime}>
-          {isOpenForDelivery
-            ? deliveryHoursOpen.map((hour, i) => <option key={i}>{hour}</option>)
-            : deliveryHoursClose.map((hour, i) => <option key={i}>{hour}</option>)}
+          {deliveryHoursOpen.map((hour, i) => (
+            <option key={i}>{hour}</option>
+          ))}
         </select>
       </div>
 

@@ -22,7 +22,7 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  const { activeOrder, orderStore } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -299,24 +299,7 @@ const Navbar = ({ page }: Page) => {
             ""
           )}
         </ul>
-        {activeOrder && page !== "home" && (
-          <ul className="navbar-active-order-container">
-            <li>
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).type}{" "}
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).time}
-            </li>
-            <li>
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).addressName}
-            </li>
-            <li>Menu</li>
-            <li>Complete your Order</li>
-          </ul>
-        )}
+
         {loggedIn && page === "home" && !localStorage.getItem("active-order") ? (
           <div className="loggedin-navigation">
             <div onClick={() => handleOpenModal("delivery")}>
@@ -332,31 +315,91 @@ const Navbar = ({ page }: Page) => {
         ) : loggedIn && page === "home" && localStorage.getItem("active-order") ? (
           <div className="loggedin-navigation">
             <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
-            <Link to={`/menu/${orderStore}/pizza`}>
+            <Link to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}>
               <img src="/svg/orderBasket.svg" className="loggedin-navigation-basket-img" />
             </Link>
           </div>
         ) : (
           <ul className="navbar-active-order-container">
-            <li>
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).type}{" "}
-              {localStorage.getItem("order-time") && JSON.parse(localStorage.getItem("order-time") as string)}
+            <li
+              onClick={() => {
+                setOpenModal(true);
+                setModalType("method");
+              }}
+            >
+              {localStorage.getItem("order-details") && (
+                <div className="navbar-active-order-step">
+                  <img src="/svg/order/step1.svg" className="navbar-active-order-step-img" />
+                  <span className="navbar-active-order-step-text">
+                    {JSON.parse(localStorage.getItem("order-details") as string).type[0].toUpperCase() +
+                      JSON.parse(localStorage.getItem("order-details") as string)
+                        .type.split("")
+                        .splice(1, JSON.parse(localStorage.getItem("order-details") as string).type.length - 1)
+                        .join("")}
+                  </span>
+                </div>
+              )}
+              {
+                <div className="navbar-active-order-step">
+                  <img src="/svg/order/time.svg" className="navbar-active-order-step-img" />
+                  <span className="navbar-active-order-step-text">
+                    {orderTime ? orderTime : JSON.parse(localStorage.getItem("order-time") as string)}
+                  </span>
+                </div>
+              }
+              <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
+            </li>
+            <li
+              style={{ flex: 2 }}
+              onClick={() => {
+                setOpenModal(true);
+                setModalType(JSON.parse(localStorage.getItem("order-details") as string).type);
+              }}
+            >
+              <div className="navbar-active-order-step">
+                <img src="/svg/order/step2.svg" className="navbar-active-order-step-img" />
+                <span className="navbar-active-order-step-text">
+                  {localStorage.getItem("order-details") &&
+                    JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
+                  {localStorage.getItem("order-details") &&
+                    JSON.parse(localStorage.getItem("order-details") as string).addressName}
+                </span>
+              </div>
+              <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
             </li>
             <li>
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
-              {localStorage.getItem("order-details") &&
-                JSON.parse(localStorage.getItem("order-details") as string).addressName}
+              <div className="navbar-active-order-step">
+                <img src="/svg/order/step3.svg" className="navbar-active-order-step-img" />
+                <span className="navbar-active-order-step-text">Menu</span>
+              </div>
+              <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
             </li>
-            <li>Menu</li>
-            <li>Complete your Order</li>
+            <li>
+              {navigateToCheckoutPage ? (
+                <Link to="/checkout" className="navbar-active-order-link">
+                  <div className="navbar-active-order-step">
+                    <img src="/svg/order/step4.svg" className="navbar-active-order-step-img" />
+                    <span className="navbar-active-order-step-text">Complete your Order</span>
+                  </div>
+                </Link>
+              ) : (
+                <div className="navbar-active-order-step inactive">
+                  <img src="/svg/order/step4.svg" className="navbar-active-order-step-img" />
+                  <span className="navbar-active-order-step-text">Complete your Order</span>
+                </div>
+              )}
+            </li>
           </ul>
         )}
       </nav>
 
       {loggedIn && page === "profile" ? (
-        <ul className="profile-nav">
+        <ul
+          className="profile-nav"
+          style={
+            JSON.parse(localStorage.getItem("active-order") as string) ? { paddingTop: "10rem" } : { paddingTop: "0" }
+          }
+        >
           <li
             onClick={() => {
               setShowProfileMenu(false);

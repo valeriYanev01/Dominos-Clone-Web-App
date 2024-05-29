@@ -21,6 +21,8 @@ interface OrderContextInterface {
   setOrderStore: React.Dispatch<React.SetStateAction<string>>;
   orderDetails: OrderDetails;
   setOrderDetails: React.Dispatch<React.SetStateAction<OrderDetails>>;
+  navigateToCheckoutPage: boolean;
+  setNavigateToCheckoutPage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -52,6 +54,8 @@ export const OrderContext = createContext<OrderContextInterface>({
     addressName: "",
   },
   setOrderDetails: () => {},
+  navigateToCheckoutPage: false,
+  setNavigateToCheckoutPage: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -77,6 +81,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     addressLocation: "",
     addressName: "",
   });
+  const [navigateToCheckoutPage, setNavigateToCheckoutPage] = useState(false);
 
   useEffect(() => {
     if (orderTime) {
@@ -116,6 +121,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setOrderStore,
         orderDetails,
         setOrderDetails,
+        navigateToCheckoutPage,
+        setNavigateToCheckoutPage,
       }}
     >
       {children}
