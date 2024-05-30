@@ -5,8 +5,9 @@ import { ModalContext } from "../../../context/ModalContext";
 import SinglePizzaSize from "./SinglePizzaSize";
 import { products } from "../../../data/products";
 import { allToppings } from "../../../data/toppings";
-import Quantity from "./Quantity";
 import { LoginContext } from "../../../context/LoginContext";
+import PizzaQuantity from "./PizzaQuantity";
+import OtherProductsQuantity from "./OtherProductsQuantity";
 
 interface Product {
   type: string;
@@ -209,10 +210,18 @@ const ProductModal: React.FC = () => {
       }
     }
     if (size === "Large") {
-      if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
-        setPrice((Number(selectedProduct.price[1].large) + 2.5) * quantity);
+      if (selectedProduct?.price[1]?.large) {
+        if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+          setPrice((Number(selectedProduct.price[1].large) + 2.5) * quantity);
+        } else {
+          setPrice(Number(selectedProduct.price[1].large) * quantity);
+        }
       } else {
-        setPrice(Number(selectedProduct.price[1].large) * quantity);
+        if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+          setPrice((Number(selectedProduct.price[0].large) + 2.5) * quantity);
+        } else {
+          setPrice(Number(selectedProduct.price[0].large) * quantity);
+        }
       }
     }
     if (size === "Jumbo") {
@@ -223,88 +232,81 @@ const ProductModal: React.FC = () => {
   return (
     <div className="product-modal-container">
       <div className="pm-heading-container">
-        <div className="pm-heading-image">
-          <img src={img} />
+        <div
+          className={`pm-heading-image ${
+            selectedProduct.type === "pizza" ? "pm-heading-image-pizza" : "pm-heading-image-other"
+          }`}
+        >
+          <img
+            src={img}
+            className={`pm-heading-image-img ${
+              selectedProduct.type === "pizza" ? "pm-heading-image-img-pizza" : "pm-heading-image-img-other"
+            }`}
+          />
         </div>
 
-        <div className="pm-info-container">
+        <div
+          className={`pm-info-container ${
+            selectedProduct.type === "pizza" ? "pm-info-container-pizza" : "pm-info-container-other"
+          }`}
+        >
           <div className="pm-name-container">
             <img src="/svg/decorLeftRed.svg" className="deal-decor" />
             <p>{name}</p>
             <img src="/svg/decorRightRed.svg" className="deal-decor" />
           </div>
 
-          <div className="pm-options-container">
-            {/* for premium pizzas */}
-            {selectedProduct.name === "Pulled Beef" ||
-            selectedProduct.name === "Pizza Milano" ||
-            selectedProduct.name === "Pizza Parma" ? (
-              <div
-                onLoad={() => {
-                  setWeigh(premiumPizzaWeigh);
-                  setSize("Large");
-                }}
-                className={`pm-options ${size === "Large" ? "active-option" : ""}`}
-                onClick={() => handlePizzaSize("Large")}
-              >
-                <img src="/svg/menu/pizzaOptions/large.svg" />
-                <p>Large</p>
-              </div>
-            ) : (
-              <>
-                <div
-                  className={`pm-options ${size === "Medium" ? "active-option" : ""}`}
-                  onClick={() => handlePizzaSize("Medium")}
-                >
-                  <img src="/svg/menu/pizzaOptions/medium.svg" />
-                  <p>Medium</p>
-                </div>
-
-                <div
-                  className={`pm-options ${size === "Large" ? "active-option" : ""}`}
-                  onClick={() => handlePizzaSize("Large")}
-                >
-                  <img src="/svg/menu/pizzaOptions/large.svg" />
-                  <p>Large</p>
-                </div>
-
-                <div
-                  className={`pm-options ${size === "Jumbo" ? "active-option" : ""}`}
-                  onClick={() => handlePizzaSize("Jumbo")}
-                >
-                  <img src="/svg/menu/pizzaOptions/jumbo.svg" />
-                  <p>Jumbo</p>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="pm-pizza-crust-container">
-            {size === "Medium"
-              ? productOptions.medium.map((crust, index) => (
-                  <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
-                    <SinglePizzaSize
-                      crust={crust}
-                      isSelected={selectedCrust === index}
-                      handleSelectedCrust={() => handleSelectedCrust(index)}
-                    />
+          {/* ----------------PIZZA-------------------- */}
+          {selectedProduct.type === "pizza" && (
+            <>
+              <div className="pm-options-container">
+                {/* for premium pizzas */}
+                {selectedProduct.name === "Pulled Beef" ||
+                selectedProduct.name === "Pizza Milano" ||
+                selectedProduct.name === "Pizza Parma" ? (
+                  <div
+                    onLoad={() => {
+                      setWeigh(premiumPizzaWeigh);
+                      setSize("Large");
+                    }}
+                    className={`pm-options ${size === "Large" ? "active-option" : ""}`}
+                    onClick={() => handlePizzaSize("Large")}
+                  >
+                    <img src="/svg/menu/pizzaOptions/large.svg" />
+                    <p>Large</p>
                   </div>
-                ))
-              : size === "Large"
-              ? !selectedProduct.price[0].large
-                ? productOptions.large.map((crust, index) => (
-                    <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
-                      <SinglePizzaSize
-                        crust={crust}
-                        isSelected={selectedCrust === index}
-                        handleSelectedCrust={() => handleSelectedCrust(index)}
-                      />
+                ) : (
+                  <>
+                    <div
+                      className={`pm-options ${size === "Medium" ? "active-option" : ""}`}
+                      onClick={() => handlePizzaSize("Medium")}
+                    >
+                      <img src="/svg/menu/pizzaOptions/medium.svg" />
+                      <p>Medium</p>
                     </div>
-                  ))
-                : // for promo pizzas where they don't have size other than large and base crust
-                  productOptions.large
-                    .filter((crust) => crust.weigh === 570)
-                    .map((crust, index) => (
+
+                    <div
+                      className={`pm-options ${size === "Large" ? "active-option" : ""}`}
+                      onClick={() => handlePizzaSize("Large")}
+                    >
+                      <img src="/svg/menu/pizzaOptions/large.svg" />
+                      <p>Large</p>
+                    </div>
+
+                    <div
+                      className={`pm-options ${size === "Jumbo" ? "active-option" : ""}`}
+                      onClick={() => handlePizzaSize("Jumbo")}
+                    >
+                      <img src="/svg/menu/pizzaOptions/jumbo.svg" />
+                      <p>Jumbo</p>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="pm-pizza-crust-container">
+                {size === "Medium"
+                  ? productOptions.medium.map((crust, index) => (
                       <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
                         <SinglePizzaSize
                           crust={crust}
@@ -313,18 +315,44 @@ const ProductModal: React.FC = () => {
                         />
                       </div>
                     ))
-              : size === "Jumbo"
-              ? productOptions.jumbo.map((crust, index) => (
-                  <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
-                    <SinglePizzaSize
-                      crust={crust}
-                      isSelected={selectedCrust === index}
-                      handleSelectedCrust={() => handleSelectedCrust(index)}
-                    />
-                  </div>
-                ))
-              : ""}
-          </div>
+                  : size === "Large"
+                  ? !selectedProduct.price[0].large
+                    ? productOptions.large.map((crust, index) => (
+                        <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
+                          <SinglePizzaSize
+                            crust={crust}
+                            isSelected={selectedCrust === index}
+                            handleSelectedCrust={() => handleSelectedCrust(index)}
+                          />
+                        </div>
+                      ))
+                    : // for promo pizzas where they don't have size other than large and base crust
+                      productOptions.large
+                        .filter((crust) => crust.weigh === 570)
+                        .map((crust, index) => (
+                          <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
+                            <SinglePizzaSize
+                              crust={crust}
+                              isSelected={selectedCrust === index}
+                              handleSelectedCrust={() => handleSelectedCrust(index)}
+                            />
+                          </div>
+                        ))
+                  : size === "Jumbo"
+                  ? productOptions.jumbo.map((crust, index) => (
+                      <div key={uuid()} onClick={() => setWeigh(crust.weigh)}>
+                        <SinglePizzaSize
+                          crust={crust}
+                          isSelected={selectedCrust === index}
+                          handleSelectedCrust={() => handleSelectedCrust(index)}
+                        />
+                      </div>
+                    ))
+                  : ""}
+              </div>
+            </>
+          )}
+          {/* ----------------PIZZA END-------------------- */}
 
           <div className="pm-desc-container">
             <div className="pm-desc">
@@ -355,20 +383,36 @@ const ProductModal: React.FC = () => {
               <p>{modifiedToppings.length > 0 ? modifiedToppings.join(", ") : desc.split("")}</p>
             </div>
 
-            <div className="pm-order-container">
-              <Quantity
-                quantity={quantity}
-                selectedProduct={selectedProduct}
-                setQuantity={setQuantity}
-                size={size}
-                selectedCrust={selectedCrust}
-                weigh={weigh}
-                price={price}
-                setPrice={setPrice}
-                toppings={toppings}
-                modifiedToppings={modifiedToppings}
-              />
-            </div>
+            {selectedProduct.type === "pizza" ? (
+              <div className="pm-order-container">
+                <PizzaQuantity
+                  quantity={quantity}
+                  selectedProduct={selectedProduct}
+                  setQuantity={setQuantity}
+                  size={size}
+                  selectedCrust={selectedCrust}
+                  weigh={weigh}
+                  price={price}
+                  setPrice={setPrice}
+                  toppings={toppings}
+                  modifiedToppings={modifiedToppings}
+                />
+              </div>
+            ) : (
+              // For other products that need the modal but don't have crust or size
+              <div className="pm-order-container">
+                <OtherProductsQuantity
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  price={price}
+                  modifiedToppings={modifiedToppings}
+                  selectedProduct={selectedProduct}
+                  setPrice={setPrice}
+                  toppings={toppings}
+                  weigh={weigh}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -8,13 +8,35 @@
 
 .pm-heading-image {
   text-align: center;
-  transform: translateY(-50%);
+}
+
+.pm-heading-image-pizza {
+  transform: translateY(-40%);
+}
+
+.pm-heading-image-other {
+  transform: none;
+}
+
+.pm-heading-image-img-pizza {
+}
+
+.pm-heading-image-img-other {
+  width: 30em;
+  height: 20em;
 }
 
 .pm-info-container {
   width: 100%;
   position: relative;
+}
+
+.pm-info-container-pizza {
   margin-top: -20%;
+}
+
+.pm-info-container-other {
+  margin-top: 0;
 }
 
 .pm-name-container {
