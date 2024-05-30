@@ -20,7 +20,7 @@ const DeliveryModal: React.FC = () => {
   const [showRecentAddress, setShowRecentAddress] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
-  const { setOpenModal, setModalType } = useContext(ModalContext);
+  const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
   const { setOrderType, orderStore, setOrderStore, setOrderAddress, orderTime, setOrderTime, setActiveOrder } =
     useContext(OrderContext);
 
@@ -217,6 +217,7 @@ const DeliveryModal: React.FC = () => {
     setActiveOrder(true);
     navigate(`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`);
     setOpenModal(false);
+    setProduct([]); // if there is an active product the modal will be open, so it needs to be nullified before entering the menu page
     setModalType("");
     localStorage.setItem("active-order", "true");
     localStorage.setItem(
