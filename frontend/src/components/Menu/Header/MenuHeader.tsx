@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MenuContext } from "../../../context/MenuContext";
 import { products } from "../../../data/products";
 import { OrderContext } from "../../../context/OrderContext";
+import { ModalContext } from "../../../context/ModalContext";
 
 interface SelectedFilters {
   setSelectedFilters: React.Dispatch<React.SetStateAction<FilterOption[]>>;
@@ -19,6 +20,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   const { selectedItem, setSelectedItem } = useContext(MenuContext);
   const { activeOrder } = useContext(OrderContext);
+  const { setModalType, setOpenModal, setProduct } = useContext(ModalContext);
 
   const itemNameUrl = useLocation().pathname.split("/")[3];
 
@@ -92,14 +94,19 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   return (
     <div className="menu-header-container">
-      <div className="menu-header" style={activeOrder ? { paddingTop: "130px" } : { paddingTop: "110px" }}>
+      <div className="menu-header" style={activeOrder ? { paddingTop: "150px" } : { paddingTop: "110px" }}>
         <div className="menu-header-item">
           {menuHeaderItems.map((item) =>
             item !== "deals" ? (
               <Link
                 to={`/menu/${storeLocation}/${item}`}
                 className="single-menu-header-item"
-                onClick={() => handleSelect(item)}
+                onClick={() => {
+                  handleSelect(item);
+                  setOpenModal(false);
+                  setModalType("");
+                  setProduct([]);
+                }}
                 onMouseEnter={() => setHoveredItem(item)}
                 onMouseLeave={() => setHoveredItem("")}
                 key={item}

@@ -31,7 +31,6 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
       key={product.name}
       onClick={() => {
         setModalType("product");
-
         setProduct([product.name, product.img, product.desc, product.bigImg || "", product.type]);
       }}
     >
