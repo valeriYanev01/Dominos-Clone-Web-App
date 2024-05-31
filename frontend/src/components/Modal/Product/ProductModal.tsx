@@ -86,8 +86,6 @@ const ProductModal: React.FC = () => {
     price: price.toFixed(2),
   };
 
-  console.log(finalPizzaProduct);
-
   const handTossed = {
     title: `Hand Tossed | ∅ ${size === "Medium" ? "25" : size === "Large" ? "30" : size === "Jumbo" ? "38" : ""}cm`,
     desc: "Our Traditional dough",
@@ -396,6 +394,7 @@ const ProductModal: React.FC = () => {
                   setPrice={setPrice}
                   toppings={toppings}
                   modifiedToppings={modifiedToppings}
+                  finalPizzaProduct={finalPizzaProduct}
                 />
               </div>
             ) : (

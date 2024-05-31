@@ -8,6 +8,15 @@ interface OrderDetails {
   addressName: string;
 }
 
+interface BasketItem {
+  name: string;
+  size: string;
+  crust: string;
+  toppings: string[];
+  quantity: number;
+  price: string;
+}
+
 interface OrderContextInterface {
   orderTime: string;
   setOrderTime: React.Dispatch<React.SetStateAction<string>>;
@@ -23,6 +32,8 @@ interface OrderContextInterface {
   setOrderDetails: React.Dispatch<React.SetStateAction<OrderDetails>>;
   navigateToCheckoutPage: boolean;
   setNavigateToCheckoutPage: React.Dispatch<React.SetStateAction<boolean>>;
+  itemsInBasket: BasketItem[];
+  setItemsInBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -56,6 +67,8 @@ export const OrderContext = createContext<OrderContextInterface>({
   setOrderDetails: () => {},
   navigateToCheckoutPage: false,
   setNavigateToCheckoutPage: () => {},
+  itemsInBasket: [],
+  setItemsInBasket: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -82,6 +95,11 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     addressName: "",
   });
   const [navigateToCheckoutPage, setNavigateToCheckoutPage] = useState(false);
+  const [itemsInBasket, setItemsInBasket] = useState<BasketItem[]>(
+    JSON.parse(localStorage.getItem("basket-items") as string)
+      ? JSON.parse(localStorage.getItem("basket-items") as string)
+      : []
+  );
 
   useEffect(() => {
     if (orderTime) {
@@ -106,6 +124,10 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("basket-items", JSON.stringify(itemsInBasket));
+  }, [itemsInBasket]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -123,6 +145,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setOrderDetails,
         navigateToCheckoutPage,
         setNavigateToCheckoutPage,
+        itemsInBasket,
+        setItemsInBasket,
       }}
     >
       {children}

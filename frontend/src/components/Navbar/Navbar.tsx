@@ -8,6 +8,7 @@ import { ModalContext, ModalType } from "../../context/ModalContext";
 import { LoginContext } from "../../context/LoginContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { OrderContext } from "../../context/OrderContext";
+import Basket from "./Basket";
 
 const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
@@ -18,11 +19,12 @@ const Navbar = ({ page }: Page) => {
   });
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [activeProfileOption, setActiveProfileOption] = useState(false);
+  const [showBasketOnHover, setShowBasterOnHover] = useState(false);
 
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  const { orderStore, orderTime, navigateToCheckoutPage } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -264,6 +266,26 @@ const Navbar = ({ page }: Page) => {
               </span>
             </li>
           )}
+          {JSON.parse(localStorage.getItem("active-order") as string) && window.location.pathname.includes("menu") && (
+            <>
+              <li
+                className="navigation-basket"
+                onMouseEnter={() => setShowBasterOnHover(true)}
+                onMouseLeave={() => setShowBasterOnHover(false)}
+              >
+                <Link to="/checkout">
+                  <img src="/svg/orderBasket.svg" className="navigation-basket-img" />
+                  <p className="navigation-basket-items-number">{itemsInBasket.length}</p>
+                </Link>
+              </li>
+              {showBasketOnHover && (
+                <div onMouseLeave={() => setShowBasterOnHover(false)} onMouseEnter={() => setShowBasterOnHover(true)}>
+                  <Basket />
+                </div>
+              )}
+            </>
+          )}
+
           {loggedIn ? (
             <li>
               <img
@@ -316,7 +338,7 @@ const Navbar = ({ page }: Page) => {
           <div className="loggedin-navigation">
             <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
             <Link to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}>
-              <img src="/svg/orderBasket.svg" className="loggedin-navigation-basket-img" />
+              <img src="/svg/orderBasketWhite.svg" className="loggedin-navigation-basket-img" />
             </Link>
           </div>
         ) : (
