@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { ModalContext } from "../../../context/ModalContext";
 import { LoginContext } from "../../../context/LoginContext";
+import { OrderContext } from "../../../context/OrderContext";
 
 interface Product {
   type: string;
@@ -16,6 +17,16 @@ interface Product {
   }[];
 }
 
+interface BasketItem {
+  name: string;
+  size?: string;
+  crust?: string;
+  toppings: string[];
+  quantity: number;
+  price: string;
+  type: string;
+}
+
 interface Props {
   quantity: number;
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
@@ -25,6 +36,7 @@ interface Props {
   setPrice: React.Dispatch<React.SetStateAction<number>>;
   toppings: string[];
   modifiedToppings: string[];
+  finalPizzaProduct: BasketItem;
 }
 
 const OtherProductsQuantity: React.FC<Props> = ({
@@ -36,8 +48,10 @@ const OtherProductsQuantity: React.FC<Props> = ({
   setPrice,
   toppings,
   modifiedToppings,
+  finalPizzaProduct,
 }) => {
-  const { setModalType } = useContext(ModalContext);
+  const { setModalType, setOpenModal } = useContext(ModalContext);
+  const { setItemsInBasket } = useContext(OrderContext);
   const { loggedIn } = useContext(LoginContext);
 
   useEffect(() => {
@@ -59,6 +73,13 @@ const OtherProductsQuantity: React.FC<Props> = ({
   const handleAddToBasket = () => {
     if (loggedIn === false) {
       setModalType("login");
+    } else {
+      finalPizzaProduct.price = String(Number(finalPizzaProduct.price) / finalPizzaProduct.quantity);
+      setItemsInBasket((prevState) => {
+        return [...prevState, finalPizzaProduct];
+      });
+      setModalType("");
+      setOpenModal(false);
     }
   };
 

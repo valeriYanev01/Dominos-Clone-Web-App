@@ -25,6 +25,7 @@ interface BasketItem {
   toppings: string[];
   quantity: number;
   price: string;
+  type: string;
 }
 
 interface Props {
@@ -96,6 +97,7 @@ const PizzaQuantity: React.FC<Props> = ({
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
+    console.log(price);
   };
 
   const handleDecrease = () => {
@@ -108,6 +110,7 @@ const PizzaQuantity: React.FC<Props> = ({
     if (loggedIn === false) {
       setModalType("login");
     } else {
+      finalPizzaProduct.price = String(Number(finalPizzaProduct.price) / finalPizzaProduct.quantity);
       setItemsInBasket((prevState) => {
         return [...prevState, finalPizzaProduct];
       });
