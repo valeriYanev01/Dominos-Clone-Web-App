@@ -122,6 +122,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       setEmailLogin(email);
     } else {
       setLoggedIn(false);
+      localStorage.clear();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

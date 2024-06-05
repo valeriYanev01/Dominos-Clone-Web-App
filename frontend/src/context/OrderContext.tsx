@@ -10,11 +10,12 @@ interface OrderDetails {
 
 interface BasketItem {
   name: string;
-  size: string;
-  crust: string;
-  toppings: string[];
+  size?: string;
+  crust?: string;
+  toppings?: string[];
   quantity: number;
   price: string;
+  type: string;
 }
 
 interface OrderContextInterface {
@@ -34,6 +35,12 @@ interface OrderContextInterface {
   setNavigateToCheckoutPage: React.Dispatch<React.SetStateAction<boolean>>;
   itemsInBasket: BasketItem[];
   setItemsInBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
+  finalPrice: number;
+  setFinalPrice: React.Dispatch<React.SetStateAction<number>>;
+  thirdPizzaPromotions: number;
+  setThirdPizzaPromotions: React.Dispatch<React.SetStateAction<number>>;
+  spreadItemsInBasket: BasketItem[];
+  setSpreadItemsInBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -69,6 +76,12 @@ export const OrderContext = createContext<OrderContextInterface>({
   setNavigateToCheckoutPage: () => {},
   itemsInBasket: [],
   setItemsInBasket: () => {},
+  finalPrice: 0,
+  setFinalPrice: () => {},
+  thirdPizzaPromotions: 0,
+  setThirdPizzaPromotions: () => {},
+  spreadItemsInBasket: [],
+  setSpreadItemsInBasket: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -100,6 +113,9 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       ? JSON.parse(localStorage.getItem("basket-items") as string)
       : []
   );
+  const [finalPrice, setFinalPrice] = useState(0);
+  const [thirdPizzaPromotions, setThirdPizzaPromotions] = useState(0);
+  const [spreadItemsInBasket, setSpreadItemsInBasket] = useState<BasketItem[]>([]);
 
   useEffect(() => {
     if (orderTime) {
@@ -128,6 +144,29 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     localStorage.setItem("basket-items", JSON.stringify(itemsInBasket));
   }, [itemsInBasket]);
 
+  useEffect(() => {
+    if (itemsInBasket.length > 0) {
+      setNavigateToCheckoutPage(true);
+    }
+  }, [itemsInBasket]);
+
+  useEffect(() => {
+    itemsInBasket.sort((a, b) => a.type.localeCompare(b.type));
+    itemsInBasket.sort((a, b) => a.price.localeCompare(b.price));
+
+    for (let i = 0; i <= itemsInBasket.length - 2; i++) {
+      const counter = i + 1;
+
+      if (
+        JSON.stringify(itemsInBasket[i].toppings) === JSON.stringify(itemsInBasket[counter].toppings) &&
+        itemsInBasket[i].name === itemsInBasket[counter].name
+      ) {
+        itemsInBasket[counter].quantity += itemsInBasket[i].quantity;
+        itemsInBasket.splice(i, 1);
+      }
+    }
+  }, [itemsInBasket, thirdPizzaPromotions]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -147,6 +186,12 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setNavigateToCheckoutPage,
         itemsInBasket,
         setItemsInBasket,
+        finalPrice,
+        setFinalPrice,
+        thirdPizzaPromotions,
+        setThirdPizzaPromotions,
+        spreadItemsInBasket,
+        setSpreadItemsInBasket,
       }}
     >
       {children}

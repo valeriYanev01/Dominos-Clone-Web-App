@@ -66,24 +66,27 @@ const ProductModal: React.FC = () => {
 
   const finalPizzaProduct = {
     name: name,
-    size: size,
+    size: product[4] === "pizza" ? size : "",
     crust:
-      selectedCrust === 0
-        ? "Hand Tossed"
-        : selectedCrust === 1
-        ? "Italian Style"
-        : selectedCrust === 2
-        ? "Gluten Free"
-        : selectedCrust === 3
-        ? "With Philadelphia"
-        : selectedCrust === 4
-        ? "With Mozzarella"
-        : selectedCrust === 5
-        ? "With Pepperoni"
+      product[4] === "pizza"
+        ? selectedCrust === 0
+          ? "Hand Tossed"
+          : selectedCrust === 1
+          ? "Italian Style"
+          : selectedCrust === 2
+          ? "Gluten Free"
+          : selectedCrust === 3
+          ? "With Philadelphia"
+          : selectedCrust === 4
+          ? "With Mozzarella"
+          : selectedCrust === 5
+          ? "With Pepperoni"
+          : ""
         : "",
     toppings: modifiedToppings,
     quantity: quantity,
     price: price.toFixed(2),
+    type: product[4],
   };
 
   const handTossed = {
@@ -409,6 +412,7 @@ const ProductModal: React.FC = () => {
                   setPrice={setPrice}
                   toppings={toppings}
                   weigh={weigh}
+                  finalPizzaProduct={finalPizzaProduct}
                 />
               </div>
             )}

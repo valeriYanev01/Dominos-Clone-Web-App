@@ -97,7 +97,6 @@ const PizzaQuantity: React.FC<Props> = ({
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
-    console.log(price);
   };
 
   const handleDecrease = () => {
