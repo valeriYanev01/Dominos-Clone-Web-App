@@ -93,7 +93,7 @@ const PizzaQuantity: React.FC<Props> = ({
     if (selectedProduct.price[0].large) {
       setPrice((selectedProduct.price[0].large + (modifiedToppings.length * 2 - toppings.length * 2)) * quantity);
     }
-  }, [quantity, selectedCrust, size, selectedProduct.price, setPrice, modifiedToppings.length, toppings.length]);
+  }, [quantity, selectedCrust, size]);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);

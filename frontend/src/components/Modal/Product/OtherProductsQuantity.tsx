@@ -58,7 +58,7 @@ const OtherProductsQuantity: React.FC<Props> = ({
     if (selectedProduct.price[0].medium) {
       setPrice((selectedProduct.price[0].medium + (modifiedToppings.length * 1.5 - toppings.length * 1.5)) * quantity);
     }
-  }, [modifiedToppings.length, quantity, selectedProduct.price, setPrice, toppings.length]);
+  }, [quantity, selectedProduct.price, setPrice]);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
