@@ -8,14 +8,17 @@ interface OrderDetails {
   addressName: string;
 }
 
-interface BasketItem {
+export interface BasketItem {
   name: string;
   size?: string;
   crust?: string;
   toppings?: string[];
+  removedToppings?: string[];
+  addedToppings?: string[];
   quantity: number;
   price: string;
   type: string;
+  deal?: [];
 }
 
 interface OrderContextInterface {
@@ -41,6 +44,10 @@ interface OrderContextInterface {
   setThirdPizzaPromotions: React.Dispatch<React.SetStateAction<number>>;
   spreadItemsInBasket: BasketItem[];
   setSpreadItemsInBasket: React.Dispatch<React.SetStateAction<BasketItem[]>>;
+  initialToppings: string[][];
+  setInitialToppings: React.Dispatch<React.SetStateAction<string[][]>>;
+  modifiedToppings: string[][];
+  setModifiedToppings: React.Dispatch<React.SetStateAction<string[][]>>;
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -82,6 +89,10 @@ export const OrderContext = createContext<OrderContextInterface>({
   setThirdPizzaPromotions: () => {},
   spreadItemsInBasket: [],
   setSpreadItemsInBasket: () => {},
+  initialToppings: [],
+  setInitialToppings: () => {},
+  modifiedToppings: [],
+  setModifiedToppings: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -116,6 +127,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [finalPrice, setFinalPrice] = useState(0);
   const [thirdPizzaPromotions, setThirdPizzaPromotions] = useState(0);
   const [spreadItemsInBasket, setSpreadItemsInBasket] = useState<BasketItem[]>([]);
+  const [initialToppings, setInitialToppings] = useState<string[][]>([]);
+  const [modifiedToppings, setModifiedToppings] = useState<string[][]>([]);
 
   useEffect(() => {
     if (orderTime) {
@@ -151,19 +164,47 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [itemsInBasket]);
 
   useEffect(() => {
-    itemsInBasket.sort((a, b) => a.type.localeCompare(b.type));
-    itemsInBasket.sort((a, b) => a.price.localeCompare(b.price));
+    const combineAndSortItems = (items: BasketItem[]) => {
+      const combinedItems = [...items];
 
-    for (let i = 0; i <= itemsInBasket.length - 2; i++) {
-      const counter = i + 1;
+      for (let i = 0; i < combinedItems.length - 1; i++) {
+        if (combinedItems[i].deal) continue;
 
-      if (
-        JSON.stringify(itemsInBasket[i].toppings) === JSON.stringify(itemsInBasket[counter].toppings) &&
-        itemsInBasket[i].name === itemsInBasket[counter].name
-      ) {
-        itemsInBasket[counter].quantity += itemsInBasket[i].quantity;
-        itemsInBasket.splice(i, 1);
+        for (let j = i + 1; j < combinedItems.length; j++) {
+          if (
+            JSON.stringify(combinedItems[i].toppings) === JSON.stringify(combinedItems[j].toppings) &&
+            combinedItems[i].name === combinedItems[j].name
+          ) {
+            combinedItems[i].quantity += combinedItems[j].quantity;
+            combinedItems.splice(j, 1);
+            j--;
+          }
+        }
       }
+
+      combinedItems.sort((a, b) => {
+        if (a.deal && !b.deal) return -1;
+        if (!a.deal && b.deal) return 1;
+
+        if (a.type === "pizza" && b.type !== "pizza") return -1;
+        if (a.type !== "pizza" && b.type === "pizza") return 1;
+
+        if (a.type === "pizza" && b.type === "pizza") {
+          if (parseFloat(a.price) !== parseFloat(b.price)) return parseFloat(a.price) - parseFloat(b.price);
+          return a.type.localeCompare(b.type);
+        }
+
+        return 0;
+      });
+
+      return combinedItems;
+    };
+
+    const newItemsInBasket = combineAndSortItems(itemsInBasket);
+
+    // avoid unnecessary rerenders
+    if (JSON.stringify(newItemsInBasket) !== JSON.stringify(itemsInBasket)) {
+      setItemsInBasket(newItemsInBasket);
     }
   }, [itemsInBasket, thirdPizzaPromotions]);
 
@@ -192,6 +233,10 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setThirdPizzaPromotions,
         spreadItemsInBasket,
         setSpreadItemsInBasket,
+        initialToppings,
+        setInitialToppings,
+        modifiedToppings,
+        setModifiedToppings,
       }}
     >
       {children}

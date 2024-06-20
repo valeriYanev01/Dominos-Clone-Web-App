@@ -15,12 +15,14 @@ interface ModalInterface {
 }
 
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
-  const { modalType, setOpenModal } = useContext(ModalContext);
+  const { modalType, setOpenModal, setModalType, setProduct } = useContext(ModalContext);
 
   if (openModal) {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         setOpenModal(false);
+        setModalType("");
+        setProduct([]);
       }
     });
   }
@@ -33,13 +35,17 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
     <>
       {openModal && (
         <div className="modal-container">
-          <div className="abra" style={modalType === "product" ? { width: "80vw" } : {}}>
+          <div className="abra" style={modalType === "product" || modalType === "deal" ? { width: "80vw" } : {}}>
             <div
               className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
-              style={modalType === "product" ? { border: "none", background: "white", maskImage: "none" } : {}}
+              style={
+                modalType === "product" || modalType === "deal"
+                  ? { border: "none", background: "white", maskImage: "none" }
+                  : {}
+              }
             >
               <div
-                className={`${modalType !== "product" ? "inner-layer" : ""} ${
+                className={`${modalType !== "product" && modalType !== "deal" ? "inner-layer" : ""} ${
                   modalType === "login" ? "modal-login-inner-layer" : ""
                 }`}
               >
@@ -68,7 +74,7 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
               className={`close-modal ${
                 modalType === "login"
                   ? "close-modal-login"
-                  : modalType === "product"
+                  : modalType === "product" || modalType === "deal"
                   ? "close-modal-product"
                   : modalType === "method"
                   ? "close-modal-method"
@@ -76,7 +82,11 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                   ? "close-modal-delivery"
                   : ""
               }`}
-              onClick={() => setOpenModal(false)}
+              onClick={() => {
+                setOpenModal(false);
+                setModalType("");
+                setProduct([]);
+              }}
             ></span>
           </div>
         </div>

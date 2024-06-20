@@ -1,0 +1,59 @@
+.checkout-page {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
+  padding-top: 180px;
+}
+
+.checkout-page-carousel {
+  width: fit-content;
+}
+
+.checkout-page-carousel-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: fit-content;
+  gap: 20px;
+}
+
+.checkout-page-carousel-container {
+  background-color: #fff;
+  padding: 3rem 0;
+  text-align: center;
+  width: 90%;
+  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.2);
+}
+
+.checkout-page-carousel-container p {
+  margin-bottom: 2rem;
+}
+
+.checkout-page-carousel-item {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  border-right: 1px solid #55555588;
+  padding-right: 1rem;
+}
+
+.checkout-page-carousel-item span {
+  width: 120px;
+  margin: 0;
+}
+
+.checkout-page-carousel-item span p {
+  margin: 0;
+}
+
+.checkout-page-carousel-image {
+  width: 64px;
+  height: 64px;
+  margin: 0;
+}
+
+.checkout-page-carousel-add-to-basket {
+  cursor: pointer;
+  margin: 0;
+  width: fit-content !important;
+}

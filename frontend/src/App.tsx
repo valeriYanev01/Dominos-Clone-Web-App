@@ -17,6 +17,7 @@ import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySetting
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
 import AddAddress from "./pages/addAddress/AddAddress";
 import Tracker from "./pages/tracker/Tracker";
+import { Checkout } from "./pages/checkout/Checkout";
 
 function App() {
   const { openModal } = useContext(ModalContext);
@@ -42,8 +43,8 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/step1" element={<Home />}/>
-        <Route path="/step2" element={<Home />}/>
+        <Route path="/step1" element={<Home />} />
+        <Route path="/step2" element={<Home />} />
         <Route path="menu/:store/*" element={<Menu />} />
         <Route path="dominos-more" element={<DominosMore />} />
         <Route path="signup" element={<Signup />} />
@@ -57,6 +58,7 @@ function App() {
         </Route>
         <Route path="add-address" element={<AddAddress />} />
         <Route path="tracker" element={<Tracker />} />
+        <Route path="checkout" element={<Checkout />} />
       </Routes>
     </>
   );

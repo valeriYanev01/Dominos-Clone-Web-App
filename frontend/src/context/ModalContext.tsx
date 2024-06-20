@@ -23,12 +23,13 @@ export interface Deal {
   price: string;
   steps: [
     { pizza: { number: number; size: string; type: string } },
-    { starter: { number: number } },
+    { starters: { number: number } },
     { chicken: { number: number } },
     { pasta: { number: number } },
-    { drink: { number: number; size: string; type: string } },
-    { dessert: { number: number; type: string } }
+    { drinks: { number: number; size: string; type: string } },
+    { desserts: { number: number; type: string } }
   ];
+  products: number;
 }
 
 interface OpenModalInterface {
@@ -50,12 +51,13 @@ const defaultDeal: Deal = {
   price: "",
   steps: [
     { pizza: { number: 0, size: "", type: "" } },
-    { starter: { number: 0 } },
+    { starters: { number: 0 } },
     { chicken: { number: 0 } },
     { pasta: { number: 0 } },
-    { drink: { number: 0, size: "", type: "" } },
-    { dessert: { number: 0, type: "" } },
+    { drinks: { number: 0, size: "", type: "" } },
+    { desserts: { number: 0, type: "" } },
   ],
+  products: 0,
 };
 
 export const ModalContext = createContext<OpenModalInterface>({

@@ -33,6 +33,7 @@ const Navbar = ({ page }: Page) => {
 
   const inStore = useLocation().pathname.includes("/menu");
 
+  console.log(itemsInBasket);
   useEffect(() => {
     if (page === "home") {
       const handleScroll = () => {
@@ -58,7 +59,11 @@ const Navbar = ({ page }: Page) => {
   }, [page]);
 
   useEffect(() => {
-    const totalQuantity = itemsInBasket.reduce((total, item) => total + item.quantity, 0);
+    const totalQuantity = itemsInBasket.reduce((total, item) => {
+      if (item.deal) {
+        return total + 1;
+      } else return total + item.quantity;
+    }, 0);
     setItemsInBasketQuantity(totalQuantity);
   }, [itemsInBasket]);
 
@@ -295,7 +300,7 @@ const Navbar = ({ page }: Page) => {
                   <p className="navigation-basket-items-number">{itemsInBasketQuantity}</p>
                 </Link>
               </li>
-              {showBasketOnHover && <Basket setShowBasketOnHover={setShowBasketOnHover} />}
+              {<Basket setShowBasketOnHover={setShowBasketOnHover} />}
             </div>
           )}
 
@@ -350,7 +355,13 @@ const Navbar = ({ page }: Page) => {
         ) : loggedIn && page === "home" && localStorage.getItem("active-order") ? (
           <div className="loggedin-navigation">
             <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
-            <Link to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}>
+            <Link
+              to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}
+              onClick={() => {
+                setModalType("");
+                setOpenModal(false);
+              }}
+            >
               <img src="/svg/orderBasketWhite.svg" className="loggedin-navigation-basket-img" />
             </Link>
           </div>

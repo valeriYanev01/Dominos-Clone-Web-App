@@ -40,6 +40,8 @@ const ProductModal: React.FC = () => {
   const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
   const [price, setPrice] = useState(0);
   const [modifiedToppings, setModifiedToppings] = useState<string[]>([]);
+  const [addToppings, setAddToppings] = useState<string[]>([]);
+  const [removeToppings, setRemoveToppings] = useState<string[]>([]);
 
   const { product } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -64,6 +66,40 @@ const ProductModal: React.FC = () => {
     });
   }, [product, selectedProduct]);
 
+  useEffect(() => {
+    const newAddedToppingsSet = new Set<string>();
+    let newAddedToppings = [] as string[];
+
+    const newRemovedToppingsSet = new Set<string>();
+    let newRemovedToppings = [] as string[];
+
+    let currentProductToppings = [] as string[];
+
+    products.forEach((product) => {
+      if (product.name === name) {
+        currentProductToppings = product.desc.split(", ");
+      }
+    });
+
+    modifiedToppings.forEach((topping) => {
+      if (!currentProductToppings.includes(topping)) {
+        newAddedToppingsSet.add(topping);
+      }
+    });
+
+    currentProductToppings.forEach((topping) => {
+      if (!modifiedToppings.includes(topping)) {
+        newRemovedToppingsSet.add(topping);
+      }
+    });
+
+    newAddedToppings = Array.from(newAddedToppingsSet);
+    newRemovedToppings = Array.from(newRemovedToppingsSet);
+
+    setRemoveToppings(newRemovedToppings);
+    setAddToppings(newAddedToppings);
+  }, [modifiedToppings, name]);
+
   const finalPizzaProduct = {
     name: name,
     size: product[4] === "pizza" ? size : "",
@@ -84,6 +120,8 @@ const ProductModal: React.FC = () => {
           : ""
         : "",
     toppings: modifiedToppings,
+    removedToppings: removeToppings,
+    addedToppings: addToppings,
     quantity: quantity,
     price: price.toFixed(2),
     type: product[4],
@@ -156,7 +194,7 @@ const ProductModal: React.FC = () => {
   };
 
   const handleChangeToppings = (topping: string, checked: boolean) => {
-    if (checked) {
+    if (checked === true) {
       if (modifiedToppings.length >= toppings.length) {
         if (size === "Medium") {
           setPrice((price) => price + 1.5 * quantity);

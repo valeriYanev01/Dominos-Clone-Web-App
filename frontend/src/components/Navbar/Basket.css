@@ -10,8 +10,153 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   max-height: 80vh;
+  min-width: 30vw;
 }
 
 .navigation-basket-single-item {
   border-bottom: 1px solid #55555588;
+  border-bottom: 1px solid #55555588;
+}
+
+.navigation-basket-product-container {
+  display: flex;
+}
+
+.navigation-basket-free-delivery {
+  text-decoration: line-through;
+}
+
+.navigation-basket-promo-text {
+  color: #fff;
+  background-color: #be1e2d;
+  text-align: center;
+  width: 90%;
+  margin: 0.5rem 0 0 0;
+}
+
+.navigation-basket-desc-remove-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navigation-basket-desc-container {
+  margin: 0;
+}
+
+.navigation-basket-product-name {
+  color: #0278ae;
+  font-weight: bold;
+}
+
+.navigation-basket-product-desc {
+  font-weight: bold;
+  color: #555555dc;
+  margin: 0;
+}
+
+.navigation-basket-remove-item-container {
+  margin: 0 0.8rem 0 0;
+  width: fit-content;
+}
+
+.navigation-basket-toppings {
+  margin-left: 1rem;
+  color: #555555bb;
+}
+
+.navigation-basket-remove-item {
+  cursor: pointer;
+}
+
+.navigation-basket-quantity-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.navigation-basket-quantity-price-container div {
+  margin: 0;
+}
+
+.navigation-basket-price-container {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.navigation-basket-decrease-quantity-disabled {
+  cursor: default !important;
+}
+
+.navigation-basket-quantity-control {
+  cursor: pointer;
+}
+
+.navigation-basket-remove-img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.navigation-basket-quantity-control-img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.navigation-basket-quantity-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #555555e6;
+}
+
+.navigation-basket-single-item-price {
+  display: flex;
+  flex-direction: column;
+  margin: 0 2rem;
+}
+
+.navigation-basket-reduced-price {
+  text-decoration: line-through;
+  color: #be1e2d;
+}
+
+.navigation-basket-reduced-price,
+.navigation-basket-regular-price {
+  margin: 0;
+}
+
+.navigation-basket-total-price-container {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #555555e6;
+}
+
+
+.navigation-basket-price-total-line {
+  text-decoration: line-through;
+  font-weight: normal !important;
+}
+
+.navigation-basket-price-save {
+  background-color: #0278ae;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+
+.navigation-basket-btn {
+  background-color: #609e29;
+  color: #fff;
+  text-align: center;
+  padding: 5px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: fit-content;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.navigation-basket-btn:hover {
+  background-color: #78ac36;
 }
