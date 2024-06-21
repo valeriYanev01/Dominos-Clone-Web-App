@@ -107,12 +107,14 @@ const DealModal: React.FC = () => {
   }, [deal.price]);
 
   useEffect(() => {
-    if (selectedCrust.includes("Medium")) {
-      setSize("Medium");
-    } else if (selectedCrust.includes("Large")) {
-      setSize("Large");
-    } else {
-      setSize("Jumbo");
+    if (selectedCrust.length > 0) {
+      if (selectedCrust[0].includes("Medium")) {
+        setSize("Medium");
+      } else if (selectedCrust[0].includes("Large")) {
+        setSize("Large");
+      } else {
+        setSize("Jumbo");
+      }
     }
   }, [selectedCrust]);
 
@@ -220,7 +222,6 @@ const DealModal: React.FC = () => {
 
         tempToppings[i] = toppings;
 
-        // console.log(modifiedToppings);
         const newAddedToppingsSet = new Set<string>();
         let newAddedToppings = [] as string[];
 
@@ -235,17 +236,19 @@ const DealModal: React.FC = () => {
           }
         });
 
-        modifiedToppings[i].forEach((topping) => {
-          if (!currentProductToppings.includes(topping)) {
-            newAddedToppingsSet.add(topping);
-          }
-        });
+        modifiedToppings[i] &&
+          modifiedToppings[i].forEach((topping) => {
+            if (!currentProductToppings.includes(topping)) {
+              newAddedToppingsSet.add(topping);
+            }
+          });
 
-        currentProductToppings.forEach((topping) => {
-          if (!modifiedToppings[i].includes(topping)) {
-            newRemovedToppingsSet.add(topping);
-          }
-        });
+        modifiedToppings[i] &&
+          currentProductToppings.forEach((topping) => {
+            if (!modifiedToppings[i].includes(topping)) {
+              newRemovedToppingsSet.add(topping);
+            }
+          });
 
         newAddedToppings = Array.from(newAddedToppingsSet);
         newRemovedToppings = Array.from(newRemovedToppingsSet);
@@ -288,7 +291,7 @@ const DealModal: React.FC = () => {
       }
     }
 
-    final.price = deal.price;
+    final.price = String(Number(price).toFixed(2));
     final.desc = deal.desc;
 
     // If the pizzas are the same with the same toppings, remove all but 1,
@@ -486,20 +489,21 @@ const DealModal: React.FC = () => {
   };
 
   const handleChangeToppings = (topping: string, checked: boolean) => {
+    console.log(size);
     if (checked === true) {
-      if (modifiedToppings.length >= toppings.length) {
+      if (modifiedToppings[pizzaIndex].length >= toppings[pizzaIndex].length) {
         if (size === "Medium") {
-          setPrice((price) => price + 1.5);
+          setPrice((price) => String(Number(price) + 1.5));
         }
         if (size === "Large") {
-          setPrice((price) => price + 2);
+          setPrice((price) => String(Number(price) + 2));
         }
         if (size === "Jumbo") {
-          setPrice((price) => price + 2.5);
+          setPrice((price) => String(Number(price) + 2.5));
         }
       }
     } else {
-      if (modifiedToppings.length > toppings.length) {
+      if (modifiedToppings[pizzaIndex].length > toppings[pizzaIndex].length) {
         if (size === "Medium") {
           setPrice((price) => String(Number(price) - 1.5));
         }
@@ -728,7 +732,7 @@ const DealModal: React.FC = () => {
       </div>
       {price && (
         <div>
-          <p>BGN {price}</p>
+          <p>BGN {Number(price).toFixed(2)}</p>
           <div className="deal-add-btn" onClick={handleAddToBasket}>
             ADD
           </div>
