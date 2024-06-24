@@ -1,21 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./Heading.css";
-import { ModalContext } from "../../context/ModalContext";
 
 type Props = {
   text: string;
 };
 
 const Heading: React.FC<Props> = ({ text }) => {
-  const { modalType } = useContext(ModalContext);
-
   return (
-    <div
-      className="heading"
-      style={
-        modalType === "deal" ? { marginTop: "0" } : modalType === "carryOut" ? { marginTop: "0", paddingTop: "0" } : {}
-      }
-    >
+    <div className="heading">
       <img src="/svg/decorLeftRed.svg" className="deal-decor" />
       <p>{text}</p>
       <img src="/svg/decorRightRed.svg" className="deal-decor" />
