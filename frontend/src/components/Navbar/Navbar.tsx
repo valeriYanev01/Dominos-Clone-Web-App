@@ -25,7 +25,7 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket, orderType } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -379,7 +379,7 @@ const Navbar = ({ page }: Page) => {
                 {localStorage.getItem("order-details") && (
                   <div className="navbar-active-order-step">
                     <img src="/svg/order/step1.svg" className="navbar-active-order-step-img" />
-                    <span className="navbar-active-order-step-text">
+                    <span className="navbar-active-order-step-text" style={{ width: "max-content" }}>
                       {JSON.parse(localStorage.getItem("order-details") as string).type[0].toUpperCase() +
                         JSON.parse(localStorage.getItem("order-details") as string)
                           .type.split("")
@@ -399,7 +399,7 @@ const Navbar = ({ page }: Page) => {
                 <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
               </li>
               <li
-                style={{ flex: 2 }}
+                style={orderType === "delivery" ? { flex: 2 } : { flex: 1 }}
                 onClick={() => {
                   setOpenModal(true);
                   setModalType(JSON.parse(localStorage.getItem("order-details") as string).type);
@@ -407,12 +407,18 @@ const Navbar = ({ page }: Page) => {
               >
                 <div className="navbar-active-order-step">
                   <img src="/svg/order/step2.svg" className="navbar-active-order-step-img" />
-                  <span className="navbar-active-order-step-text">
-                    {localStorage.getItem("order-details") &&
-                      JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
-                    {localStorage.getItem("order-details") &&
-                      JSON.parse(localStorage.getItem("order-details") as string).addressName}
-                  </span>
+                  {JSON.parse(localStorage.getItem("order-details") as string).addressLocation ? (
+                    <span className="navbar-active-order-step-text order-type-delivery">
+                      {localStorage.getItem("order-details") &&
+                        JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
+                      {localStorage.getItem("order-details") &&
+                        JSON.parse(localStorage.getItem("order-details") as string).addressName}
+                    </span>
+                  ) : (
+                    <span className="navbar-active-order-step-text order-type-carryout">
+                      {JSON.parse(localStorage.getItem("order-details") as string).store}
+                    </span>
+                  )}
                 </div>
                 <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
               </li>

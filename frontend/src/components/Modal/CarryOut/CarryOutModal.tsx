@@ -187,7 +187,7 @@ const CarryOutModal = () => {
     localStorage.setItem(
       "order-details",
       JSON.stringify({
-        type: "carry-out",
+        type: "carryOut",
         store: orderStore,
       })
     );

@@ -1,17 +1,14 @@
 import React, { useContext } from "react";
 import "./OrderMethod.css";
 import { ModalContext } from "../../../context/ModalContext";
+import Heading from "../../Heading/Heading";
 
 const OrderMethod: React.FC = () => {
   const { setModalType } = useContext(ModalContext);
 
   return (
     <div className="order-modal">
-      <div className="om-heading">
-        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
-        <p>CHOOSE YOUR ORDER METHOD</p>
-        <img src="/svg/decorRightRed.svg" className="deal-decor" />
-      </div>
+      <Heading text="CHOOSE YOUR ORDER METHOD" />
 
       <div className="om-methods-container">
         <div className="om-method" onClick={() => setModalType("delivery")}>
