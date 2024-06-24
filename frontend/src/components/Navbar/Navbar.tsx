@@ -368,7 +368,8 @@ const Navbar = ({ page }: Page) => {
           </div>
         ) : (
           loggedIn &&
-          localStorage.getItem("active-order") && (
+          localStorage.getItem("active-order") &&
+          page !== "careers" && (
             <ul className="navbar-active-order-container">
               <li
                 onClick={() => {
