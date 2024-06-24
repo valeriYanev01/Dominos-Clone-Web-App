@@ -18,6 +18,7 @@ import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
 import AddAddress from "./pages/addAddress/AddAddress";
 import Tracker from "./pages/tracker/Tracker";
 import { Checkout } from "./pages/checkout/Checkout";
+import Careers from "./pages/careers/Careers";
 
 function App() {
   const { openModal } = useContext(ModalContext);
@@ -59,6 +60,7 @@ function App() {
         <Route path="add-address" element={<AddAddress />} />
         <Route path="tracker" element={<Tracker />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="careers" element={<Careers />} />
       </Routes>
     </>
   );
