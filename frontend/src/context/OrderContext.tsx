@@ -19,6 +19,7 @@ export interface BasketItem {
   price: string;
   type: string;
   deal?: [];
+  desc?: string;
 }
 
 interface OrderContextInterface {
@@ -48,6 +49,8 @@ interface OrderContextInterface {
   setInitialToppings: React.Dispatch<React.SetStateAction<string[][]>>;
   modifiedToppings: string[][];
   setModifiedToppings: React.Dispatch<React.SetStateAction<string[][]>>;
+  isOpenForDelivery: boolean;
+  setIsOpenForDelivery: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -93,6 +96,8 @@ export const OrderContext = createContext<OrderContextInterface>({
   setInitialToppings: () => {},
   modifiedToppings: [],
   setModifiedToppings: () => {},
+  isOpenForDelivery: false,
+  setIsOpenForDelivery: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -129,12 +134,19 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [spreadItemsInBasket, setSpreadItemsInBasket] = useState<BasketItem[]>([]);
   const [initialToppings, setInitialToppings] = useState<string[][]>([]);
   const [modifiedToppings, setModifiedToppings] = useState<string[][]>([]);
+  const [isOpenForDelivery, setIsOpenForDelivery] = useState(false);
 
   useEffect(() => {
     if (orderTime) {
       localStorage.setItem("order-time", JSON.stringify(orderTime));
     }
   }, [orderTime]);
+
+  useEffect(() => {
+    if (new Date().getHours() >= 11) {
+      setIsOpenForDelivery(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem("active-order")) {
@@ -237,6 +249,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setInitialToppings,
         modifiedToppings,
         setModifiedToppings,
+        isOpenForDelivery,
+        setIsOpenForDelivery,
       }}
     >
       {children}

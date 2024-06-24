@@ -14,15 +14,22 @@ const DeliveryModal: React.FC = () => {
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [lastOrderAddress, setLastOrderAddress] = useState<Address>();
   const [selectedAddress, setSelectedAddress] = useState<Address>();
-  const [isOpenForDelivery, setIsOpenForDelivery] = useState(false);
   const [showAddresses, setShowAddresses] = useState(true);
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
-  const { setOrderType, orderStore, setOrderStore, setOrderAddress, orderTime, setOrderTime, setActiveOrder } =
-    useContext(OrderContext);
+  const {
+    setOrderType,
+    orderStore,
+    setOrderStore,
+    setOrderAddress,
+    orderTime,
+    setOrderTime,
+    setActiveOrder,
+    isOpenForDelivery,
+  } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -94,12 +101,6 @@ const DeliveryModal: React.FC = () => {
       getAllAddresses();
     }
   }, [emailLogin, token, lastOrderAddressName]);
-
-  useEffect(() => {
-    if (new Date().getHours() >= 11) {
-      setIsOpenForDelivery(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (selectedAddress) setOrderAddress(selectedAddress);

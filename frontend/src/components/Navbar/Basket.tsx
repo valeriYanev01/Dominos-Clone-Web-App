@@ -48,32 +48,35 @@ interface SingleDeal {
 const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
   const [totalPizzas, setTotalPizzas] = useState(0);
   const [itemsInBasketPlusDiscount, setItemsInBasketPlusDiscount] = useState<Product[]>([]);
-  const [nonDealItemsInBasket, setNonDealItemsInBasket] = useState(0);
+  const [dealItemsInBasket, setDealItemsInBasket] = useState(0);
   const [thirdPizzaPromo, setThirdPizzaPromo] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(false);
   const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
+  const [dealsCount, setDealsCount] = useState(0);
 
   const { itemsInBasket, setItemsInBasket, finalPrice, setFinalPrice, thirdPizzaPromotions, setThirdPizzaPromotions } =
     useContext(OrderContext);
 
   useEffect(() => {
     let counter = 0;
+
     itemsInBasket.forEach((item) => {
-      if (!item.deal) counter += 1;
+      if (item.deal) {
+        counter += 1;
+      }
     });
 
-    setNonDealItemsInBasket(counter);
+    setDealsCount(counter);
   }, [itemsInBasket]);
 
-  // Calculate final price
   useEffect(() => {
-    let price = 0;
+    let counter = 0;
     itemsInBasket.forEach((item) => {
-      price += Number(item.price) * item.quantity;
+      if (item.deal) counter += 1;
     });
 
-    setFinalPrice(price);
-  }, [itemsInBasket, setFinalPrice, thirdPizzaPromotions]);
+    setDealItemsInBasket(counter);
+  }, [itemsInBasket]);
 
   // To determine how many 3rd pizza promotions should be included
   useEffect(() => {
@@ -107,8 +110,12 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
       }
     }
 
-    for (let i = 0; i < thirdPizzaPromotions; i++) {
-      spreadItemsInBasket[i].price = "5.50";
+    if (thirdPizzaPromotions > 0) {
+      for (let i = 0; i < thirdPizzaPromotions; i++) {
+        if (spreadItemsInBasket[i].type === "pizza") {
+          spreadItemsInBasket[i].price = "5.50";
+        }
+      }
     }
 
     for (let i = 0; i < spreadItemsInBasket.length; i++) {
@@ -167,14 +174,14 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
 
   const increaseQuantity = (i: number) => {
     const products = [...itemsInBasket];
-    products[i].quantity += 1;
+    products[i + dealsCount].quantity += 1;
     setItemsInBasket(products);
   };
 
   const decreaseQuantity = (i: number) => {
     const products = [...itemsInBasket];
-    if (products[i].quantity > 1) {
-      products[i].quantity -= 1;
+    if (products[i + dealsCount].quantity > 1) {
+      products[i + dealsCount].quantity -= 1;
     }
     setItemsInBasket(products);
   };
@@ -182,9 +189,9 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
   const removeItemFromBasket = (item: BasketItem, i: number) => {
     const newItemsInBasket = [...itemsInBasket];
     if (item.deal) {
-      newItemsInBasket.splice(i + nonDealItemsInBasket, 1);
-    } else {
       newItemsInBasket.splice(i, 1);
+    } else {
+      newItemsInBasket.splice(i + dealItemsInBasket, 1);
     }
 
     setItemsInBasket(newItemsInBasket);
@@ -194,14 +201,68 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
     let priceNoDiscount = 0;
 
     itemsInBasket.forEach((item) => {
-      priceNoDiscount += parseFloat(item.price) * item.quantity;
+      if (item.deal) {
+        priceNoDiscount += parseFloat(item.price);
+      } else {
+        priceNoDiscount += parseFloat(item.price) * item.quantity;
+      }
     });
 
     setFinalPriceNoDiscount(priceNoDiscount);
   }, [itemsInBasket]);
 
+  console.log(finalPrice, finalPriceNoDiscount);
+
   return (
     <div className="navigation-basket-items" onMouseEnter={() => setShowBasketOnHover(true)}>
+      {itemsInBasket
+        .filter((item) => item.deal)
+        .map((item, i) => (
+          <div key={uuid()} className="navigation-basket-single-item">
+            <div className="navigation-basket-deal-container">
+              <span className="navigation-basket-deal-symbol">*</span>
+
+              <div className="navigation-basket-deal-desc">
+                {item.deal &&
+                  item.deal.map((i: SingleDeal) => (
+                    <div key={uuid()}>
+                      {i.crust ? <span>{i.crust} </span> : ""}
+                      <span className="navigation-basket-deal-name">
+                        {i.name} x {i.quantity}
+                      </span>
+
+                      {i.addedToppings && i.addedToppings?.length > 0 && (
+                        <div className="navigation-basket-toppings">
+                          <span>+ </span>
+                          {i.addedToppings.join(", ")}
+                        </div>
+                      )}
+                      {i.removedToppings && i.removedToppings?.length > 0 && (
+                        <div className="navigation-basket-toppings">
+                          <span>- </span>
+                          {i.removedToppings.join(", ")}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+
+              <div onClick={() => removeItemFromBasket(item, i)} className="navigation-basket-remove-item-container">
+                <span className="navigation-basket-remove-item">
+                  <img src="/svg/basket/removeItem.svg" className="navigation-basket-remove-img" />
+                </span>
+              </div>
+            </div>
+
+            <div className="navigation-basket-quantity-price-container">
+              <div></div>
+              <p className="navigation-basket-single-item-price" style={{ margin: "0" }}>
+                BGN {item.price}
+              </p>
+            </div>
+          </div>
+        ))}
+
       {itemsInBasket.length > 0 &&
         itemsInBasket
           .filter((item) => !item.deal)
@@ -297,40 +358,6 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
             </div>
           ))}
 
-      {itemsInBasket
-        .filter((item) => item.deal)
-        .map((item, i) => (
-          <div key={uuid()} className="navigation-basket-single-item">
-            <span>*</span>
-            {item.deal &&
-              item.deal.map((i: SingleDeal) => (
-                <div key={uuid()}>
-                  {i.crust ? <span>{i.crust} </span> : ""}
-                  <span className="navigation-basket-deal-name">{i.name}</span>
-
-                  {i.addedToppings && i.addedToppings?.length > 0 && (
-                    <div className="navigation-basket-toppings">
-                      <span>+ </span>
-                      {i.addedToppings.join(", ")}
-                    </div>
-                  )}
-                  {i.removedToppings && i.removedToppings?.length > 0 && (
-                    <div className="navigation-basket-toppings">
-                      <span>- </span>
-                      {i.removedToppings.join(", ")}
-                    </div>
-                  )}
-                </div>
-              ))}
-            <p>{item.price}</p>
-            <div onClick={() => removeItemFromBasket(item, i)} className="navigation-basket-remove-item-container">
-              <span className="navigation-basket-remove-item">
-                <img src="/svg/basket/removeItem.svg" className="navigation-basket-remove-img" />
-              </span>
-            </div>
-          </div>
-        ))}
-
       {freeDelivery ? (
         <p className="navigation-basket-promo-text">
           Free Delivery <span className="navigation-basket-free-delivery">1.99 Lv.</span> 0.00 Lv.
@@ -342,11 +369,11 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
       <div className="navigation-basket-total-price-container">
         <p>
           Total:{" "}
-          <span className={`${finalPrice < finalPriceNoDiscount ? "navigation-basket-price-total-line" : ""}`}>
+          <span className={`${finalPrice + 1 < finalPriceNoDiscount ? "navigation-basket-price-total-line" : ""}`}>
             {finalPriceNoDiscount.toFixed(2)}
           </span>
         </p>
-        {finalPrice < finalPriceNoDiscount && (
+        {finalPrice + 1 < finalPriceNoDiscount && (
           <>
             <p className="navigation-basket-price-discount">Total with discount: {finalPrice.toFixed(2)}</p>
             <p className="navigation-basket-price-save">You Save: {(finalPriceNoDiscount - finalPrice).toFixed(2)}</p>

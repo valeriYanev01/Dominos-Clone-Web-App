@@ -34,7 +34,7 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   return (
     <>
       {openModal && (
-        <div className="modal-container">
+        <div>
           <div className="abra" style={modalType === "product" || modalType === "deal" ? { width: "80vw" } : {}}>
             <div
               className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}

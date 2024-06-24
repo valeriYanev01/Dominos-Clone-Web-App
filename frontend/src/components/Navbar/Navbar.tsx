@@ -33,7 +33,6 @@ const Navbar = ({ page }: Page) => {
 
   const inStore = useLocation().pathname.includes("/menu");
 
-  console.log(itemsInBasket);
   useEffect(() => {
     if (page === "home") {
       const handleScroll = () => {
@@ -111,6 +110,8 @@ const Navbar = ({ page }: Page) => {
       return;
     } else {
       navigate(`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`);
+      setOpenModal(false);
+      setModalType("");
     }
   };
 
@@ -300,7 +301,7 @@ const Navbar = ({ page }: Page) => {
                   <p className="navigation-basket-items-number">{itemsInBasketQuantity}</p>
                 </Link>
               </li>
-              {<Basket setShowBasketOnHover={setShowBasketOnHover} />}
+              {showBasketOnHover && <Basket setShowBasketOnHover={setShowBasketOnHover} />}
             </div>
           )}
 

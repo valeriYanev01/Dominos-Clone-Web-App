@@ -9,4 +9,5 @@ export type Address = {
   name: string;
   phoneNumber: string;
   _id: string;
+  address?: string
 };

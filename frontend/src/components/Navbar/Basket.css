@@ -11,6 +11,7 @@
   overflow-y: auto;
   max-height: 80vh;
   min-width: 30vw;
+  width: 35vw;
 }
 
 .navigation-basket-single-item {
@@ -32,6 +33,16 @@
   text-align: center;
   width: 90%;
   margin: 0.5rem 0 0 0;
+}
+
+.navigation-basket-deal-name,
+.navigation-basket-deal-desc {
+  color: #0278ae;
+  font-weight: bold;
+}
+
+.navigation-basket-deal-desc {
+  flex: 1;
 }
 
 .navigation-basket-desc-remove-container {
@@ -56,8 +67,9 @@
 }
 
 .navigation-basket-remove-item-container {
-  margin: 0 0.8rem 0 0;
+  margin-right: 0;
   width: fit-content;
+  text-align: right;
 }
 
 .navigation-basket-toppings {
@@ -113,6 +125,7 @@
   display: flex;
   flex-direction: column;
   margin: 0 2rem;
+  font-weight: bold;
 }
 
 .navigation-basket-reduced-price {
@@ -132,6 +145,16 @@
   color: #555555e6;
 }
 
+.navigation-basket-deal-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigation-basket-deal-symbol {
+  font-size: 2rem;
+  color: #be1e2d;
+  margin-right: 1rem;
+}
 
 .navigation-basket-price-total-line {
   text-decoration: line-through;

@@ -31,14 +31,16 @@ export const Checkout: React.FC = () => {
   console.log(items);
 
   const { loggedIn } = useContext(LoginContext);
-  const { setModalType } = useContext(ModalContext);
+  const { setModalType, setOpenModal } = useContext(ModalContext);
   const { itemsInBasket, setItemsInBasket } = useContext(OrderContext);
 
   const handleAddToBasket = (name: string, price: string, type: string) => {
     if (loggedIn === false) {
       setModalType("login");
+      setOpenModal(true);
     } else {
-      console.log(true);
+      setModalType("");
+      setOpenModal(false);
       setItemsInBasket((prevState: BasketItem[]) => [
         ...prevState,
         { name: name, price: price, type: type, crust: "", quantity: 1, size: "", toppings: [] },
