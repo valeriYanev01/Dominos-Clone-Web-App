@@ -1,0 +1,25 @@
+.careers-page {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url("/images/background.webp");
+}
+
+.careers-container {
+  margin-top: 10rem;
+  margin-bottom: 2rem;
+  width: 60vw;
+  background-color: #fff;
+  box-shadow: 5px -1px 30px rgba(0, 0, 0, 0.25);
+  padding: 0 2rem;
+}
+
+.careers-heading {
+  padding: 2rem 0;
+}
+
+.careers-body {
+}
+
+.careers-body-text {
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 100;
+}

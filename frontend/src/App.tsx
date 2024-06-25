@@ -20,6 +20,8 @@ import Tracker from "./pages/tracker/Tracker";
 import { Checkout } from "./pages/checkout/Checkout";
 import Careers from "./pages/careers/Careers";
 
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+
 function App() {
   const { openModal } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -60,7 +62,15 @@ function App() {
         <Route path="add-address" element={<AddAddress />} />
         <Route path="tracker" element={<Tracker />} />
         <Route path="checkout" element={<Checkout />} />
-        <Route path="careers" element={<Careers />} />
+
+        <Route
+          path="careers"
+          element={
+            <GoogleReCaptchaProvider reCaptchaKey="6Ldb0AAqAAAAAF6nJ37WL8v34GhnL0pCecfs7y6Y">
+              <Careers />
+            </GoogleReCaptchaProvider>
+          }
+        />
       </Routes>
     </>
   );
