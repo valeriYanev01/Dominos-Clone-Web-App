@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import axios from "axios";
 import { UserModel } from "../models/UserModel.js";
 
 dotenv.config();
@@ -275,5 +276,27 @@ export const getCoupons = async (req, res) => {
     return res.status(200).json({ coupons });
   } catch (err) {
     return res.status(400).json({ error: err.message });
+  }
+};
+
+export const apply = async (req, res) => {
+  const { recaptchaToken } = req.body;
+  const secretKey = "6Ldb0AAqAAAAAF_WMTC_C7MqxGMh3HVWNM9isT8Z";
+
+  try {
+    const response = await axios.post("https://www.google.com/recaptcha/api/siteverify", null, {
+      params: { secret: secretKey, response: recaptchaToken },
+    });
+
+    const data = response.data;
+
+    if (data.success) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, "error-codes": data["error-codes"] });
+    }
+  } catch (err) {
+    console.log("Error verifying reCaptcha:", err);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };

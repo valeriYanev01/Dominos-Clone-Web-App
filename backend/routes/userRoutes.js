@@ -2,6 +2,7 @@ import express from "express";
 import {
   addAddress,
   addCoupon,
+  apply,
   deleteAccount,
   deleteAddress,
   getAddresses,
@@ -34,6 +35,7 @@ router.get("/get-coupons", getCoupons);
 router.post("/account/update", updateUser);
 router.post("/add-address", addAddress);
 router.post("/add-coupon", addCoupon);
+router.post("/apply", apply);
 router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
