@@ -11,6 +11,8 @@ import { AddressContextProvider } from "./context/AddressContext.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ModalContextProvider } from "./context/ModalContext.tsx";
 
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -25,7 +27,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <OrderContextProvider>
                 <MenuContextProvider>
                   <MapContextProvider>
-                    <App />
+                    <GoogleReCaptchaProvider reCaptchaKey="6Ldb0AAqAAAAAF6nJ37WL8v34GhnL0pCecfs7y6Y">
+                      <App />
+                    </GoogleReCaptchaProvider>
                   </MapContextProvider>
                 </MenuContextProvider>
               </OrderContextProvider>
