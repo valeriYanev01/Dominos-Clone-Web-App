@@ -17,14 +17,19 @@ import {
   updateUser,
   userLogin,
   userSignup,
+  verifyGoogleRecaptchaToken,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
+import { upload } from "../middleware/multerConfig.js";
 
 const router = express.Router();
 
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.post("/google", googleLogin);
+
+router.post("/verify-google-recaptcha-token", verifyGoogleRecaptchaToken);
+router.post("/apply", upload, apply);
 
 router.use(verifyToken);
 router.get("/", getUser);
@@ -35,7 +40,6 @@ router.get("/get-coupons", getCoupons);
 router.post("/account/update", updateUser);
 router.post("/add-address", addAddress);
 router.post("/add-coupon", addCoupon);
-router.post("/apply", apply);
 router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);

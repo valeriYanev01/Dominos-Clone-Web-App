@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "./Careers.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Heading from "../../components/Heading/Heading";
 import Footer from "../../components/Footer/Footer";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { LoginContext } from "../../context/LoginContext";
 
 const Careers: React.FC = () => {
-  const { token } = useContext(LoginContext);
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [number, setNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [email, setEmail] = useState("");
+  const [position, setPosition] = useState("");
+  const [cv, setCv] = useState<File | null>(null);
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -24,16 +29,37 @@ const Careers: React.FC = () => {
 
     if (recaptchaToken) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/users/apply",
-          {
-            recaptchaToken: recaptchaToken,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await axios.post("http://localhost:3000/api/users/verify-google-recaptcha-token", {
+          recaptchaToken: recaptchaToken,
+        });
+
         const result = response.data;
+
         if (result.success) {
-          console.log("reCAPTCHA verification successful");
+          try {
+            if (!cv) {
+              alert("Please upload your CV");
+              return;
+            }
+
+            const formData = new FormData();
+
+            formData.append("cv", cv);
+
+            console.log("hi");
+            const response = await axios.post("http://localhost:3000/api/users/apply", formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+            const result = response.data;
+
+            if (result.success) {
+              alert("CV uploaded successfully!");
+            } else {
+              console.log("fail");
+            }
+          } catch (err) {
+            console.log(err);
+          }
         } else {
           console.log("reCAPTCHA verification failed", result["error-codes"]);
         }
@@ -82,47 +108,66 @@ const Careers: React.FC = () => {
             </div>
 
             <div className="careers-personal-details">
+              <p>PERSONAL DETAILS</p>
               <div>
                 <label>NAME *</label>
-                <input type="text" required />
+                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
 
               <div>
                 <label>CITY *</label>
-                <input type="text" required />
+                <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} />
 
                 <label>TELEPHONE NUMBER *</label>
-                <input type="text" required />
+                <input type="text" required value={number} onChange={(e) => setNumber(e.target.value)} />
               </div>
 
               <div>
                 <div>
                   <label>DATE OF BIRTH *</label>
-                  <input type="date" required />
+                  <input type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
                 </div>
 
                 <label>EMAIL</label>
-                <input type="email" />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
 
             <div>
               <p>I WOULD LIKE TO APPLY FOR: *</p>
 
-              <input type="radio" name="job" value="Delivery Drivers" required />
+              <input
+                type="radio"
+                name="job"
+                value="Delivery Drivers"
+                required
+                onChange={() => setPosition("Delivery Drivers")}
+              />
               <label>Delivery Drivers</label>
 
-              <input type="radio" name="job" value="Kitchen Staff" required />
+              <input
+                type="radio"
+                name="job"
+                value="Kitchen Staff"
+                required
+                onChange={() => setPosition("Kitchen Staff")}
+              />
               <label>Kitchen Staff</label>
 
-              <input type="radio" name="job" value="Either One" required />
+              <input type="radio" name="job" value="Either One" required onChange={() => setPosition("Either One")} />
               <label>Either One</label>
             </div>
 
             <div>
               <div>
                 <p>SEND US YOUR CV</p>
-                <input type="file" accept=".doc, .docx, .pdf, .txt, .image/*" />
+                <input
+                  type="file"
+                  accept=".doc, .docx, .pdf, .txt, .image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) setCv(e.target.files[0]);
+                  }}
+                />
               </div>
             </div>
 

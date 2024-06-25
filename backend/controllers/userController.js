@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import axios from "axios";
+import nodemailer from "nodemailer";
+import path from "path";
+import { fileURLToPath } from "url";
 import { UserModel } from "../models/UserModel.js";
 
 dotenv.config();
@@ -279,7 +282,7 @@ export const getCoupons = async (req, res) => {
   }
 };
 
-export const apply = async (req, res) => {
+export const verifyGoogleRecaptchaToken = async (req, res) => {
   const { recaptchaToken } = req.body;
   const secretKey = "6Ldb0AAqAAAAAF_WMTC_C7MqxGMh3HVWNM9isT8Z";
 
@@ -298,5 +301,51 @@ export const apply = async (req, res) => {
   } catch (err) {
     console.log("Error verifying reCaptcha:", err);
     res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+export const apply = async (req, res) => {
+  const { file } = req;
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+  if (!file) {
+    return res.status(400).send({ success: false, message: "No file uploaded" });
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: "dominos.clone01@gmail.com",
+      pass: "qdpk xkkw eaef joot",
+    },
+  });
+
+  const mailOptions = {
+    from: "valeri.t.yanev@gmail.com",
+    to: "valeri.t.yanev@gmail.com",
+    subject: "Job Application - CV Attached",
+    text: "Please find attached the CVfor the job application",
+    attachments: [
+      {
+        filename: file.originalname,
+        path: path.join(__dirname, "..", file.path),
+      },
+    ],
+  };
+
+  try {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(console.log(error));
+        return res.status(500).send({ success: false, message: "Failed to send email" });
+      }
+
+      console.log("Email sent: " + info.response);
+      return res.status(200).send({ success: true, message: "Application submitted successfully" });
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
