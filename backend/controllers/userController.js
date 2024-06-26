@@ -4,6 +4,7 @@ import axios from "axios";
 import nodemailer from "nodemailer";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 import { UserModel } from "../models/UserModel.js";
 
 dotenv.config();
@@ -306,6 +307,7 @@ export const verifyGoogleRecaptchaToken = async (req, res) => {
 
 export const apply = async (req, res) => {
   const { file } = req;
+  const { name, city, number, birthDate, email, position } = req.body;
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -322,11 +324,18 @@ export const apply = async (req, res) => {
     },
   });
 
-  const mailOptions = {
-    from: "valeri.t.yanev@gmail.com",
+  const mailOptionsForMe = {
+    from: "dominos.clone01@gmail.com",
     to: "valeri.t.yanev@gmail.com",
-    subject: "Job Application - CV Attached",
-    text: "Please find attached the CVfor the job application",
+    subject: `Job Application ${name} - CV Attached`,
+    text: `
+          Name: ${name}
+          City: ${city}
+          Phone Number: ${number}
+          Birth Date: ${birthDate}
+          Email: ${email}
+          Position: ${position}
+    `,
     attachments: [
       {
         filename: file.originalname,
@@ -335,15 +344,49 @@ export const apply = async (req, res) => {
     ],
   };
 
+  const mailOptionsForApplier = {
+    from: "dominos.clone01@gmail.com",
+    to: email,
+    subject: `Job Application - Successfully Applied`,
+    text: `
+      Hello,
+
+      ${name}, You successfully applied for ${position}.
+
+      We will get back to you soon!
+
+      Br!
+    `,
+  };
+
   try {
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptionsForMe, (error, info) => {
       if (error) {
-        console.log(console.log(error));
+        console.log(error);
         return res.status(500).send({ success: false, message: "Failed to send email" });
       }
 
       console.log("Email sent: " + info.response);
+
+      fs.unlink(`uploads/${file.filename}`, (err) => {
+        if (err) {
+          return console.log(err);
+        }
+
+        console.log("File Deleted: " + file.filename);
+      });
+
       return res.status(200).send({ success: true, message: "Application submitted successfully" });
+    });
+
+    transporter.sendMail(mailOptionsForApplier, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({ success: false, message: "Failed to send email" });
+      }
+
+      console.log("Email sent: " + info.response);
+      return res.status(200).send({ success: true, message: "Email send successfully" });
     });
   } catch (err) {
     res.status(400).json({ error: err.message });
