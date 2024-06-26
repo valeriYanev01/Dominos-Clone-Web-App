@@ -30,6 +30,8 @@ const Careers: React.FC = () => {
 
     if (recaptchaToken) {
       try {
+        setError("");
+
         const response = await axios.post("http://localhost:3000/api/users/verify-google-recaptcha-token", {
           recaptchaToken: recaptchaToken,
         });
@@ -42,6 +44,7 @@ const Careers: React.FC = () => {
               setError("Please upload your CV");
               return;
             }
+            setError("");
 
             const formData = new FormData();
 
@@ -203,6 +206,8 @@ const Careers: React.FC = () => {
             <p>All fields marked with ( *) are </p>
 
             <button type="submit">SUBMIT</button>
+
+            {error && <p>{error}</p>}
           </form>
         </div>
       </div>
