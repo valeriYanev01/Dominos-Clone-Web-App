@@ -326,11 +326,12 @@
 .profile-nav {
   display: flex;
   justify-content: center;
-  padding: 7.5rem 0 1.25rem 0;
+  padding: 1.25rem 0;
   gap: 3.125rem;
   list-style: none;
   font-weight: bold;
   background-color: #555555b0;
+  align-items: center;
 }
 
 .profile-nav li {

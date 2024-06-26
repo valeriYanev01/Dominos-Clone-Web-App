@@ -454,7 +454,7 @@ const Navbar = ({ page }: Page) => {
         <ul
           className="profile-nav"
           style={
-            JSON.parse(localStorage.getItem("active-order") as string) ? { paddingTop: "10rem" } : { paddingTop: "0" }
+            JSON.parse(localStorage.getItem("active-order") as string) ? { marginTop: "8.7rem" } : { paddingTop: "7rem" }
           }
         >
           <li
