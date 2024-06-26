@@ -14,6 +14,7 @@ const Careers: React.FC = () => {
   const [email, setEmail] = useState("");
   const [position, setPosition] = useState("");
   const [cv, setCv] = useState<File | null>(null);
+  const [error, setError] = useState("");
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -21,7 +22,7 @@ const Careers: React.FC = () => {
     event.preventDefault();
 
     if (!executeRecaptcha) {
-      console.log("Execute reCAPTCHA not available yet");
+      setError("Execute reCAPTCHA not available yet");
       return;
     }
 
@@ -38,33 +39,42 @@ const Careers: React.FC = () => {
         if (result.success) {
           try {
             if (!cv) {
-              alert("Please upload your CV");
+              setError("Please upload your CV");
               return;
             }
 
             const formData = new FormData();
 
             formData.append("cv", cv);
+            formData.append("name", name);
+            formData.append("city", city);
+            formData.append("number", number);
+            formData.append("birthDate", birthDate);
+            formData.append("email", email);
+            formData.append("position", position);
 
-            console.log("hi");
             const response = await axios.post("http://localhost:3000/api/users/apply", formData, {
               headers: { "Content-Type": "multipart/form-data" },
             });
             const result = response.data;
 
             if (result.success) {
-              alert("CV uploaded successfully!");
+              alert("Application successfully submitted!");
             } else {
-              console.log("fail");
+              setError("Something went wrong.");
             }
           } catch (err) {
-            console.log(err);
+            if (axios.isAxiosError(err)) {
+              setError(err.message);
+            }
           }
         } else {
-          console.log("reCAPTCHA verification failed", result["error-codes"]);
+          setError(`reCAPTCHA verification failed", ${result["error-codes"]}`);
         }
       } catch (err) {
-        console.log("Error verifying reCAPTCHA:", err);
+        if (axios.isAxiosError(err)) {
+          setError(`Error verifying reCAPTCHA:, ${err.message}`);
+        }
       }
     }
   };
