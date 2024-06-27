@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Careers.css";
 import Navbar from "../../components/Navbar/Navbar";
-import Heading from "../../components/Heading/Heading";
 import Footer from "../../components/Footer/Footer";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
@@ -14,12 +13,21 @@ const Careers: React.FC = () => {
   const [email, setEmail] = useState("");
   const [position, setPosition] = useState("");
   const [cv, setCv] = useState<File | null>(null);
+  const [cvValue, setCvValue] = useState("");
+  const [firstCheckboxChecked, setFirstCheckboxChecked] = useState(false);
+  const [secondCheckboxChecked, setSecondCheckboxChecked] = useState(false);
   const [error, setError] = useState("");
+  const [isApplying, setIsApplying] = useState(false);
+  const [successfulApplied, setSuccessfullApplied] = useState(false);
+  const [btnText, setBtnText] = useState("SUBMIT");
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setIsApplying(true);
+    setBtnText("SUBMITTING");
 
     if (!executeRecaptcha) {
       setError("Execute reCAPTCHA not available yet");
@@ -62,7 +70,22 @@ const Careers: React.FC = () => {
             const result = response.data;
 
             if (result.success) {
-              alert("Application successfully submitted!");
+              setName("");
+              setCity("");
+              setNumber("");
+              setBirthDate("");
+              setEmail("");
+              setPosition("");
+              setCv(null);
+              setCvValue("");
+              setFirstCheckboxChecked(false);
+              setSecondCheckboxChecked(false);
+              setError("");
+
+              window.scrollTo(0, 0);
+
+              setSuccessfullApplied(true);
+              setBtnText("SUBMITTED ✔");
             } else {
               setError("Something went wrong.");
             }
@@ -78,6 +101,8 @@ const Careers: React.FC = () => {
         if (axios.isAxiosError(err)) {
           setError(`Error verifying reCAPTCHA:, ${err.message}`);
         }
+      } finally {
+        setIsApplying(false);
       }
     }
   };
@@ -88,7 +113,9 @@ const Careers: React.FC = () => {
 
       <div className="careers-container">
         <div className="careers-heading">
-          <Heading text="JOB APPLICATION" />
+          <img className="deal-decor" src="/svg/decorLeftRed.svg" />
+          <p>JOB APPLICATION</p>
+          <img className="deal-decor" src="/svg/decorRightRed.svg" />
         </div>
 
         <div className="careers-body">
@@ -97,7 +124,7 @@ const Careers: React.FC = () => {
             at Domino’s to develop their talent and reach their potential, we offer:
           </p>
 
-          <ul>
+          <ul className="careers-body-benefits">
             <li>- Worldwide acknowledged training programs</li>
             <li>- Competitive remuneration</li>
             <li>- Flexible working schedule</li>
@@ -122,92 +149,164 @@ const Careers: React.FC = () => {
 
             <div className="careers-personal-details">
               <p>PERSONAL DETAILS</p>
-              <div>
-                <label>NAME *</label>
-                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+              <div className="careers-personal-details-field-single">
+                <label htmlFor="careers-name">NAME *</label>
+                <input id="careers-name" type="text" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
 
-              <div>
-                <label>CITY *</label>
-                <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} />
-
-                <label>TELEPHONE NUMBER *</label>
-                <input type="text" required value={number} onChange={(e) => setNumber(e.target.value)} />
-              </div>
-
-              <div>
-                <div>
-                  <label>DATE OF BIRTH *</label>
-                  <input type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+              <div className="careers-personal-details-field-container">
+                <div className="careers-personal-details-field">
+                  <label htmlFor="city">CITY *</label>
+                  <input id="city" type="text" required value={city} onChange={(e) => setCity(e.target.value)} />
                 </div>
 
-                <label>EMAIL</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <div className="careers-personal-details-field">
+                  <label htmlFor="phone-number">TELEPHONE NUMBER *</label>
+                  <input
+                    id="phone-number"
+                    type="text"
+                    required
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="careers-personal-details-field-container">
+                <div className="careers-personal-details-field">
+                  <label htmlFor="birth-date">DATE OF BIRTH *</label>
+                  <input
+                    id="birth-date"
+                    type="date"
+                    required
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                  />
+                </div>
+
+                <div className="careers-personal-details-field">
+                  <label htmlFor="email">EMAIL</label>
+                  <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
               </div>
             </div>
 
-            <div>
-              <p>I WOULD LIKE TO APPLY FOR: *</p>
+            <div className="careers-positions-outer-container">
+              <p className="careers-positions-text">I WOULD LIKE TO APPLY FOR: *</p>
 
-              <input
-                type="radio"
-                name="job"
-                value="Delivery Drivers"
-                required
-                onChange={() => setPosition("Delivery Drivers")}
-              />
-              <label>Delivery Drivers</label>
+              <div className="careers-positions-container">
+                <div className="careers-positions">
+                  <input
+                    id="delivery"
+                    type="radio"
+                    name="job"
+                    value="Delivery Drivers"
+                    required
+                    checked={position === "Delivery Drivers"}
+                    onChange={() => setPosition("Delivery Drivers")}
+                  />
+                  <label htmlFor="delivery">Delivery Drivers</label>
+                </div>
 
-              <input
-                type="radio"
-                name="job"
-                value="Kitchen Staff"
-                required
-                onChange={() => setPosition("Kitchen Staff")}
-              />
-              <label>Kitchen Staff</label>
+                <div className="careers-positions">
+                  <input
+                    id="kitchen"
+                    type="radio"
+                    name="job"
+                    value="Kitchen Staff"
+                    required
+                    checked={position === "Kitchen Staff"}
+                    onChange={() => setPosition("Kitchen Staff")}
+                  />
+                  <label htmlFor="kitchen">Kitchen Staff</label>
+                </div>
 
-              <input type="radio" name="job" value="Either One" required onChange={() => setPosition("Either One")} />
-              <label>Either One</label>
+                <div className="careers-positions">
+                  <input
+                    id="either"
+                    type="radio"
+                    name="job"
+                    value="Either One"
+                    required
+                    checked={position === "Either One"}
+                    onChange={() => setPosition("Either One")}
+                  />
+                  <label htmlFor="either">Either One</label>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <div>
-                <p>SEND US YOUR CV</p>
+            <div className="careers-cv-conditions-container">
+              <div className="careers-upload-cv">
+                <p>SEND US YOUR CV *</p>
                 <input
+                  value={cvValue}
+                  required
                   type="file"
                   accept=".doc, .docx, .pdf, .txt, .image/*"
                   onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) setCv(e.target.files[0]);
+                    if (e.target.files && e.target.files[0]) {
+                      setCvValue(e.target.value);
+                      if (e.target.files[0].size > 1024 * 1024 * 2) {
+                        e.target.value = "";
+                        setCv(null);
+                        setError("Uploading unsuccessful - file too big.");
+                      } else {
+                        setError("");
+                        setCv(e.target.files[0]);
+                      }
+                    }
                   }}
                 />
               </div>
+
+              <div className="careers-conditions-container">
+                <div className="careers-conditions">
+                  <input
+                    type="checkbox"
+                    id="cond1"
+                    onChange={() => setFirstCheckboxChecked(!firstCheckboxChecked)}
+                    checked={firstCheckboxChecked}
+                    required
+                  />
+                  <label htmlFor="cond1">
+                    By applying for a job at LN Solutions LTD I hereby confirm that I have read the Job Application Data
+                    Collection and Recording Policy and I desire that the administrator company LN Solution Ltd collects
+                    and processes the personal data that I submit by completing the form at www.dominos.bg/career as
+                    well as the personal data that I have sent in the CV.
+                  </label>
+                </div>
+
+                <div className="careers-conditions">
+                  <input
+                    type="checkbox"
+                    id="cond2"
+                    onChange={() => setSecondCheckboxChecked(!secondCheckboxChecked)}
+                    checked={secondCheckboxChecked}
+                    required
+                  />
+                  <label htmlFor="cond2">
+                    I confirm that I have read and I agree with the Statement of Consent for Personal Data Processing
+                    Related to Job Applications
+                  </label>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <div>
-                <input type="checkbox" />
-                <label>
-                  By applying for a job at LN Solutions LTD I hereby confirm that I have read the Job Application Data
-                  Collection and Recording Policy and I desire that the administrator company LN Solution Ltd collects
-                  and processes the personal data that I submit by completing the form at www.dominos.bg/career as well
-                  as the personal data that I have sent in the CV.
-                </label>
-              </div>
-              <div>
-                <input type="checkbox" />
-                <label>
-                  I confirm that I have read and I agree with the Statement of Consent for Personal Data Processing
-                  Related to Job Applications
-                </label>
-              </div>
+            <p className="careers-required-fields-text">All fields marked with ( *) are </p>
+
+            <div className="careers-btn-container">
+              <button
+                type="submit"
+                className={`careers-btn ${isApplying || successfulApplied ? "careers-btn-disabled" : ""}`}
+                disabled={isApplying || successfulApplied}
+              >
+                {btnText} <span className={`${isApplying ? "careers-btn-text-dot-animation" : ""}`}></span>
+              </button>
             </div>
-
-            <p>All fields marked with ( *) are </p>
-
-            <button type="submit">SUBMIT</button>
 
             {error && <p>{error}</p>}
+            {successfulApplied && <div className="careers-success">Application Submitted!</div>}
           </form>
         </div>
       </div>
