@@ -126,6 +126,9 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
     },
+    more: {
+      type: Number,
+    },
     addresses: [addressSchema],
     orders: [ordersSchema],
     consents: [consentSchema],
@@ -144,7 +147,8 @@ userSchema.statics.signup = async function (
   addresses,
   orders,
   consents,
-  coupons
+  coupons,
+  more
 ) {
   if (!email) {
     throw new Error("Email is required");
@@ -207,6 +211,7 @@ userSchema.statics.signup = async function (
     orders,
     consents,
     coupons,
+    more,
   });
 
   return user;

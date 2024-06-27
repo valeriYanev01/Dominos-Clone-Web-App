@@ -16,7 +16,8 @@ const createToken = (_id, expiration = "1h") => {
 };
 
 export const userSignup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, img, addresses, orders, consents, coupons } = req.body;
+  const { email, password, confirmPassword, firstName, lastName, img, addresses, orders, consents, coupons, more } =
+    req.body;
 
   try {
     const user = await UserModel.signup(
@@ -29,7 +30,8 @@ export const userSignup = async (req, res) => {
       addresses,
       orders,
       consents,
-      coupons
+      coupons,
+      more
     );
     const token = createToken(user._id);
 
