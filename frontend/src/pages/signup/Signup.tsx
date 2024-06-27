@@ -50,6 +50,7 @@ const Signup: React.FC = () => {
           { more: false },
         ],
         coupons: [],
+        more: 0,
       });
 
       setLoggedIn(true);

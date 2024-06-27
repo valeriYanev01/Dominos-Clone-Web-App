@@ -29,6 +29,8 @@ interface LoggedInInterface {
   setToken: React.Dispatch<React.SetStateAction<Token>>;
   googleLogin: GoogleLogin;
   setGoogleLogin: React.Dispatch<React.SetStateAction<GoogleLogin>>;
+  dominosMorePoints: number;
+  setDominosMorePoints: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const LoginContext = createContext<LoggedInInterface>({
@@ -51,6 +53,8 @@ export const LoginContext = createContext<LoggedInInterface>({
     updated_at: "",
   },
   setGoogleLogin: () => {},
+  dominosMorePoints: 0,
+  setDominosMorePoints: () => {},
 });
 
 export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -69,6 +73,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     sub: "",
     updated_at: "",
   });
+  const [dominosMorePoints, setDominosMorePoints] = useState(0);
 
   const { isAuthenticated, user: googleUser } = useAuth0();
 
@@ -104,8 +109,27 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       };
 
       signGoogleUser();
+    } else {
+      if (token) {
+        const normalLogin = async () => {
+          try {
+            const response = await axios.get("http://localhost:3000/api/users", {
+              headers: { Authorization: `Bearer ${token}` },
+              params: { email: emailLogin },
+            });
+
+            setDominosMorePoints(response.data.user.more);
+          } catch (err) {
+            if (axios.isAxiosError(err)) {
+              console.log(err.message);
+            }
+          }
+        };
+
+        normalLogin();
+      }
     }
-  }, [googleUser]);
+  }, [emailLogin, googleUser, token]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -148,7 +172,18 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   return (
     <LoginContext.Provider
-      value={{ loggedIn, setLoggedIn, emailLogin, setEmailLogin, token, setToken, googleLogin, setGoogleLogin }}
+      value={{
+        loggedIn,
+        setLoggedIn,
+        emailLogin,
+        setEmailLogin,
+        token,
+        setToken,
+        googleLogin,
+        setGoogleLogin,
+        dominosMorePoints,
+        setDominosMorePoints,
+      }}
     >
       {children}
     </LoginContext.Provider>
