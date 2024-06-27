@@ -191,8 +191,6 @@ export const updateAddress = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   const { email } = req.query;
 
-  console.log(email);
-
   try {
     await UserModel.findOneAndDelete({ email });
 
@@ -300,7 +298,6 @@ export const verifyGoogleRecaptchaToken = async (req, res) => {
       res.json({ success: false, "error-codes": data["error-codes"] });
     }
   } catch (err) {
-    console.log("Error verifying reCaptcha:", err);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -360,34 +357,29 @@ export const apply = async (req, res) => {
   };
 
   try {
-    transporter.sendMail(mailOptionsForMe, (error, info) => {
+    transporter.sendMail(mailOptionsForMe, (error) => {
       if (error) {
-        console.log(error);
         return res.status(500).send({ success: false, message: "Failed to send email" });
       }
-
-      console.log("Email sent: " + info.response);
 
       fs.unlink(`uploads/${file.filename}`, (err) => {
         if (err) {
           return console.log(err);
         }
-
-        console.log("File Deleted: " + file.filename);
       });
 
       return res.status(200).send({ success: true, message: "Application submitted successfully" });
     });
 
-    transporter.sendMail(mailOptionsForApplier, (error, info) => {
-      if (error) {
-        console.log(error);
-        return res.status(500).send({ success: false, message: "Failed to send email" });
-      }
+    if (email) {
+      transporter.sendMail(mailOptionsForApplier, (error) => {
+        if (error) {
+          return res.status(500).send({ success: false, message: "Failed to send email" });
+        }
 
-      console.log("Email sent: " + info.response);
-      return res.status(200).send({ success: true, message: "Email send successfully" });
-    });
+        return res.status(200).send({ success: true, message: "Email send successfully" });
+      });
+    }
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
