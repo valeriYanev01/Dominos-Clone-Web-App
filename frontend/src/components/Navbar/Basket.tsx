@@ -110,7 +110,7 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
       }
     }
 
-    if (thirdPizzaPromotions > 0) {
+    if (thirdPizzaPromotions > 0 && itemsInBasket.length > 0) {
       for (let i = 0; i < thirdPizzaPromotions; i++) {
         if (spreadItemsInBasket[i].type === "pizza") {
           spreadItemsInBasket[i].price = "5.50";
@@ -210,8 +210,6 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
 
     setFinalPriceNoDiscount(priceNoDiscount);
   }, [itemsInBasket]);
-
-  console.log(finalPrice, finalPriceNoDiscount);
 
   return (
     <div className="navigation-basket-items" onMouseEnter={() => setShowBasketOnHover(true)}>
