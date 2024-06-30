@@ -16,8 +16,20 @@ const createToken = (_id, expiration = "1h") => {
 };
 
 export const userSignup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, img, addresses, orders, consents, coupons, more } =
-    req.body;
+  const {
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    img,
+    addresses,
+    orders,
+    consents,
+    coupons,
+    more,
+    invoices,
+  } = req.body;
 
   try {
     const user = await UserModel.signup(
@@ -31,7 +43,8 @@ export const userSignup = async (req, res) => {
       orders,
       consents,
       coupons,
-      more
+      more,
+      invoices
     );
     const token = createToken(user._id);
 
@@ -384,5 +397,36 @@ export const apply = async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+export const addInvoice = async (req, res) => {
+  const { email, companyName, companyAddress, companyActivity, companyVAT, companyOwner } = req.body;
+
+  try {
+    const newInvoice = await UserModel.newInvoice(
+      email,
+      companyName,
+      companyAddress,
+      companyActivity,
+      companyVAT,
+      companyOwner
+    );
+
+    return res.status(200).json({ newInvoice });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const getInvoices = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const invoices = await UserModel.findOne({ email }).select("invoices");
+
+    return res.status(200).json({ invoices });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
 };

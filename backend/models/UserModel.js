@@ -104,6 +104,29 @@ const couponsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const invoicesSchema = new mongoose.Schema({
+  companyName: {
+    type: String,
+    required: true,
+  },
+  companyAddress: {
+    type: String,
+    required: true,
+  },
+  companyActivity: {
+    type: String,
+    required: true,
+  },
+  companyVAT: {
+    type: String,
+    required: true,
+  },
+  companyOwner: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -133,6 +156,7 @@ const userSchema = new mongoose.Schema(
     orders: [ordersSchema],
     consents: [consentSchema],
     coupons: [couponsSchema],
+    invoices: [invoicesSchema],
   },
   { timestamps: true }
 );
@@ -148,7 +172,8 @@ userSchema.statics.signup = async function (
   orders,
   consents,
   coupons,
-  more
+  more,
+  invoices
 ) {
   if (!email) {
     throw new Error("Email is required");
@@ -212,6 +237,7 @@ userSchema.statics.signup = async function (
     consents,
     coupons,
     more,
+    invoices,
   });
 
   return user;
@@ -518,6 +544,45 @@ userSchema.statics.addCoupon = async function (email, coupon, validity, used, us
             validity: validity,
             used: used,
             usedDate: usedDate,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+userSchema.statics.newInvoice = async function (
+  email,
+  companyName,
+  companyAddress,
+  companyActivity,
+  companyVAT,
+  companyOwner
+) {
+  if (!companyName || !companyAddress || !companyActivity || !companyVAT || !companyOwner) {
+    throw new Error("All fields required");
+  }
+
+  try {
+    const user = await this.findOneAndUpdate(
+      { email },
+      {
+        $push: {
+          invoices: {
+            companyName,
+            companyAddress,
+            companyActivity,
+            companyVAT,
+            companyOwner,
           },
         },
       },
