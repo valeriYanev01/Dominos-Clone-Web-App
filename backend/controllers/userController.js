@@ -180,7 +180,6 @@ export const updateAddress = async (req, res) => {
   const { id, email, name, fullAddress, store, phoneNumber, doorBell, floor, block, apartment, entrance, coordinates } =
     req.body;
 
-  console.log(store);
   try {
     const newAddress = await UserModel.updateAddress(
       id,
@@ -420,12 +419,45 @@ export const addInvoice = async (req, res) => {
 };
 
 export const getInvoices = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;
 
   try {
     const invoices = await UserModel.findOne({ email }).select("invoices");
 
     return res.status(200).json({ invoices });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const deleteInvoice = async (req, res) => {
+  const { email, companyVAT } = req.query;
+
+  console.log(email, companyVAT);
+
+  try {
+    const invoice = await UserModel.updateOne({ email }, { $pull: { invoices: { companyVAT: companyVAT } } });
+
+    return res.status(200).json({ invoice });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateInvoice = async (req, res) => {
+  const { email, companyName, companyAddress, companyActivity, companyVAT, companyOwner } = req.body;
+
+  try {
+    const invoice = await UserModel.updateInvoice(
+      email,
+      companyName,
+      companyAddress,
+      companyActivity,
+      companyVAT,
+      companyOwner
+    );
+
+    return res.status(200).json({ invoice });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

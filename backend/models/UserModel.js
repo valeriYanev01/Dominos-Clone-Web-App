@@ -405,7 +405,6 @@ userSchema.statics.updateAddress = async function (
   entrance = "",
   coordinates
 ) {
-  console.log(store);
   if (!name) {
     throw new Error("Enter a name for this address");
   }
@@ -572,6 +571,12 @@ userSchema.statics.newInvoice = async function (
     throw new Error("All fields required");
   }
 
+  const allInvoices = await this.findOne({ email }).select("invoices");
+
+  const companyExists = allInvoices.invoices.some((invoice) => invoice.companyVAT === companyVAT);
+
+  if (companyExists) throw new Error("Comapny with that VAT already exists");
+
   try {
     const user = await this.findOneAndUpdate(
       { email },
@@ -595,8 +600,41 @@ userSchema.statics.newInvoice = async function (
 
     return user;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message);
   }
+};
+
+userSchema.statics.updateInvoice = async function (
+  email,
+  companyName,
+  companyAddress,
+  companyActivity,
+  companyVAT,
+  companyOwner
+) {
+  if (!email) {
+    throw new Error("Unauthorized request");
+  }
+
+  if (!companyName || !companyAddress || !companyActivity || !companyVAT || !companyOwner) {
+    throw new Error("All fields required");
+  }
+
+  const updatedInvoice = await this.findOneAndUpdate(
+    { email, "invoices.companyVAT": companyVAT },
+    {
+      $set: {
+        "invoices.$.companyName": companyName,
+        "invoices.$.companyAddress": companyAddress,
+        "invoices.$.companyActivity": companyActivity,
+        "invoices.$.companyVAT": companyVAT,
+        "invoices.$.companyOwner": companyOwner,
+      },
+    },
+    { new: true }
+  );
+
+  return updatedInvoice;
 };
 
 export const UserModel = mongoose.model("User", userSchema);

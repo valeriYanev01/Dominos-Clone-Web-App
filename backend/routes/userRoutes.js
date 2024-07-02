@@ -6,6 +6,7 @@ import {
   apply,
   deleteAccount,
   deleteAddress,
+  deleteInvoice,
   getAddresses,
   getCoupons,
   getInvoices,
@@ -16,6 +17,7 @@ import {
   newOrder,
   updateAddress,
   updateConsent,
+  updateInvoice,
   updateUser,
   userLogin,
   userSignup,
@@ -47,7 +49,9 @@ router.post("/add-invoice", addInvoice);
 router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
+router.put("/update-invoice", updateInvoice);
 router.delete("/delete-address", deleteAddress);
 router.delete("/account-delete", deleteAccount);
+router.delete("/delete-invoice", deleteInvoice);
 
 export { router as userRouter };
