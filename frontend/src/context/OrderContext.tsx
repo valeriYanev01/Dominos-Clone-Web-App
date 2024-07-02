@@ -138,7 +138,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   useEffect(() => {
     if (orderTime) {
-      localStorage.setItem("order-time", JSON.stringify(orderTime));
+      localStorage.setItem("order-time", orderTime);
     }
   }, [orderTime]);
 
@@ -166,12 +166,20 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem("order-time")) {
+      setOrderTime(localStorage.getItem("order-time") as string);
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("basket-items", JSON.stringify(itemsInBasket));
   }, [itemsInBasket]);
 
   useEffect(() => {
     if (itemsInBasket.length > 0) {
       setNavigateToCheckoutPage(true);
+    } else {
+      setNavigateToCheckoutPage(false);
     }
   }, [itemsInBasket]);
 

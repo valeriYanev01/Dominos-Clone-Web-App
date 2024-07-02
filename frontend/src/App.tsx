@@ -38,6 +38,10 @@ function App() {
     if (localStorage.getItem("user") && location.pathname.includes("signup")) {
       navigate("/");
     }
+
+    if (!localStorage.getItem("user") && location.pathname.includes("checkout")) {
+      navigate("/");
+    }
   }, [loggedIn, navigate, location]);
 
   return (

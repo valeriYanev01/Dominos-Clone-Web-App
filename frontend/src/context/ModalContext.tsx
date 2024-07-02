@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 type OpenModal = boolean;
 
@@ -76,6 +77,15 @@ export const ModalContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [modalType, setModalType] = useState<ModalType>("");
   const [product, setProduct] = useState<Product>([]);
   const [deal, setDeal] = useState<Deal>(defaultDeal);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.pathname.includes("menu") && modalType === "product") {
+      setOpenModal(false);
+      setModalType("");
+    }
+  }, [location, modalType]);
 
   return (
     <ModalContext.Provider

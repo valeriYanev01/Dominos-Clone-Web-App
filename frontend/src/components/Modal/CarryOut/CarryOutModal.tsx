@@ -143,6 +143,10 @@ const CarryOutModal = () => {
     "22:30",
   ];
 
+  useEffect(() => {
+    setOrderTime(deliveryHoursOpenedStore[0]);
+  }, []);
+
   const deliveryHoursOpen = deliveryHoursOpenedStore
     .map((hour) => {
       if (hour !== "NOW") {
@@ -184,6 +188,7 @@ const CarryOutModal = () => {
     setProduct([]); // if there is an active product the modal will be open, so it needs to be nullified before entering the menu page
     setModalType("");
     localStorage.setItem("active-order", "true");
+    localStorage.setItem("order-time", String(orderTime));
     localStorage.setItem(
       "order-details",
       JSON.stringify({

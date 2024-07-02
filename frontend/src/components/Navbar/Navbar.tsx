@@ -25,7 +25,7 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket, orderType } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -392,15 +392,17 @@ const Navbar = ({ page }: Page) => {
                 {
                   <div className="navbar-active-order-step">
                     <img src="/svg/order/time.svg" className="navbar-active-order-step-img" />
-                    <span className="navbar-active-order-step-text">
-                      {orderTime ? orderTime : JSON.parse(localStorage.getItem("order-time") as string)}
-                    </span>
+                    <span className="navbar-active-order-step-text">{orderTime}</span>
                   </div>
                 }
                 <img src="/svg/order/arrow.svg" className="navbar-active-order-step-arrow" />
               </li>
               <li
-                style={orderType === "delivery" ? { flex: 2 } : { flex: 1 }}
+                style={
+                  JSON.parse(localStorage.getItem("order-details") as string).type === "delivery"
+                    ? { flex: 2 }
+                    : { flex: 1 }
+                }
                 onClick={() => {
                   setOpenModal(true);
                   setModalType(JSON.parse(localStorage.getItem("order-details") as string).type);
@@ -454,7 +456,9 @@ const Navbar = ({ page }: Page) => {
         <ul
           className="profile-nav"
           style={
-            JSON.parse(localStorage.getItem("active-order") as string) ? { marginTop: "8.7rem" } : { paddingTop: "7rem" }
+            JSON.parse(localStorage.getItem("active-order") as string)
+              ? { marginTop: "8.7rem" }
+              : { paddingTop: "7rem" }
           }
         >
           <li

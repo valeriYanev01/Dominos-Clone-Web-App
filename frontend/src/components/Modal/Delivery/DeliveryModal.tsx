@@ -9,7 +9,7 @@ import { OrderContext } from "../../../context/OrderContext";
 import { useNavigate } from "react-router-dom";
 
 const DeliveryModal: React.FC = () => {
-  const [lastOrderFullAddress, setLastOrderFullAddress] = useState();
+  // const [lastOrderFullAddress, setLastOrderFullAddress] = useState();
   const [lastOrderAddressName, setLastOrderAddressName] = useState();
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [lastOrderAddress, setLastOrderAddress] = useState<Address>();
@@ -46,14 +46,13 @@ const DeliveryModal: React.FC = () => {
 
           if (allOrders.length < 1) {
             setShowRecentAddress(false);
-            console.log(otherAddresses);
+            console.log();
             setSelectedAddress(otherAddresses[0]);
           } else {
             const lastOrder = allOrders[allOrders.length - 1];
             setLastOrderAddress(lastOrder);
-            setLastOrderFullAddress(lastOrder.address.fullAddress);
+            // setLastOrderFullAddress(lastOrder.address.fullAddress);
             setLastOrderAddressName(lastOrder.address.name);
-            setOrderStore(lastOrder.address.store);
             setShowAddresses(true);
             setShowRecentAddress(true);
             setSelectedAddress(lastOrder.address);
@@ -87,7 +86,7 @@ const DeliveryModal: React.FC = () => {
           } else {
             setShowOtherAddresses(true);
             setShowAddresses(true);
-            if (newAddresses.length < response.data.allAddresses.addresses.length) {
+            if (newAddresses.length <= response.data.allAddresses.addresses.length) {
               setOtherAddresses(newAddresses);
             }
           }
@@ -103,8 +102,11 @@ const DeliveryModal: React.FC = () => {
   }, [emailLogin, token, lastOrderAddressName]);
 
   useEffect(() => {
-    if (selectedAddress) setOrderAddress(selectedAddress);
-  }, [selectedAddress, setOrderAddress]);
+    if (selectedAddress && selectedAddress.store) {
+      setOrderStore(selectedAddress.store);
+      setOrderAddress(selectedAddress);
+    }
+  }, [selectedAddress, setOrderAddress, setOrderStore]);
 
   const deliveryHoursOpenedStore = [
     isOpenForDelivery ? "NOW" : "11:30",
@@ -209,6 +211,12 @@ const DeliveryModal: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenForDelivery]);
 
+  useEffect(() => {
+    setOrderTime(deliveryHoursOpenedStore[0]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSelectedAddress = (address: Address) => {
     setSelectedAddress(address.address ? address.address : address);
   };
@@ -272,7 +280,7 @@ const DeliveryModal: React.FC = () => {
                     className="dm-address-location-store"
                     style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                   />
-                  <p>{lastOrderFullAddress}</p>
+                  <p>{lastOrderAddress?.address && lastOrderAddress?.address.fullAddress}</p>
                 </div>
 
                 <div className="dm-address-store-container">
@@ -282,7 +290,10 @@ const DeliveryModal: React.FC = () => {
                     style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
                   />
                   <p>
-                    Your Store: <span className="dm-address-store-name">{orderStore}</span>
+                    Your Store:{" "}
+                    <span className="dm-address-store-name">
+                      {lastOrderAddress?.address && lastOrderAddress?.address.store}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -300,6 +311,11 @@ const DeliveryModal: React.FC = () => {
                     className={`address-container ${selectedAddress === address ? "selected-address" : ""}`}
                   >
                     <img
+                      onClick={() => {
+                        setModalType("");
+                        setOpenModal(false);
+                        navigate("profile/addresses");
+                      }}
                       src="/svg/edit.svg"
                       className="dm-address-edit-img"
                       style={selectedAddress === address ? { display: "block" } : { display: "none" }}
@@ -316,7 +332,7 @@ const DeliveryModal: React.FC = () => {
                         className="dm-address-location-store"
                         style={selectedAddress === address ? { display: "block" } : { display: "none" }}
                       />
-                      <p>{lastOrderFullAddress}</p>
+                      <p>{address.fullAddress}</p>
                     </div>
 
                     <div className="dm-address-store-container">
@@ -326,7 +342,7 @@ const DeliveryModal: React.FC = () => {
                         style={selectedAddress === address ? { display: "block" } : { display: "none" }}
                       />
                       <p>
-                        Your Store: <span className="dm-address-store-name">Store</span>
+                        Your Store: <span className="dm-address-store-name">{address.store}</span>
                       </p>
                     </div>
                   </div>

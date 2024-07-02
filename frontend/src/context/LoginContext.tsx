@@ -118,7 +118,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
               params: { email: emailLogin },
             });
 
-            setDominosMorePoints(response.data.user.more);
+            localStorage.setItem("dominos-more", response.data.user.more);
           } catch (err) {
             if (axios.isAxiosError(err)) {
               console.log(err.message);

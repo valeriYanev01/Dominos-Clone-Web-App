@@ -48,6 +48,7 @@ const Signup: React.FC = () => {
           { confidentiality: true },
           { termsOfUse: true },
           { more: false },
+          { invoices: [] },
         ],
         coupons: [],
         more: 0,
