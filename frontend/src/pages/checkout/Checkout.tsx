@@ -430,6 +430,8 @@ export const Checkout: React.FC = () => {
                 onChange={() => {
                   setShowInvoices(!showInvoices);
                   setShowAddNewInvoiceMenu(false);
+                  setSelectedInvoice(null);
+                  setEditInvoice(false);
                 }}
               />
               <label htmlFor="checkout-invoice">Invoice me</label>
@@ -454,6 +456,17 @@ export const Checkout: React.FC = () => {
                           setEditInvoice(!editInvoice);
                           setSelectedInvoice(invoice);
                           setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
+
+                          if (showAddNewInvoiceMenu) {
+                            setSelectedInvoice(invoice);
+                            setEditInvoice(true);
+                            setShowAddNewInvoiceMenu(true);
+                            if (selectedInvoice?.companyVAT === invoice.companyVAT) {
+                              setSelectedInvoice(null);
+                              setEditInvoice(false);
+                              setShowAddNewInvoiceMenu(false);
+                            }
+                          }
                         }}
                       />
                       <img
@@ -469,18 +482,18 @@ export const Checkout: React.FC = () => {
                   <div
                     className="checkout-all-new-invoice-container"
                     onClick={() => {
-                      if (selectedInvoice) {
-                        setSelectedInvoice(null);
-                        setEditInvoice(false);
-                        setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
-                      }
+                      setSelectedInvoice(null);
+                      setEditInvoice(false);
+                      setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
                     }}
                   >
                     {selectedInvoice?.companyName}-{selectedInvoice?.companyVAT}
                   </div>
                 ) : (
                   <div
-                    onClick={() => setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu)}
+                    onClick={() => {
+                      setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
+                    }}
                     className="checkout-all-new-invoice-container"
                   >
                     <p className="checkout-all-invoice-btn">New Invoice</p>
