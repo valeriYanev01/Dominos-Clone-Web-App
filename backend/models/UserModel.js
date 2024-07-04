@@ -157,6 +157,12 @@ const userSchema = new mongoose.Schema(
     consents: [consentSchema],
     coupons: [couponsSchema],
     invoices: [invoicesSchema],
+    paymentMethods: {
+      type: [String],
+    },
+    stripeCustomerID: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
