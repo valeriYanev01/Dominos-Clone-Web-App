@@ -1,8 +1,38 @@
 .deal-modal-container {
   height: 100vh;
   width: 80vw;
-  overflow-y: auto;
-  box-shadow: 7px 4px 5px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.deal-modal-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  align-items: center;
+  width: 80%;
+}
+
+.deal-modal-heading p,
+.deal-modal-heading img {
+  margin: 0;
+}
+
+.deal-modal-heading p {
+  font-size: 2.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.deal-modal-heading {
+  color: #0073aa;
+}
+
+.deal-modal-deal-description {
+  width: 60%;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .dm-steps-container {
@@ -10,12 +40,14 @@
   border-bottom: dashed 2px #55555588;
   border-top: dashed 2px #55555588;
   margin-top: 3.125rem;
+  width: inherit;
 }
 
 .dm-step {
   flex: 1;
-  height: 30vh;
+  min-height: 30vh;
   position: relative;
+  margin: 0;
 }
 
 .dm-step-num {
@@ -30,8 +62,74 @@
   font-size: 1.2rem;
 }
 
+.dm-product-container {
+  padding: 1rem;
+}
+
+.dm-product-text {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.dm-product-select {
+  width: 90%;
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  background-color: #f2f4f5;
+  border: 1px solid #e3e4e5;
+  outline: none;
+  color: #555;
+}
+
 .dm-step-side-border {
   border-left: 2px dashed #55555588;
+}
+
+.dm-toppings-text,
+.dm-toppings {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.dm-logged-topping-container {
+  justify-content: end;
+}
+
+.dm-logged-topping-container div {
+  margin: 0;
+}
+
+.dm-add-btn-price-container {
+  width: 25%;
+  margin-right: 2rem;
+  margin-top: 1rem;
+}
+
+.dm-price-container {
+  display: flex;
+  margin-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dm-price-text,
+.dm-price-number {
+  margin: 0;
+}
+
+.dm-price-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.dm-price-number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0073aa;
 }
 
 .deal-add-btn {
@@ -41,9 +139,6 @@
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
-  width: 25%;
-  margin-right: 0;
-  margin-top: 50px;
   font-size: 22px;
   letter-spacing: 1px;
 }

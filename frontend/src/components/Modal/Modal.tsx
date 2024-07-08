@@ -17,15 +17,23 @@ interface ModalInterface {
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   const { modalType, setOpenModal, setModalType, setProduct } = useContext(ModalContext);
 
-  if (openModal) {
-    window.addEventListener("keydown", (e) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpenModal(false);
         setModalType("");
         setProduct([]);
       }
-    });
-  }
+    };
+
+    if (openModal) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [openModal, setOpenModal, setModalType, setProduct]);
 
   useEffect(() => {
     openModal ? document.body.classList.add("hide-scrollbar") : document.body.classList.remove("hide-scrollbar");
@@ -34,10 +42,12 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   return (
     <>
       {openModal && (
-        <div>
+        <div className="modal-container">
           <div className="abra" style={modalType === "product" || modalType === "deal" ? { width: "80vw" } : {}}>
             <div
-              className={`modall ${modalType === "login" ? "modal-login-width" : ""}`}
+              className={`modall ${
+                modalType === "login" ? "modal-login-width" : modalType === "deal" ? "modal-deal-width" : ""
+              }`}
               style={
                 modalType === "product" || modalType === "deal"
                   ? { border: "none", background: "white", maskImage: "none" }
@@ -69,25 +79,17 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
                   ""
                 )}
               </div>
+              <span
+                className={`close-modal ${
+                  modalType === "product" || modalType === "deal" ? "close-modal-product" : ""
+                }`}
+                onClick={() => {
+                  setOpenModal(false);
+                  setModalType("");
+                  setProduct([]);
+                }}
+              ></span>
             </div>
-            <span
-              className={`close-modal ${
-                modalType === "login"
-                  ? "close-modal-login"
-                  : modalType === "product" || modalType === "deal"
-                  ? "close-modal-product"
-                  : modalType === "method"
-                  ? "close-modal-method"
-                  : modalType === "delivery"
-                  ? "close-modal-delivery"
-                  : ""
-              }`}
-              onClick={() => {
-                setOpenModal(false);
-                setModalType("");
-                setProduct([]);
-              }}
-            ></span>
           </div>
         </div>
       )}

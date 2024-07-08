@@ -200,7 +200,11 @@ const CarryOutModal = () => {
 
   return (
     <div>
-      <Heading text="SELECT STORE & PICK-UP TIME" />
+      <div className="carryout-modal-heading">
+        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
+        <p>SELECT STORE & PICK-UP TIME</p>
+        <img src="/svg/decorRightRed.svg" className="deal-decor" />
+      </div>
 
       <div className="com-address">
         <p>STORE</p>

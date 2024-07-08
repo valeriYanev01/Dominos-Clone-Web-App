@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./DealModal.css";
 import { ModalContext } from "../../../context/ModalContext";
-import Heading from "../../Heading/Heading";
 import { products } from "../../../data/products";
-import { BasketItem, OrderContext } from "../../../context/OrderContext";
+import { OrderContext } from "../../../context/OrderContext";
 import { LoginContext } from "../../../context/LoginContext";
 import { allToppings } from "../../../data/toppings";
 
@@ -78,7 +77,7 @@ const DealModal: React.FC = () => {
   const [price, setPrice] = useState("");
   const [size, setSize] = useState("");
   const [pizzaIndex, setPizzaIndex] = useState(0);
-  const [finalDeal, setFinalDeal] = useState<BasketItem>();
+  const [finalDeal, setFinalDeal] = useState();
   const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
 
   const { deal, setOpenModal, setModalType } = useContext(ModalContext);
@@ -310,6 +309,7 @@ const DealModal: React.FC = () => {
     }
 
     setFinalDeal(final);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     indexes,
     selectedChicken,
@@ -489,7 +489,6 @@ const DealModal: React.FC = () => {
   };
 
   const handleChangeToppings = (topping: string, checked: boolean) => {
-    console.log(size);
     if (checked === true) {
       if (modifiedToppings[pizzaIndex].length >= toppings[pizzaIndex].length) {
         if (size === "Medium") {
@@ -549,10 +548,13 @@ const DealModal: React.FC = () => {
 
   return (
     <div className="deal-modal-container">
-      <div>
-        <Heading text={deal.heading} />
+      <div className="deal-modal-heading">
+        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
+        <p>{deal.heading}</p>
+        <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
-      <p>{deal.desc}</p>
+
+      <p className="deal-modal-deal-description">{deal.desc}</p>
 
       <div className="dm-steps-container">
         {dealProducts.length > 0 &&
@@ -562,9 +564,10 @@ const DealModal: React.FC = () => {
               {product.pizza && (
                 <div key={uuid()}>
                   {new Array(product.pizza.number).fill(undefined).map((_, i) => (
-                    <div key={uuid()}>
-                      <p>PRODUCT</p>
+                    <div key={uuid()} className="dm-product-container">
+                      <p className="dm-product-text">PRODUCT</p>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         value={selectedPizzas[i]}
                         onChange={(e) => {
@@ -576,6 +579,7 @@ const DealModal: React.FC = () => {
                         )}
                       </select>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         onChange={(e) => {
                           handleCrustChange(i, e.target.value);
@@ -591,15 +595,16 @@ const DealModal: React.FC = () => {
                       </select>
 
                       <div>
-                        <p>TOPPINGS</p>
+                        <p className="dm-toppings-text">TOPPINGS</p>
 
-                        <p>
+                        <p className="dm-toppings">
                           {modifiedToppings[i]?.length > toppings[i]?.length
                             ? modifiedToppings[i]?.join(", ")
                             : toppings[i]?.join(", ")}
                         </p>
+
                         {loggedIn && (
-                          <div className="logged-topping-container">
+                          <div className="logged-topping-container dm-logged-topping-container">
                             <div className="toppings-default" onClick={() => handleDefault(i)}>
                               DEFAULT
                             </div>
@@ -622,11 +627,12 @@ const DealModal: React.FC = () => {
                 </div>
               )}
               {product.starters && (
-                <div key={uuid()}>
+                <div key={uuid()} className="dm-product-container">
                   {new Array(product.starters.number).fill(undefined).map((_, i) => (
                     <div key={uuid()}>
-                      <p>PRODUCT</p>
+                      <p className="dm-product-text">PRODUCT</p>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         onChange={(e) => handleStarterChange(i, e.target.value)}
                         value={selectedStarters[i]}
@@ -640,11 +646,12 @@ const DealModal: React.FC = () => {
                 </div>
               )}
               {product.chicken && (
-                <div key={uuid()}>
+                <div key={uuid()} className="dm-product-container">
                   {new Array(product.chicken.number).fill(undefined).map((_, i) => (
                     <div key={uuid()}>
-                      <p>PRODUCT</p>
+                      <p className="dm-product-text">PRODUCT</p>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         onChange={(e) => handleChickenChange(i, e.target.value)}
                         value={selectedChicken[i]}
@@ -658,11 +665,12 @@ const DealModal: React.FC = () => {
                 </div>
               )}
               {product.pasta && (
-                <div key={uuid()}>
+                <div key={uuid()} className="dm-product-container">
                   {new Array(product.pasta.number).fill(undefined).map((_, i) => (
                     <div key={uuid()}>
-                      <p>PRODUCT</p>
+                      <p className="dm-product-text">PRODUCT</p>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         onChange={(e) => handlePastaChange(i, e.target.value)}
                         value={selectedPastas[i]}
@@ -676,11 +684,15 @@ const DealModal: React.FC = () => {
                 </div>
               )}
               {product.drinks && (
-                <div key={uuid()}>
+                <div key={uuid()} className="dm-product-container">
                   {new Array(product.drinks.number).fill(undefined).map((_, i) => (
                     <div key={uuid()}>
-                      <p>PRODUCT</p>
-                      <select key={uuid()} onChange={(e) => handleDrinkChange(i, e.target.value)}>
+                      <p className="dm-product-text">PRODUCT</p>
+                      <select
+                        className="dm-product-select"
+                        key={uuid()}
+                        onChange={(e) => handleDrinkChange(i, e.target.value)}
+                      >
                         {product.drinks?.type === "coke"
                           ? products.map(
                               (p) =>
@@ -700,11 +712,12 @@ const DealModal: React.FC = () => {
                 </div>
               )}
               {product.desserts && (
-                <div key={uuid()}>
+                <div key={uuid()} className="dm-product-container">
                   {new Array(product.desserts.number).fill(undefined).map((_, i) => (
                     <div key={uuid()}>
-                      <p>PRODUCT</p>
+                      <p className="dm-product-text">PRODUCT</p>
                       <select
+                        className="dm-product-select"
                         key={uuid()}
                         onChange={(e) => handleDessertChange(i, e.target.value)}
                         value={selectedDesserts[i]}
@@ -731,8 +744,11 @@ const DealModal: React.FC = () => {
           ))}
       </div>
       {price && (
-        <div>
-          <p>BGN {Number(price).toFixed(2)}</p>
+        <div className="dm-add-btn-price-container">
+          <span className="dm-price-container">
+            <span className="dm-price-text">PRICE</span>{" "}
+            <span className="dm-price-number">BGN {Number(price).toFixed(2)}</span>
+          </span>
           <div className="deal-add-btn" onClick={handleAddToBasket}>
             ADD
           </div>

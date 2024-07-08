@@ -4,13 +4,13 @@
   height: 100% !important;
   background: rgba(0, 0, 0, 0.5);
   z-index: 10000;
+  display: flex;
 }
 
 .abra {
   width: 40%;
   height: 100%;
   position: relative;
-  z-index: 1000000;
 }
 
 .modall {
@@ -20,26 +20,15 @@
   left: 50%;
   z-index: 30 !important;
   border: 2px solid lightgray;
-  background: radial-gradient(circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
-    radial-gradient(circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
-    radial-gradient(circle at bottom right, transparent 8px, lightgray 8px 10px, transparent 0 0),
-    radial-gradient(circle at bottom left, transparent 8px, lightgray 8px 10px, white 10px);
-
-  mask-image: radial-gradient(circle at top left, transparent 0, transparent 10px, black 10px),
-    radial-gradient(circle at top right, transparent 0, transparent 10px, black 10px),
-    radial-gradient(circle at bottom left, transparent 0, transparent 10px, black 10px),
-    radial-gradient(circle at bottom right, transparent 0, transparent 10px, black 10px);
-  mask-position: top left, top right, bottom left, bottom right;
-  mask-repeat: no-repeat;
-  mask-size: 60% 60%;
+  background: #fff;
   padding: 10px;
   transform: translate(-50%, -50%);
   box-shadow: 5px 20px 15px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* .modal-login-width {
-  width: 40% !important;
-} */
+.modal-deal-width {
+  padding: 0;
+}
 
 .inner-layer {
   background-image: radial-gradient(10px circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
@@ -64,46 +53,27 @@
 
 .close-modal {
   position: absolute;
-  /* top: 12%; */
-  right: 0;
-  z-index: 30;
-  /* transform: translate(310px, -140px); */
+  right: -3%;
+  top: -3%;
+  z-index: 999999 !important;
   cursor: pointer;
 }
 
 .close-modal:before {
-  position: absolute;
   content: "\2716";
-  top: -5px;
-  right: -5px;
   color: white;
   padding: 5px 10px;
   background-color: #0d6490;
   border-radius: 50%;
 }
 
-/* .close-modal-login {
-  transform: translate(30px, 20px);
+.close-modal-product {
+  top: 3%;
+  right: -7%;
 }
-.close-modal-product {}
-*/
 
 .close-modal-product:before {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-  position: fixed;
-  top: 10px;
-  right: 30px;
 }
-
-.close-modal-method:before {
-  transform: translateY(110px);
-}
-
-/* .close-modal-delivery {
-  top: 0;
-  right: 0;
-  transform: translate(0, 0);
-  position: absolute;
-} */
