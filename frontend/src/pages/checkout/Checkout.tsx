@@ -16,6 +16,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faStairs, faBell } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../../components/Profile/PaymentMethods/CheckoutForm";
+import { useNavigate } from "react-router-dom";
 
 interface Invoice {
   companyActivity: string;
@@ -23,6 +27,36 @@ interface Invoice {
   companyName: string;
   companyOwner: string;
   companyVAT: string;
+}
+
+interface PaymentMethod {
+  id: string;
+  card: {
+    brand: string;
+    last4: string;
+  };
+}
+
+interface SingleDeal {
+  name: string;
+  crust?: string;
+  quantity: number;
+  price: string;
+  addedToppings: string[];
+  removedToppings: string[];
+}
+
+interface FinalOrder {
+  deliveryTime: string;
+  deliveryAddress?: string;
+  pickupAddress?: string;
+  phoneNumber: string;
+  floor: string;
+  doorBell: string;
+  comments: string;
+  paymentMethod: string;
+  creditCard?: string;
+  items: BasketItem[];
 }
 
 export const Checkout: React.FC = () => {
@@ -45,10 +79,58 @@ export const Checkout: React.FC = () => {
   const [error, setError] = useState("");
   const [editInvoice, setEditInvoice] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [stripePromise, setStripePromise] = useState<any | null>(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const [savedPaymentMethods, setSavedPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [selectedCard, setSelectedCard] = useState("");
+  const [showAddNewCard, setShowAddNewCard] = useState(false);
+  const [cardError, setCardError] = useState("");
+  const [cardSuccess, setCardSuccess] = useState(false);
+  const [finalOrder, setFinalOrder] = useState<FinalOrder>();
 
-  const { loggedIn, dominosMorePoints, setDominosMorePoints, token, emailLogin } = useContext(LoginContext);
+  const { loggedIn, dominosMorePoints, setDominosMorePoints, token, emailLogin, customerID } = useContext(LoginContext);
   const { setModalType, setOpenModal } = useContext(ModalContext);
-  const { itemsInBasket, setItemsInBasket, orderTime } = useContext(OrderContext);
+  const {
+    itemsInBasket,
+    setItemsInBasket,
+    orderTime,
+    finalPrice,
+    dealsCount,
+    dealItemsInBasket,
+    itemsInBasketPlusDiscount,
+    freeDelivery,
+    thirdPizzaPromo,
+    finalPriceNoDiscount,
+  } = useContext(OrderContext);
+
+  const navigate = useNavigate();
+
+  const increaseQuantity = (i: number) => {
+    const products = [...itemsInBasket];
+    products[i + dealsCount].quantity += 1;
+    setItemsInBasket(products);
+  };
+
+  const decreaseQuantity = (i: number) => {
+    const products = [...itemsInBasket];
+    if (products[i + dealsCount].quantity > 1) {
+      products[i + dealsCount].quantity -= 1;
+    }
+    setItemsInBasket(products);
+  };
+
+  const removeItemFromBasket = (item: BasketItem, i: number) => {
+    const newItemsInBasket = [...itemsInBasket];
+    if (item.deal) {
+      newItemsInBasket.splice(i, 1);
+    } else {
+      newItemsInBasket.splice(i + dealItemsInBasket, 1);
+    }
+
+    setItemsInBasket(newItemsInBasket);
+  };
 
   useEffect(() => {
     let hours = 0;
@@ -112,6 +194,104 @@ export const Checkout: React.FC = () => {
         }
       };
       fetchAllInvoices();
+    }
+  }, [emailLogin, token]);
+
+  useEffect(() => {
+    if (token) {
+      const getPublishableKey = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/api/payment/config", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          setStripePromise(loadStripe(response.data.publishableKey));
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err);
+          }
+        }
+      };
+
+      getPublishableKey();
+    }
+  }, [token, showAddNewCard]);
+
+  useEffect(() => {
+    if (token && customerID) {
+      const fetchAllPaymentMethods = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/api/payment/all-payment-methods", {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { customerID },
+          });
+
+          setSavedPaymentMethods(response.data.savedPaymentMethods);
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err);
+          }
+        }
+      };
+
+      fetchAllPaymentMethods();
+    }
+  }, [token, customerID, cardSuccess]);
+
+  useEffect(() => {
+    const getClientSecret = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/payment/create-payment-intent",
+          {
+            amount: 100,
+            payment_method: selectedCard,
+            customer: customerID,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        setClientSecret(response.data.paymentIntent.client_secret);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err);
+        }
+      }
+    };
+
+    if (token) {
+      getClientSecret();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerID, token, showAddNewCard]);
+
+  useEffect(() => {
+    if (cardSuccess) {
+      setShowAddNewCard(false);
+    }
+  }, [cardSuccess]);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users/get-single-address", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            name: JSON.parse(localStorage.getItem("order-details") as string).addressName,
+            email: emailLogin,
+          },
+        });
+
+        const data = response.data.address;
+
+        setPhoneNumber(data.phoneNumber);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (emailLogin && token) {
+      fetchAddress();
     }
   }, [emailLogin, token]);
 
@@ -267,6 +447,87 @@ export const Checkout: React.FC = () => {
     }
   };
 
+  const handleDeleteCard = async (paymentMethodID: string) => {
+    try {
+      const response = await axios.delete("http://localhost:3000/api/payment/delete-payment-method", {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { email: emailLogin, paymentMethodID },
+      });
+
+      if (response.data.success) {
+        try {
+          const response = await axios.get("http://localhost:3000/api/payment/all-payment-methods", {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { customerID },
+          });
+
+          setSavedPaymentMethods(response.data.savedPaymentMethods);
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err);
+          }
+        }
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handlePayWithSelectedCard = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/payment/create-payment-intent",
+        {
+          amount: 2000,
+          payment_method: selectedCard,
+          return_url: "http://localhost:5173/tracker",
+          customer: customerID,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setClientSecret(response.data.paymentIntent.client_secret);
+
+      if (response.data.paymentIntent.status === "succeeded") {
+        window.location.href = "http://localhost:5173/tracker";
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handleOrder = () => {
+    if (selectedPaymentMethod === "card") {
+      handlePayWithSelectedCard();
+    }
+
+    setFinalOrder({
+      deliveryTime: orderTime,
+      deliveryAddress: JSON.parse(localStorage.getItem("order-details") as string).addressLocation,
+      pickupAddress: JSON.parse(localStorage.getItem("order-details") as string).store,
+      phoneNumber: phoneNumber,
+      floor: floor,
+      doorBell: bell,
+      comments: comments,
+      // invoice
+      paymentMethod: selectedPaymentMethod,
+      creditCard: selectedCard,
+      items: itemsInBasket,
+    });
+
+    localStorage.removeItem("active-order");
+    localStorage.removeItem("basket-items");
+
+    setDominosMorePoints((prevState) => prevState + 1);
+    navigate("/tracker");
+    localStorage.setItem("final-order", finalOrder);
+  };
+
+  console.log(finalOrder);
   return (
     <div className="checkout-page">
       <Navbar page="checkout" />
@@ -456,6 +717,7 @@ export const Checkout: React.FC = () => {
                           setEditInvoice(!editInvoice);
                           setSelectedInvoice(invoice);
                           setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
+                          setError("");
 
                           if (showAddNewInvoiceMenu) {
                             setSelectedInvoice(invoice);
@@ -493,6 +755,7 @@ export const Checkout: React.FC = () => {
                   <div
                     onClick={() => {
                       setShowAddNewInvoiceMenu(!showAddNewInvoiceMenu);
+                      setError("");
                     }}
                     className="checkout-all-new-invoice-container"
                   >
@@ -564,28 +827,292 @@ export const Checkout: React.FC = () => {
                   </div>
                 </div>
 
-                <div
-                  className="checkout-new-invoice-btn"
-                  onClick={() => (selectedInvoice ? handleUpdateInvoice() : handleAddNewInvoice())}
-                >
-                  Save
+                <div className="checkout-new-invoice-btn-container">
+                  <button
+                    className={`checkout-new-invoice-btn ${loading ? "disabled" : ""}`}
+                    onClick={() => (selectedInvoice ? handleUpdateInvoice() : handleAddNewInvoice())}
+                    disabled={loading}
+                  >
+                    Save
+                  </button>
                 </div>
 
                 <p className="checkout-error">{error && error}</p>
               </div>
             )}
           </div>
+
           <div className="checkout-details-payment">
             <span className="checkout-details-step">2</span>
+
+            <p className="checkout-details-delivery-heading">PAYMENT METHOD</p>
+
+            <div
+              onClick={() => {
+                setShowAddNewCard(false);
+                setSelectedPaymentMethod("cash");
+              }}
+              className="checkout-delivery-method"
+            >
+              <input
+                type="radio"
+                name="payment-method"
+                value="cash"
+                checked={selectedPaymentMethod === "cash"}
+                onChange={() => setSelectedPaymentMethod("cash")}
+              />
+              <img
+                src={selectedPaymentMethod === "cash" ? "/svg/checkout/cash-selected.svg" : "/svg/checkout/cash.svg"}
+              />
+              <p>Cash</p>
+            </div>
+
+            <div onClick={() => setSelectedPaymentMethod("card")} className="checkout-delivery-method">
+              <input
+                type="radio"
+                name="payment-method"
+                value="cash"
+                checked={selectedPaymentMethod === "card"}
+                onChange={() => setSelectedPaymentMethod("card")}
+              />
+              <img
+                src={selectedPaymentMethod === "card" ? "/svg/checkout/card-selected.svg" : "/svg/checkout/card.svg"}
+              />
+              <div>
+                <p className="checkout-delivery-method-card">Credit Card</p>
+                <p className="checkout-delivery-method-card-symbol-text">&#10003; No extra charge</p>
+              </div>
+            </div>
+
+            {selectedPaymentMethod === "card" && (
+              <div>
+                <ul className="checkout-saved-cards-container">
+                  {savedPaymentMethods &&
+                    savedPaymentMethods.map((method) => (
+                      <li key={method.id}>
+                        <input
+                          type="radio"
+                          name="checkout-selected-card"
+                          id={method.id}
+                          value={method.id}
+                          onChange={() => setSelectedCard(method.id)}
+                        />
+                        <label htmlFor={method.id}>
+                          <span className="checkout-saved-card-brand">{method.card.brand}</span> **** **** ****{" "}
+                          <span className="checkout-saved-card-last4">{method.card.last4}</span>
+                        </label>
+                        <img
+                          className="checkout-single-card-delete"
+                          src="/svg/checkout/delete.svg"
+                          onClick={() => handleDeleteCard(method.id)}
+                        />
+                      </li>
+                    ))}
+                </ul>
+                <div className="checkout-all-new-invoice-container" onClick={() => setShowAddNewCard(!showAddNewCard)}>
+                  <p className="checkout-all-invoice-btn">Add New Card</p>
+                  <img className="checkout-all-invoice-btn-img" src="/svg/checkout/plus.svg" />
+                </div>
+              </div>
+            )}
+
+            {showAddNewCard && clientSecret && stripePromise && (
+              <>
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <CheckoutForm setCardError={setCardError} setCardSuccess={setCardSuccess} />
+                </Elements>
+
+                {cardError && cardError}
+              </>
+            )}
           </div>
+
           <div className="checkout-details-order">
             <span className="checkout-details-step">3</span>
 
-            {itemsInBasket.map((item) => (
-              <p key={uuid()}>
-                {item.deal ? item.desc : item.name} x {item.quantity}
-              </p>
-            ))}
+            <p className="checkout-details-delivery-heading">ORDER CONFIRMATION</p>
+
+            <div>
+              {itemsInBasket
+                .filter((item) => item.deal)
+                .map((item, i) => (
+                  <div key={uuid()} className="navigation-basket-single-item">
+                    <div className="navigation-basket-deal-container">
+                      <span className="navigation-basket-deal-symbol">*</span>
+
+                      <div className="navigation-basket-deal-desc">
+                        {item.deal &&
+                          item.deal.map((i: SingleDeal) => (
+                            <div key={uuid()}>
+                              {i.crust ? <span>{i.crust} </span> : ""}
+                              <span className="navigation-basket-deal-name">
+                                {i.name} x {i.quantity}
+                              </span>
+
+                              {i.addedToppings && i.addedToppings?.length > 0 && (
+                                <div className="navigation-basket-toppings">
+                                  <span>+ </span>
+                                  {i.addedToppings.join(", ")}
+                                </div>
+                              )}
+                              {i.removedToppings && i.removedToppings?.length > 0 && (
+                                <div className="navigation-basket-toppings">
+                                  <span>- </span>
+                                  {i.removedToppings.join(", ")}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                      </div>
+
+                      <div
+                        onClick={() => removeItemFromBasket(item, i)}
+                        className="navigation-basket-remove-item-container"
+                      >
+                        <span className="navigation-basket-remove-item">
+                          <img src="/svg/basket/removeItem.svg" className="navigation-basket-remove-img" />
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="navigation-basket-quantity-price-container">
+                      <div></div>
+                      <p className="navigation-basket-single-item-price" style={{ margin: "0" }}>
+                        BGN {item.price}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+              {itemsInBasket.length > 0 &&
+                itemsInBasket
+                  .filter((item) => !item.deal)
+                  .map((item, i) => (
+                    <div key={uuid()} className="navigation-basket-single-item">
+                      <div>
+                        <div className="navigation-basket-desc-remove-container">
+                          <div className="navigation-basket-desc-container">
+                            <p className="navigation-basket-product-name">{item.name}</p>
+                            <div className="navigation-basket-product-desc">
+                              <span>{item.size} </span>
+                              <span>{item.crust}</span>
+                            </div>
+
+                            {item.addedToppings && item.addedToppings?.length > 0 && (
+                              <div className="navigation-basket-toppings">
+                                <span>+ </span>
+                                {item.addedToppings.join(", ")}
+                              </div>
+                            )}
+
+                            {item.removedToppings && item.removedToppings?.length > 0 && (
+                              <div className="navigation-basket-toppings">
+                                <span>- </span>
+                                {item.removedToppings.join(", ")}
+                              </div>
+                            )}
+                          </div>
+
+                          <div
+                            onClick={() => removeItemFromBasket(item, i)}
+                            className="navigation-basket-remove-item-container"
+                          >
+                            <span className="navigation-basket-remove-item">
+                              <img src="/svg/basket/removeItem.svg" className="navigation-basket-remove-img" />
+                            </span>
+                          </div>
+                        </div>
+                        {thirdPizzaPromo && item.type === "pizza" && (
+                          <p className="navigation-basket-promo-text">Third Pizza for 5.50 Lv.</p>
+                        )}
+
+                        <div className="navigation-basket-quantity-price-container">
+                          <div className="navigation-basket-price-container">
+                            <span
+                              onClick={() => decreaseQuantity(i)}
+                              className={`navigation-basket-quantity-control
+                        ${item.quantity < 2 ? "navigation-basket-decrease-quantity-disabled" : ""}`}
+                            >
+                              {item.quantity < 2 ? (
+                                <img
+                                  src="/svg/basket/minus-disabled.svg"
+                                  className="navigation-basket-quantity-control-img"
+                                />
+                              ) : (
+                                <img src="/svg/basket/minus.svg" className="navigation-basket-quantity-control-img" />
+                              )}
+                            </span>
+                            <span className="navigation-basket-quantity-text">{item.quantity}</span>
+                            <span onClick={() => increaseQuantity(i)} className="navigation-basket-quantity-control">
+                              <img src="/svg/basket/plus.svg" className="navigation-basket-quantity-control-img" />
+                            </span>
+                          </div>
+
+                          <div className="navigation-basket-single-item-price">
+                            {itemsInBasketPlusDiscount.length > 0 &&
+                            itemsInBasketPlusDiscount[i] &&
+                            item.type === "pizza" &&
+                            Number(item.price) * item.quantity > Number(itemsInBasketPlusDiscount[i].price) ? (
+                              <div>
+                                {itemsInBasketPlusDiscount.length > 0 ? (
+                                  <div>
+                                    <p className="navigation-basket-reduced-price">
+                                      BGN {Number(Number(item.price) * item.quantity).toFixed(2)}
+                                    </p>
+                                    <p className="navigation-basket-regular-price">
+                                      BGN {Number(itemsInBasketPlusDiscount[i].price).toFixed(2)}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <p className="navigation-basket-regular-price">
+                                    BGN {Number(Number(item.price) * item.quantity).toFixed(2)}
+                                  </p>
+                                )}
+                              </div>
+                            ) : (
+                              itemsInBasketPlusDiscount[i] && (
+                                <p style={{ fontWeight: "bold" }}>
+                                  BGN {Number(itemsInBasketPlusDiscount[i].price).toFixed(2)}
+                                </p>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+              {freeDelivery ? (
+                <p className="navigation-basket-promo-text">
+                  Free Delivery <span className="navigation-basket-free-delivery">1.99 Lv.</span> 0.00 Lv.
+                </p>
+              ) : (
+                <p>Paid Delivery 1.99 BGN!!!</p>
+              )}
+
+              <div className="navigation-basket-total-price-container">
+                <p>
+                  Total:{" "}
+                  <span
+                    className={`${finalPrice + 1 < finalPriceNoDiscount ? "navigation-basket-price-total-line" : ""}`}
+                  >
+                    {finalPriceNoDiscount.toFixed(2)}
+                  </span>
+                </p>
+                {finalPrice + 1 < finalPriceNoDiscount && (
+                  <>
+                    <p className="navigation-basket-price-discount">Total with discount: {finalPrice.toFixed(2)}</p>
+                    <p className="navigation-basket-price-save">
+                      You Save: {(finalPriceNoDiscount - finalPrice).toFixed(2)}
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="checkout-final-order-btn" onClick={handleOrder}>
+              ORDER NOW
+            </div>
           </div>
         </div>
       </div>

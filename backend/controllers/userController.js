@@ -235,10 +235,20 @@ export const updateConsent = async (req, res) => {
 };
 
 export const googleLogin = async (req, res) => {
-  const { email, firstName, lastName, img, password, addresses, orders, consents } = req.body;
+  const { email, firstName, lastName, img, password, addresses, orders, consents, more } = req.body;
 
   try {
-    const user = await UserModel.googleLogin(email, firstName, lastName, img, password, addresses, orders, consents);
+    const user = await UserModel.googleLogin(
+      email,
+      firstName,
+      lastName,
+      img,
+      password,
+      addresses,
+      orders,
+      consents,
+      more
+    );
     const token = createToken(user._id);
 
     return res.status(200).json({ user, token });
@@ -458,6 +468,17 @@ export const updateInvoice = async (req, res) => {
     );
 
     return res.status(200).json({ invoice });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const increaseDominosMore = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const dominosMore = await UserModel.increaseDominosMore(email);
+    console.log(dominosMore);
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

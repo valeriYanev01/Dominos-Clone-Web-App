@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import React, { useContext } from "react";
+import axios from "axios";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { LoginContext } from "../../../context/LoginContext";
 
-const CheckoutForm: React.FC = () => {
-  const [message, setMessage] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
+interface Props {
+  setCardError: React.Dispatch<React.SetStateAction<string>>;
+  setCardSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
+
+  const { emailLogin, token } = useContext(LoginContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,31 +21,46 @@ const CheckoutForm: React.FC = () => {
       return;
     }
 
-    setIsProcessing(true);
+    const cardElement = elements.getElement(CardElement);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/tracker`,
-      },
-    });
+    if (cardElement) {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+      });
 
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message as string);
-    } else {
-      setMessage("An unexpected error occured.");
+      if (error) {
+        console.log(error);
+      } else {
+        try {
+          const response = await axios.post(
+            "http://localhost:3000/api/payment/save-payment-method",
+            {
+              paymentMethodID: paymentMethod.id,
+              email: emailLogin,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          if (response.data.success) {
+            setCardSuccess(true);
+          }
+        } catch (err) {
+          console.log(err);
+          if (axios.isAxiosError(err)) {
+            setCardError(err.response?.data.error);
+          }
+        }
+      }
     }
-
-    setIsProcessing(false);
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit} style={{ width: "fit-content" }}>
-      <PaymentElement id="payment-element" />
-      <button disabled={isProcessing || !stripe || !elements} id="submit">
-        <span id="button-text">{isProcessing ? "Processing ... " : "Pay now"}</span>
+    <form onSubmit={handleSubmit}>
+      <CardElement id="payment-element" />
+      <button disabled={!stripe} id="submit">
+        Save Card
       </button>
-      {message && <div id="payment-message">{message}</div>}
     </form>
   );
 };

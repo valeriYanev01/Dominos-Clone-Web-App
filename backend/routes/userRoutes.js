@@ -14,6 +14,7 @@ import {
   getSingleAddress,
   getUser,
   googleLogin,
+  increaseDominosMore,
   newOrder,
   updateAddress,
   updateConsent,
@@ -50,6 +51,7 @@ router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
 router.put("/update-invoice", updateInvoice);
+router.put("/update-dominos-more", increaseDominosMore);
 router.delete("/delete-address", deleteAddress);
 router.delete("/account-delete", deleteAccount);
 router.delete("/delete-invoice", deleteInvoice);

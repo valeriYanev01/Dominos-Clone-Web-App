@@ -307,7 +307,8 @@
 }
 
 .checkout-single-invoice-edit,
-.checkout-single-invoice-delete {
+.checkout-single-invoice-delete,
+.checkout-single-card-delete {
   width: 2rem;
   cursor: pointer;
 }
@@ -365,6 +366,10 @@
   max-width: 90%;
 }
 
+.checkout-new-invoice-btn-container {
+  text-align: center;
+}
+
 .checkout-new-invoice-btn {
   width: fit-content;
   background: #0d6490;
@@ -374,9 +379,93 @@
   font-size: 1.4rem;
   padding: 0.5rem 3rem;
   cursor: pointer;
+  border: none;
+}
+.disabled {
+  cursor: default;
+  background-color: #555;
 }
 
 .checkout-error {
   margin: 0.5rem 0 0 0.5rem;
   color: #e2213d;
+}
+
+.checkout-delivery-method:first-of-type {
+  margin-top: 2rem;
+}
+
+.checkout-delivery-method {
+  display: flex;
+  text-align: center;
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer !important;
+  color: #0d6490;
+  font-weight: bold;
+}
+
+.checkout-delivery-method input {
+  margin-right: 1rem;
+  transform: scale(1.6);
+  cursor: pointer;
+}
+
+.checkout-delivery-method img {
+  width: 3rem;
+  margin: 0;
+}
+
+.checkout-delivery-method-card,
+.checkout-delivery-method-card-symbol-text {
+  line-height: 1 !important;
+}
+
+.checkout-delivery-method-card-symbol-text {
+  font-weight: normal !important;
+  color: #555 !important;
+}
+
+.checkout-saved-cards-container {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-saved-cards-container li {
+  padding: 1rem;
+  margin: 0;
+}
+
+.checkout-saved-cards-container li label,
+.checkout-saved-cards-container input {
+  cursor: pointer;
+}
+
+.checkout-saved-cards-container input {
+  margin-right: 0.5rem;
+  transform: scale(1.6);
+}
+
+.checkout-single-card-delete {
+  margin-left: 0.5rem;
+}
+
+.checkout-saved-card-brand,
+.checkout-saved-card-last4 {
+  font-weight: bold;
+}
+
+.checkout-saved-card-brand {
+  color: #0d6490;
+}
+
+.checkout-final-order-btn {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #e2213d;
+  border-radius: 0.4rem;
+  cursor: pointer;
 }

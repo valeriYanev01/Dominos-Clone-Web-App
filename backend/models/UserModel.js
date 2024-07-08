@@ -482,10 +482,11 @@ userSchema.statics.googleLogin = async function (
   lastName,
   img,
   password,
-  addresses,
-  orders,
-  consents,
-  coupons
+  addresses = [],
+  orders = [],
+  consents = [],
+  coupons = [],
+  more = 0
 ) {
   password = cryptoRandomString({ length: 30, type: "ascii-printable" });
 
@@ -507,7 +508,8 @@ userSchema.statics.googleLogin = async function (
       addresses,
       orders,
       consents,
-      coupons,
+      coupons: Array.isArray(coupons) ? coupons : [],
+      more: Number(more),
     });
 
     return newUser;
@@ -641,6 +643,16 @@ userSchema.statics.updateInvoice = async function (
   );
 
   return updatedInvoice;
+};
+
+userSchema.statics.increaseDominosMore = async function (email) {
+  if (!email) {
+    throw new Error("User not found");
+  }
+
+  const updatedDominosMore = await this.findOneAndUpdate({ email });
+
+  return updatedDominosMore;
 };
 
 export const UserModel = mongoose.model("User", userSchema);
