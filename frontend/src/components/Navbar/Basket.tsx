@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { v4 as uuid } from "uuid";
 import "./Basket.css";
 import { BasketItem, OrderContext } from "../../context/OrderContext";
@@ -6,34 +6,6 @@ import { Link } from "react-router-dom";
 
 interface Props {
   setShowBasketOnHover: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-class Product {
-  name: string;
-  price: string;
-  quantity: number;
-  size: string;
-  crust: string;
-  toppings: string[];
-  type: string;
-
-  constructor(
-    name: string,
-    price: string,
-    quantity: number,
-    size: string,
-    crust: string,
-    toppings: string[],
-    type: string
-  ) {
-    this.name = name;
-    this.price = price;
-    this.quantity = quantity;
-    this.size = size;
-    this.crust = crust;
-    this.toppings = toppings;
-    this.type = type;
-  }
 }
 
 interface SingleDeal {
@@ -46,131 +18,17 @@ interface SingleDeal {
 }
 
 const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
-  const [totalPizzas, setTotalPizzas] = useState(0);
-  const [itemsInBasketPlusDiscount, setItemsInBasketPlusDiscount] = useState<Product[]>([]);
-  const [dealItemsInBasket, setDealItemsInBasket] = useState(0);
-  const [thirdPizzaPromo, setThirdPizzaPromo] = useState(false);
-  const [freeDelivery, setFreeDelivery] = useState(false);
-  const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
-  const [dealsCount, setDealsCount] = useState(0);
-
-  const { itemsInBasket, setItemsInBasket, finalPrice, setFinalPrice, thirdPizzaPromotions, setThirdPizzaPromotions } =
-    useContext(OrderContext);
-
-  useEffect(() => {
-    let counter = 0;
-
-    itemsInBasket.forEach((item) => {
-      if (item.deal) {
-        counter += 1;
-      }
-    });
-
-    setDealsCount(counter);
-  }, [itemsInBasket]);
-
-  useEffect(() => {
-    let counter = 0;
-    itemsInBasket.forEach((item) => {
-      if (item.deal) counter += 1;
-    });
-
-    setDealItemsInBasket(counter);
-  }, [itemsInBasket]);
-
-  // To determine how many 3rd pizza promotions should be included
-  useEffect(() => {
-    let pizzaQuantity = 0;
-
-    itemsInBasket.forEach((item) => {
-      if (item.type === "pizza") {
-        pizzaQuantity += item.quantity;
-      }
-    });
-
-    const spreadItemsInBasket = [];
-
-    for (let i = 0; i < itemsInBasket.length; i++) {
-      if (itemsInBasket[i].deal) {
-        continue;
-      } else {
-        for (let j = 0; j < itemsInBasket[i].quantity; j++) {
-          const product = new Product(
-            itemsInBasket[i].name,
-            itemsInBasket[i].price,
-            1,
-            itemsInBasket[i].size || "",
-            itemsInBasket[i].crust || "",
-            itemsInBasket[i].toppings || [],
-            itemsInBasket[i].type
-          );
-
-          spreadItemsInBasket.push(product);
-        }
-      }
-    }
-
-    if (thirdPizzaPromotions > 0 && itemsInBasket.length > 0) {
-      for (let i = 0; i < thirdPizzaPromotions; i++) {
-        if (spreadItemsInBasket[i].type === "pizza") {
-          spreadItemsInBasket[i].price = "5.50";
-        }
-      }
-    }
-
-    for (let i = 0; i < spreadItemsInBasket.length; i++) {
-      for (let j = i + 1; j < spreadItemsInBasket.length; j++) {
-        if (
-          JSON.stringify(spreadItemsInBasket[i].toppings) === JSON.stringify(spreadItemsInBasket[j].toppings) &&
-          spreadItemsInBasket[i].name === spreadItemsInBasket[j].name
-        ) {
-          spreadItemsInBasket[i].quantity += spreadItemsInBasket[j].quantity;
-          spreadItemsInBasket[i].price = String(
-            Number(spreadItemsInBasket[i].price) + Number(spreadItemsInBasket[j].price)
-          );
-          spreadItemsInBasket.splice(j, 1);
-          j--;
-        } else {
-          continue;
-        }
-      }
-    }
-
-    setItemsInBasketPlusDiscount(spreadItemsInBasket);
-
-    let price = 0;
-
-    spreadItemsInBasket.forEach((item) => {
-      price += Number(item.price);
-    });
-
-    itemsInBasket.forEach((item) => {
-      if (item.deal) {
-        price += Number(item.price);
-      }
-    });
-
-    setFinalPrice(price);
-
-    setTotalPizzas(pizzaQuantity);
-    setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
-  }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice]);
-
-  useEffect(() => {
-    if (thirdPizzaPromotions) {
-      setThirdPizzaPromo(true);
-    } else {
-      setThirdPizzaPromo(false);
-    }
-  }, [thirdPizzaPromotions]);
-
-  useEffect(() => {
-    if (finalPrice > 30) {
-      setFreeDelivery(true);
-    } else {
-      setFreeDelivery(false);
-    }
-  }, [finalPrice]);
+  const {
+    itemsInBasket,
+    setItemsInBasket,
+    finalPrice,
+    dealsCount,
+    dealItemsInBasket,
+    thirdPizzaPromo,
+    itemsInBasketPlusDiscount,
+    freeDelivery,
+    finalPriceNoDiscount,
+  } = useContext(OrderContext);
 
   const increaseQuantity = (i: number) => {
     const products = [...itemsInBasket];
@@ -196,20 +54,6 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
 
     setItemsInBasket(newItemsInBasket);
   };
-
-  useEffect(() => {
-    let priceNoDiscount = 0;
-
-    itemsInBasket.forEach((item) => {
-      if (item.deal) {
-        priceNoDiscount += parseFloat(item.price);
-      } else {
-        priceNoDiscount += parseFloat(item.price) * item.quantity;
-      }
-    });
-
-    setFinalPriceNoDiscount(priceNoDiscount);
-  }, [itemsInBasket]);
 
   return (
     <div className="navigation-basket-items" onMouseEnter={() => setShowBasketOnHover(true)}>

@@ -31,6 +31,8 @@ interface LoggedInInterface {
   setGoogleLogin: React.Dispatch<React.SetStateAction<GoogleLogin>>;
   dominosMorePoints: number;
   setDominosMorePoints: React.Dispatch<React.SetStateAction<number>>;
+  customerID: string;
+  setCustomerID: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const LoginContext = createContext<LoggedInInterface>({
@@ -55,6 +57,8 @@ export const LoginContext = createContext<LoggedInInterface>({
   setGoogleLogin: () => {},
   dominosMorePoints: 0,
   setDominosMorePoints: () => {},
+  customerID: "",
+  setCustomerID: () => {},
 });
 
 export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -74,6 +78,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     updated_at: "",
   });
   const [dominosMorePoints, setDominosMorePoints] = useState(0);
+  const [customerID, setCustomerID] = useState("");
 
   const { isAuthenticated, user: googleUser } = useAuth0();
 
@@ -82,7 +87,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const email = user?.split(",")[0] || "";
 
   useEffect(() => {
-    if (googleUser) {
+    if (googleUser?.given_name && isAuthenticated) {
       const signGoogleUser = async () => {
         try {
           const response = await axios.post("http://localhost:3000/api/users/google", {
@@ -97,7 +102,9 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
               { delivery: true, deals: false, updates: false, confidentiality: true, termsOfUse: true, more: false },
             ],
             coupons: [],
+            more: 0,
           });
+
           localStorage.setItem("user", String([response.data.user.email, response.data.token]));
           setToken(response.data.token);
           setEmailLogin(response.data.user.email);
@@ -129,7 +136,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         normalLogin();
       }
     }
-  }, [emailLogin, googleUser, token]);
+  }, [emailLogin, googleUser, token, isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -170,6 +177,28 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     return () => clearInterval(interval);
   }, [token]);
 
+  useEffect(() => {
+    const fetchCustomerID = async () => {
+      if (token && emailLogin) {
+        const response = await axios.get("http://localhost:3000/api/users/", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
+
+        setCustomerID(response.data.user.stripeCustomerID);
+        localStorage.setItem("customer_id", customerID);
+      }
+    };
+
+    fetchCustomerID();
+  }, [token, emailLogin, customerID]);
+
+  useEffect(() => {
+    if (!customerID && localStorage.getItem("customer_id")) {
+      setCustomerID(localStorage.getItem("customer_id") as string);
+    }
+  }, [customerID]);
+
   return (
     <LoginContext.Provider
       value={{
@@ -183,6 +212,8 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setGoogleLogin,
         dominosMorePoints,
         setDominosMorePoints,
+        customerID,
+        setCustomerID,
       }}
     >
       {children}

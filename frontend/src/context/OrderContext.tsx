@@ -51,6 +51,46 @@ interface OrderContextInterface {
   setModifiedToppings: React.Dispatch<React.SetStateAction<string[][]>>;
   isOpenForDelivery: boolean;
   setIsOpenForDelivery: React.Dispatch<React.SetStateAction<boolean>>;
+  itemsInBasketPlusDiscount: Product[];
+  setItemsInBasketPlusDiscount: React.Dispatch<React.SetStateAction<Product[]>>;
+  dealItemsInBasket: number;
+  setDealItemsInBasket: React.Dispatch<React.SetStateAction<number>>;
+  thirdPizzaPromo: boolean;
+  setThirdPizzaPromo: React.Dispatch<React.SetStateAction<boolean>>;
+  freeDelivery: boolean;
+  setFreeDelivery: React.Dispatch<React.SetStateAction<boolean>>;
+  dealsCount: number;
+  setDealsCount: React.Dispatch<React.SetStateAction<number>>;
+  finalPriceNoDiscount: number;
+  setFinalPriceNoDiscount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+class Product {
+  name: string;
+  price: string;
+  quantity: number;
+  size: string;
+  crust: string;
+  toppings: string[];
+  type: string;
+
+  constructor(
+    name: string,
+    price: string,
+    quantity: number,
+    size: string,
+    crust: string,
+    toppings: string[],
+    type: string
+  ) {
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+    this.size = size;
+    this.crust = crust;
+    this.toppings = toppings;
+    this.type = type;
+  }
 }
 
 export const OrderContext = createContext<OrderContextInterface>({
@@ -98,6 +138,18 @@ export const OrderContext = createContext<OrderContextInterface>({
   setModifiedToppings: () => {},
   isOpenForDelivery: false,
   setIsOpenForDelivery: () => {},
+  itemsInBasketPlusDiscount: [],
+  setItemsInBasketPlusDiscount: () => {},
+  dealItemsInBasket: 0,
+  setDealItemsInBasket: () => {},
+  thirdPizzaPromo: false,
+  setThirdPizzaPromo: () => {},
+  freeDelivery: false,
+  setFreeDelivery: () => {},
+  dealsCount: 0,
+  setDealsCount: () => {},
+  finalPriceNoDiscount: 0,
+  setFinalPriceNoDiscount: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -135,6 +187,13 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [initialToppings, setInitialToppings] = useState<string[][]>([]);
   const [modifiedToppings, setModifiedToppings] = useState<string[][]>([]);
   const [isOpenForDelivery, setIsOpenForDelivery] = useState(false);
+  const [totalPizzas, setTotalPizzas] = useState(0);
+  const [itemsInBasketPlusDiscount, setItemsInBasketPlusDiscount] = useState<Product[]>([]);
+  const [dealItemsInBasket, setDealItemsInBasket] = useState(0);
+  const [thirdPizzaPromo, setThirdPizzaPromo] = useState(false);
+  const [freeDelivery, setFreeDelivery] = useState(false);
+  const [dealsCount, setDealsCount] = useState(0);
+  const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
 
   useEffect(() => {
     if (orderTime) {
@@ -228,6 +287,135 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
   }, [itemsInBasket, thirdPizzaPromotions]);
 
+  useEffect(() => {
+    let counter = 0;
+
+    itemsInBasket.forEach((item) => {
+      if (item.deal) {
+        counter += 1;
+      }
+    });
+
+    setDealsCount(counter);
+  }, [itemsInBasket]);
+
+  useEffect(() => {
+    let counter = 0;
+    itemsInBasket.forEach((item) => {
+      if (item.deal) counter += 1;
+    });
+
+    setDealItemsInBasket(counter);
+  }, [itemsInBasket]);
+
+  // To determine how many 3rd pizza promotions should be included
+  useEffect(() => {
+    let pizzaQuantity = 0;
+
+    itemsInBasket.forEach((item) => {
+      if (item.type === "pizza") {
+        pizzaQuantity += item.quantity;
+      }
+    });
+
+    const spreadItemsInBasket = [];
+
+    for (let i = 0; i < itemsInBasket.length; i++) {
+      if (itemsInBasket[i].deal) {
+        continue;
+      } else {
+        for (let j = 0; j < itemsInBasket[i].quantity; j++) {
+          const product = new Product(
+            itemsInBasket[i].name,
+            itemsInBasket[i].price,
+            1,
+            itemsInBasket[i].size || "",
+            itemsInBasket[i].crust || "",
+            itemsInBasket[i].toppings || [],
+            itemsInBasket[i].type
+          );
+
+          spreadItemsInBasket.push(product);
+        }
+      }
+    }
+
+    if (thirdPizzaPromotions > 0 && itemsInBasket.length > 0) {
+      for (let i = 0; i < thirdPizzaPromotions; i++) {
+        if (spreadItemsInBasket[i].type === "pizza") {
+          spreadItemsInBasket[i].price = "5.50";
+        }
+      }
+    }
+
+    for (let i = 0; i < spreadItemsInBasket.length; i++) {
+      for (let j = i + 1; j < spreadItemsInBasket.length; j++) {
+        if (
+          JSON.stringify(spreadItemsInBasket[i].toppings) === JSON.stringify(spreadItemsInBasket[j].toppings) &&
+          spreadItemsInBasket[i].name === spreadItemsInBasket[j].name
+        ) {
+          spreadItemsInBasket[i].quantity += spreadItemsInBasket[j].quantity;
+          spreadItemsInBasket[i].price = String(
+            Number(spreadItemsInBasket[i].price) + Number(spreadItemsInBasket[j].price)
+          );
+          spreadItemsInBasket.splice(j, 1);
+          j--;
+        } else {
+          continue;
+        }
+      }
+    }
+
+    setItemsInBasketPlusDiscount(spreadItemsInBasket);
+
+    let price = 0;
+
+    spreadItemsInBasket.forEach((item) => {
+      price += Number(item.price);
+    });
+
+    itemsInBasket.forEach((item) => {
+      if (item.deal) {
+        price += Number(item.price);
+      }
+    });
+
+    setFinalPrice(price);
+
+    setTotalPizzas(pizzaQuantity);
+    setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
+  }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice]);
+
+  useEffect(() => {
+    if (thirdPizzaPromotions) {
+      setThirdPizzaPromo(true);
+    } else {
+      setThirdPizzaPromo(false);
+    }
+  }, [thirdPizzaPromotions]);
+
+  useEffect(() => {
+    if (finalPrice > 30) {
+      setFreeDelivery(true);
+    } else {
+      setFreeDelivery(false);
+    }
+  }, [finalPrice]);
+
+  useEffect(() => {
+    let priceNoDiscount = 0;
+
+    itemsInBasket.forEach((item) => {
+      if (item.deal) {
+        priceNoDiscount += parseFloat(item.price);
+      } else {
+        priceNoDiscount += parseFloat(item.price) * item.quantity;
+      }
+    });
+
+    setFinalPriceNoDiscount(priceNoDiscount);
+  }, [itemsInBasket]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -259,6 +447,18 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setModifiedToppings,
         isOpenForDelivery,
         setIsOpenForDelivery,
+        itemsInBasketPlusDiscount,
+        setItemsInBasketPlusDiscount,
+        dealItemsInBasket,
+        setDealItemsInBasket,
+        thirdPizzaPromo,
+        setThirdPizzaPromo,
+        dealsCount,
+        setDealsCount,
+        freeDelivery,
+        setFreeDelivery,
+        finalPriceNoDiscount,
+        setFinalPriceNoDiscount,
       }}
     >
       {children}
