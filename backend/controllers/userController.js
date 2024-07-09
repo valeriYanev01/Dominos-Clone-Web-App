@@ -258,12 +258,36 @@ export const googleLogin = async (req, res) => {
 };
 
 export const newOrder = async (req, res) => {
-  const { email, products, address } = req.body;
+  const {
+    email,
+    products,
+    address,
+    deliveryTime,
+    phoneNumber,
+    floor,
+    doorBell,
+    comments,
+    paymentMethod,
+    invoice,
+    finalPrice,
+  } = req.body;
 
   try {
-    const order = await UserModel.newOrder(email, products, address);
+    const user = await UserModel.newOrder(
+      email,
+      products,
+      address,
+      deliveryTime,
+      phoneNumber,
+      floor,
+      doorBell,
+      comments,
+      paymentMethod,
+      invoice,
+      finalPrice
+    );
 
-    return res.status(200).json({ order });
+    return res.status(200).json({ user, success: true });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

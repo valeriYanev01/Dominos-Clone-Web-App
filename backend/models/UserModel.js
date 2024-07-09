@@ -18,7 +18,6 @@ const addressSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: true,
   },
   doorBell: {
     type: String,
@@ -55,12 +54,71 @@ const productSchema = new mongoose.Schema({
       removed: [String],
     },
   ],
+  price: {
+    type: String,
+  },
+  crust: {
+    type: String,
+  },
+  size: {
+    type: String,
+  },
+});
+
+const invoicesSchema = new mongoose.Schema({
+  companyName: {
+    type: String,
+    required: true,
+  },
+  companyAddress: {
+    type: String,
+    required: true,
+  },
+  companyActivity: {
+    type: String,
+    required: true,
+  },
+  companyVAT: {
+    type: String,
+    required: true,
+  },
+  companyOwner: {
+    type: String,
+    required: true,
+  },
 });
 
 const ordersSchema = new mongoose.Schema(
   {
     products: [productSchema],
     address: addressSchema,
+    deliveryTime: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    floor: {
+      type: String,
+    },
+    doorBell: {
+      type: String,
+    },
+    comments: {
+      type: String,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    invoice: {
+      type: invoicesSchema,
+    },
+    finalPrice: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
@@ -103,29 +161,6 @@ const couponsSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-const invoicesSchema = new mongoose.Schema({
-  companyName: {
-    type: String,
-    required: true,
-  },
-  companyAddress: {
-    type: String,
-    required: true,
-  },
-  companyActivity: {
-    type: String,
-    required: true,
-  },
-  companyVAT: {
-    type: String,
-    required: true,
-  },
-  companyOwner: {
-    type: String,
-    required: true,
-  },
-});
 
 const userSchema = new mongoose.Schema(
   {
@@ -516,7 +551,19 @@ userSchema.statics.googleLogin = async function (
   }
 };
 
-userSchema.statics.newOrder = async function (email, products, address) {
+userSchema.statics.newOrder = async function (
+  email,
+  products,
+  address,
+  deliveryTime,
+  phoneNumber,
+  floor,
+  doorBell,
+  comments,
+  paymentMethod,
+  invoice,
+  finalPrice
+) {
   try {
     const user = await this.findOne({ email });
 
@@ -530,7 +577,18 @@ userSchema.statics.newOrder = async function (email, products, address) {
       modifications: product.modifications,
     }));
 
-    user.orders.push({ products: productObjects, address: address });
+    user.orders.push({
+      products: productObjects,
+      address,
+      deliveryTime,
+      phoneNumber,
+      floor,
+      doorBell,
+      comments,
+      paymentMethod,
+      invoice,
+      finalPrice,
+    });
 
     const updatedUser = await user.save();
 
