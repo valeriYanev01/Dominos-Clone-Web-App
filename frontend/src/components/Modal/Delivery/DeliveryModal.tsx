@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { AddressContext } from "../../../context/AddressContext";
 
 const DeliveryModal: React.FC = () => {
-  // const [lastOrderFullAddress, setLastOrderFullAddress] = useState();
   const [lastOrderAddressName, setLastOrderAddressName] = useState();
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [lastOrderAddress, setLastOrderAddress] = useState<Address>();
@@ -255,7 +254,11 @@ const DeliveryModal: React.FC = () => {
             <div className="dm-addresses-recently">
               <p className="dm-addresses-heading">Recently Selected</p>
               <div
-                onClick={() => handleSelectedAddress(lastOrderAddress as Address)}
+                onClick={() => {
+                  if (lastOrderAddress) {
+                    handleSelectedAddress(lastOrderAddress);
+                  }
+                }}
                 className={`address-container ${
                   selectedAddress === lastOrderAddress?.address ? "selected-address" : ""
                 }`}
