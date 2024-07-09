@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { LoginContext } from "../../../context/LoginContext";
+import "./CheckoutForm.css";
 
 interface Props {
   setCardError: React.Dispatch<React.SetStateAction<string>>;
@@ -57,8 +58,8 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CardElement id="payment-element" />
-      <button disabled={!stripe} id="submit">
+      <CardElement id="payment-element" className="stripeElement" />
+      <button disabled={!stripe} id="submit" className="submit-button">
         Save Card
       </button>
     </form>

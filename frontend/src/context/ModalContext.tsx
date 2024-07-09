@@ -81,11 +81,11 @@ export const ModalContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const location = useLocation();
 
   useEffect(() => {
-    if (!location.pathname.includes("menu") && modalType === "product") {
+    if ((!location.pathname.includes("menu") && modalType === "product") || (modalType === "" && product)) {
       setOpenModal(false);
       setModalType("");
     }
-  }, [location, modalType]);
+  }, [location, modalType, product]);
 
   return (
     <ModalContext.Provider

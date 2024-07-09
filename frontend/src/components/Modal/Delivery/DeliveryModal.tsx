@@ -7,13 +7,13 @@ import { Address } from "../../../types/Address";
 import { ModalContext } from "../../../context/ModalContext";
 import { OrderContext } from "../../../context/OrderContext";
 import { useNavigate } from "react-router-dom";
+import { AddressContext } from "../../../context/AddressContext";
 
 const DeliveryModal: React.FC = () => {
   // const [lastOrderFullAddress, setLastOrderFullAddress] = useState();
   const [lastOrderAddressName, setLastOrderAddressName] = useState();
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [lastOrderAddress, setLastOrderAddress] = useState<Address>();
-  const [selectedAddress, setSelectedAddress] = useState<Address>();
   const [showAddresses, setShowAddresses] = useState(true);
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
@@ -30,6 +30,7 @@ const DeliveryModal: React.FC = () => {
     setActiveOrder,
     isOpenForDelivery,
   } = useContext(OrderContext);
+  const { selectedAddress, setSelectedAddress } = useContext(AddressContext);
 
   const navigate = useNavigate();
 
@@ -46,12 +47,10 @@ const DeliveryModal: React.FC = () => {
 
           if (allOrders.length < 1) {
             setShowRecentAddress(false);
-            console.log();
             setSelectedAddress(otherAddresses[0]);
           } else {
             const lastOrder = allOrders[allOrders.length - 1];
             setLastOrderAddress(lastOrder);
-            // setLastOrderFullAddress(lastOrder.address.fullAddress);
             setLastOrderAddressName(lastOrder.address.name);
             setShowAddresses(true);
             setShowRecentAddress(true);

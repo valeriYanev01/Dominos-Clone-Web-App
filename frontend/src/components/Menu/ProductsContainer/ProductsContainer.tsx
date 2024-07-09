@@ -46,7 +46,14 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
           : products.map(
               (product) =>
                 product.filter.includes("Vegetarian") && (
-                  <div className="menu-single-product-container" key={product.img}>
+                  <div
+                    className={`menu-single-product-container ${
+                      product.type === "quesadilla" || product.type === "chicken" || product.type === "desserts"
+                        ? "menu-single-product-animation"
+                        : ""
+                    }`}
+                    key={product.img}
+                  >
                     <SingleProduct product={product} />
                   </div>
                 )

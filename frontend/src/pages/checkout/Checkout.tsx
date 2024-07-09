@@ -19,6 +19,7 @@ import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../components/Profile/PaymentMethods/CheckoutForm";
+import { AddressContext } from "../../context/AddressContext";
 import { useNavigate } from "react-router-dom";
 
 interface Invoice {
@@ -44,19 +45,6 @@ interface SingleDeal {
   price: string;
   addedToppings: string[];
   removedToppings: string[];
-}
-
-interface FinalOrder {
-  deliveryTime: string;
-  deliveryAddress?: string;
-  pickupAddress?: string;
-  phoneNumber: string;
-  floor: string;
-  doorBell: string;
-  comments: string;
-  paymentMethod: string;
-  creditCard?: string;
-  items: BasketItem[];
 }
 
 export const Checkout: React.FC = () => {
@@ -88,7 +76,6 @@ export const Checkout: React.FC = () => {
   const [showAddNewCard, setShowAddNewCard] = useState(false);
   const [cardError, setCardError] = useState("");
   const [cardSuccess, setCardSuccess] = useState(false);
-  const [finalOrder, setFinalOrder] = useState<FinalOrder>();
 
   const { loggedIn, dominosMorePoints, setDominosMorePoints, token, emailLogin, customerID } = useContext(LoginContext);
   const { setModalType, setOpenModal } = useContext(ModalContext);
@@ -104,6 +91,7 @@ export const Checkout: React.FC = () => {
     thirdPizzaPromo,
     finalPriceNoDiscount,
   } = useContext(OrderContext);
+  const { selectedAddress, setSelectedAddress } = useContext(AddressContext);
 
   const navigate = useNavigate();
 
@@ -294,6 +282,21 @@ export const Checkout: React.FC = () => {
       fetchAddress();
     }
   }, [emailLogin, token]);
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
+      setSelectedAddress({
+        name: JSON.parse(localStorage.getItem("order-details") as string).addressName,
+        fullAddress: JSON.parse(localStorage.getItem("order-details") as string).addressLocation,
+        apartament: "",
+        block: "",
+        coordinates: [0, 0],
+        doorBell: "",
+        entrance: "",
+        phoneNumber: "",
+      });
+    }
+  }, [setSelectedAddress]);
 
   const items = products
     .map((product) => {
@@ -500,34 +503,43 @@ export const Checkout: React.FC = () => {
     }
   };
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     if (selectedPaymentMethod === "card") {
       handlePayWithSelectedCard();
     }
 
-    setFinalOrder({
-      deliveryTime: orderTime,
-      deliveryAddress: JSON.parse(localStorage.getItem("order-details") as string).addressLocation,
-      pickupAddress: JSON.parse(localStorage.getItem("order-details") as string).store,
-      phoneNumber: phoneNumber,
-      floor: floor,
-      doorBell: bell,
-      comments: comments,
-      // invoice
-      paymentMethod: selectedPaymentMethod,
-      creditCard: selectedCard,
-      items: itemsInBasket,
-    });
+    try {
+      const response = await axios.put(
+        "http://localhost:3000/api/users/new-order",
+        {
+          email: emailLogin,
+          products: itemsInBasket,
+          address: selectedAddress,
+          deliveryTime: orderTime,
+          phoneNumber,
+          floor,
+          doorBell: bell,
+          comments,
+          paymentMethod: selectedPaymentMethod,
+          invoice: selectedInvoice,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    localStorage.removeItem("active-order");
-    localStorage.removeItem("basket-items");
+      if (response.data.success) {
+        navigate("/tracker");
+        localStorage.removeItem("active-order");
+        localStorage.removeItem("basket-items");
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+      }
+    }
 
     setDominosMorePoints((prevState) => prevState + 1);
-    navigate("/tracker");
-    localStorage.setItem("final-order", finalOrder);
   };
 
-  console.log(finalOrder);
   return (
     <div className="checkout-page">
       <Navbar page="checkout" />
@@ -922,7 +934,7 @@ export const Checkout: React.FC = () => {
                   <CheckoutForm setCardError={setCardError} setCardSuccess={setCardSuccess} />
                 </Elements>
 
-                {cardError && cardError}
+                {cardError && <p className="checkout-card-error">{cardError}</p>}
               </>
             )}
           </div>

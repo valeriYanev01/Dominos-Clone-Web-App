@@ -9,7 +9,7 @@ export type Address = {
   name: string;
   phoneNumber: string;
   store?: string;
-  _id: string;
+  _id?: string;
   address?: {
     apartament: string;
     closestStore: string;

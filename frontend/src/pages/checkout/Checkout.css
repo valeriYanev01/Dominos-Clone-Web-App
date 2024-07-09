@@ -460,6 +460,10 @@
   color: #0d6490;
 }
 
+.checkout-card-error {
+  color: #e2213d;
+}
+
 .checkout-final-order-btn {
   margin-top: 1rem;
   padding: 0.5rem;

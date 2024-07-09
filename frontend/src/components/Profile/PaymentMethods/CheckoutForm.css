@@ -1,0 +1,29 @@
+.stripeElement {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 1rem !important;
+}
+
+.stripeElement--focused {
+  border-color: #e2213d;
+  outline: none;
+}
+
+.submit-button {
+  background-color: #e2213d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

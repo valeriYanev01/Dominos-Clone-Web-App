@@ -8,6 +8,8 @@ interface AddressContextInterface {
   setAddresses: React.Dispatch<React.SetStateAction<Address[]>>;
   error: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  selectedAddress: Address;
+  setSelectedAddress: React.Dispatch<React.SetStateAction<Address>>;
 }
 
 export const AddressContext = createContext<AddressContextInterface>({
@@ -15,11 +17,34 @@ export const AddressContext = createContext<AddressContextInterface>({
   setAddresses: () => {},
   error: "",
   setError: () => {},
+  selectedAddress: {
+    apartament: "",
+    block: "",
+    coordinates: [0, 0],
+    doorBell: "",
+    entrance: "",
+    fullAddress: "",
+    name: "",
+    phoneNumber: "",
+    _id: "",
+  },
+  setSelectedAddress: () => {},
 });
 
 export const AddressContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [error, setError] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState<Address>({
+    apartament: "",
+    block: "",
+    coordinates: [0, 0],
+    doorBell: "",
+    entrance: "",
+    fullAddress: "",
+    name: "",
+    phoneNumber: "",
+    _id: "",
+  });
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -43,6 +68,8 @@ export const AddressContextProvider: React.FC<{ children: ReactNode }> = ({ chil
   }, [token, emailLogin]);
 
   return (
-    <AddressContext.Provider value={{ addresses, setAddresses, error, setError }}>{children}</AddressContext.Provider>
+    <AddressContext.Provider value={{ addresses, setAddresses, error, setError, selectedAddress, setSelectedAddress }}>
+      {children}
+    </AddressContext.Provider>
   );
 };
