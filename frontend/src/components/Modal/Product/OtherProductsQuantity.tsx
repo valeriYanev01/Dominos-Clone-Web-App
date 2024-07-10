@@ -50,7 +50,7 @@ const OtherProductsQuantity: React.FC<Props> = ({
   modifiedToppings,
   finalPizzaProduct,
 }) => {
-  const { setModalType, setOpenModal } = useContext(ModalContext);
+  const { setModalType, setOpenModal, setProduct } = useContext(ModalContext);
   const { setItemsInBasket } = useContext(OrderContext);
   const { loggedIn } = useContext(LoginContext);
 
@@ -80,6 +80,7 @@ const OtherProductsQuantity: React.FC<Props> = ({
       });
       setModalType("");
       setOpenModal(false);
+      setProduct([]);
     }
   };
 

@@ -55,11 +55,9 @@ const PizzaQuantity: React.FC<Props> = ({
   modifiedToppings,
   finalPizzaProduct,
 }) => {
-  const { setModalType, setOpenModal } = useContext(ModalContext);
+  const { setModalType, setOpenModal, setProduct } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
   const { setItemsInBasket } = useContext(OrderContext);
-
-  console.log(finalPizzaProduct);
 
   useEffect(() => {
     if (selectedProduct.price[0].medium && !selectedProduct.price[1].large && !selectedProduct.price[2].jumbo) {
@@ -117,6 +115,7 @@ const PizzaQuantity: React.FC<Props> = ({
       });
       setModalType("");
       setOpenModal(false);
+      setProduct([]);
     }
   };
 

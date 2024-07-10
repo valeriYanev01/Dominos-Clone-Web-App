@@ -381,7 +381,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     });
 
     setFinalPrice(price);
-
     setTotalPizzas(pizzaQuantity);
     setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
   }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice]);

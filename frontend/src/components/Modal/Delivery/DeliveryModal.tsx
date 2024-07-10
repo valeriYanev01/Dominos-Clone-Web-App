@@ -16,6 +16,8 @@ const DeliveryModal: React.FC = () => {
   const [showAddresses, setShowAddresses] = useState(true);
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
+  const [error, setError] = useState("");
+  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
@@ -34,70 +36,71 @@ const DeliveryModal: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (emailLogin && token) {
-      const getAllOrders = async () => {
-        try {
-          const response = await axios.get("http://localhost:3000/api/users/get-orders", {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { email: emailLogin },
-          });
+    const getAllOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users/get-orders", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
 
-          const allOrders = response.data.allOrders.orders;
+        const allOrders = response.data.allOrders.orders;
 
-          if (allOrders.length < 1) {
-            setShowRecentAddress(false);
-            setSelectedAddress(otherAddresses[0]);
-          } else {
-            const lastOrder = allOrders[allOrders.length - 1];
-            setLastOrderAddress(lastOrder);
-            setLastOrderAddressName(lastOrder.address.name);
-            setShowAddresses(true);
-            setShowRecentAddress(true);
-            setSelectedAddress(lastOrder.address);
-          }
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            console.log(err.message);
-          }
+        if (allOrders.length < 1) {
+          setShowRecentAddress(false);
+          setSelectedAddress(otherAddresses[0]);
+        } else {
+          const lastOrder = allOrders[allOrders.length - 1];
+          setLastOrderAddress(lastOrder.address);
+          setLastOrderAddressName(lastOrder.address.name);
+          setShowAddresses(true);
+          setShowRecentAddress(true);
+          setSelectedAddress(lastOrder.address);
         }
-      };
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data.error);
+        }
+      }
+    };
+
+    if (emailLogin && token) {
       getAllOrders();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [emailLogin, token, otherAddresses]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [emailLogin, token]);
 
   useEffect(() => {
-    if (emailLogin && token) {
-      const getAllAddresses = async () => {
-        try {
-          const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { email: emailLogin },
-          });
+    const getAllAddresses = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
 
-          const newAddresses = response.data.allAddresses.addresses.filter((address: Address) => {
-            return address.name !== lastOrderAddressName;
-          });
+        const newAddresses = response.data.allAddresses.addresses.filter((address: Address) => {
+          return address.name !== lastOrderAddressName;
+        });
 
-          if (newAddresses.length < 1) {
-            setShowOtherAddresses(false);
-          } else {
-            setShowOtherAddresses(true);
-            setShowAddresses(true);
-            if (newAddresses.length <= response.data.allAddresses.addresses.length) {
-              setOtherAddresses(newAddresses);
-            }
-          }
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            console.log(err.message);
+        if (newAddresses.length < 1) {
+          setShowOtherAddresses(false);
+        } else {
+          setShowOtherAddresses(true);
+          setShowAddresses(true);
+          if (newAddresses.length <= response.data.allAddresses.addresses.length) {
+            setOtherAddresses(newAddresses);
           }
         }
-      };
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data.error);
+        }
+      }
+    };
 
+    if (emailLogin && token) {
       getAllAddresses();
     }
-  }, [emailLogin, token, lastOrderAddressName]);
+  }, [emailLogin, lastOrderAddressName, token]);
 
   useEffect(() => {
     if (selectedAddress && selectedAddress.store) {
@@ -216,8 +219,14 @@ const DeliveryModal: React.FC = () => {
   }, []);
 
   const handleSelectedAddress = (address: Address) => {
-    setSelectedAddress(address.address ? address.address : address);
+    setSelectedAddress(address);
   };
+
+  useEffect(() => {
+    if (selectedAddress.name.length > 0 && orderTime.length > 0) {
+      setIsReadyForOrder(true);
+    }
+  }, [orderTime.length, selectedAddress.name.length]);
 
   const handleOrder = () => {
     setOrderType("delivery");
@@ -259,19 +268,17 @@ const DeliveryModal: React.FC = () => {
                     handleSelectedAddress(lastOrderAddress);
                   }
                 }}
-                className={`address-container ${
-                  selectedAddress === lastOrderAddress?.address ? "selected-address" : ""
-                }`}
+                className={`address-container ${selectedAddress === lastOrderAddress ? "selected-address" : ""}`}
               >
                 <img
                   src="/svg/edit.svg"
                   className="dm-address-edit-img"
-                  style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                 />
                 <img
                   src="/svg/greenCheck.svg"
                   className="dm-address-check-img"
-                  style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                 />
 
                 <p className="dm-address-name">{lastOrderAddressName}</p>
@@ -280,22 +287,20 @@ const DeliveryModal: React.FC = () => {
                   <img
                     src="/svg/addressLocation.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                   />
-                  <p>{lastOrderAddress?.address && lastOrderAddress?.address.fullAddress}</p>
+                  <p>{lastOrderAddress && lastOrderAddress.fullAddress}</p>
                 </div>
 
                 <div className="dm-address-store-container">
                   <img
                     src="/svg/addressStore.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress?.address ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                   />
                   <p>
                     Your Store:{" "}
-                    <span className="dm-address-store-name">
-                      {lastOrderAddress?.address && lastOrderAddress?.address.store}
-                    </span>
+                    <span className="dm-address-store-name">{lastOrderAddress && lastOrderAddress.store}</span>
                   </p>
                 </div>
               </div>
@@ -351,6 +356,8 @@ const DeliveryModal: React.FC = () => {
                 ))}
             </div>
           )}
+
+          {error && <p>{error}</p>}
         </div>
       )}
 
@@ -381,8 +388,12 @@ const DeliveryModal: React.FC = () => {
       </div>
 
       <div
-        className={`dm-address-order-btn ${!showAddresses ? "dm-address-order-btn-disabled" : ""}`}
-        onClick={handleOrder}
+        className={`dm-address-order-btn ${!isReadyForOrder ? "dm-address-order-btn-disabled" : ""}`}
+        onClick={() => {
+          if (isReadyForOrder) {
+            handleOrder();
+          }
+        }}
       >
         ORDER NOW!
       </div>
