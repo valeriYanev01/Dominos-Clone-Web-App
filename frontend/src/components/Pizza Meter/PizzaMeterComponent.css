@@ -1,0 +1,9 @@
+.pizza-meter-container {
+  width: 50%;
+  text-align: center;
+  border-right: 1.5px solid gray;
+}
+
+.pizza-meter {
+  width: 8rem;
+}

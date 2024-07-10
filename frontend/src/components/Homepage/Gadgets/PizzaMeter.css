@@ -23,16 +23,6 @@
   padding-top: 20px;
 }
 
-.gadgets-pan-container {
-  width: 50%;
-  text-align: center;
-  border-right: 1.5px solid gray;
-}
-
-.gadgets-pan {
-  width: 140px;
-}
-
 .gadgets-dominos-more-container {
   display: flex;
   flex-direction: column;
