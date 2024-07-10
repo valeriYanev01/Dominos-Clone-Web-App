@@ -1,5 +1,6 @@
-import React, { ReactNode, createContext, useEffect, useState } from "react";
+import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Address } from "../types/Address";
+import { ModalContext } from "./ModalContext";
 
 interface OrderDetails {
   type: string;
@@ -63,6 +64,8 @@ interface OrderContextInterface {
   setDealsCount: React.Dispatch<React.SetStateAction<number>>;
   finalPriceNoDiscount: number;
   setFinalPriceNoDiscount: React.Dispatch<React.SetStateAction<number>>;
+  isReadyForOrder: boolean;
+  setIsReadyForOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 class Product {
@@ -150,6 +153,8 @@ export const OrderContext = createContext<OrderContextInterface>({
   setDealsCount: () => {},
   finalPriceNoDiscount: 0,
   setFinalPriceNoDiscount: () => {},
+  isReadyForOrder: false,
+  setIsReadyForOrder: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -194,6 +199,9 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [freeDelivery, setFreeDelivery] = useState(false);
   const [dealsCount, setDealsCount] = useState(0);
   const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
+  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
+
+  const { modalType } = useContext(ModalContext);
 
   useEffect(() => {
     if (orderTime) {
@@ -415,6 +423,14 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     setFinalPriceNoDiscount(priceNoDiscount);
   }, [itemsInBasket]);
 
+  useEffect(() => {
+    if (modalType === "delivery") {
+      setIsReadyForOrder(true);
+    } else {
+      setIsReadyForOrder(false);
+    }
+  }, [modalType]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -458,6 +474,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setFreeDelivery,
         finalPriceNoDiscount,
         setFinalPriceNoDiscount,
+        isReadyForOrder,
+        setIsReadyForOrder,
       }}
     >
       {children}

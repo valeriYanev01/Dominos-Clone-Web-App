@@ -17,7 +17,6 @@ const DeliveryModal: React.FC = () => {
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
   const [error, setError] = useState("");
-  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
@@ -32,6 +31,7 @@ const DeliveryModal: React.FC = () => {
     isOpenForDelivery,
   } = useContext(OrderContext);
   const { selectedAddress, setSelectedAddress } = useContext(AddressContext);
+  const { isReadyForOrder } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ const DeliveryModal: React.FC = () => {
     if (emailLogin && token) {
       getAllOrders();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailLogin, token]);
 
   useEffect(() => {
@@ -221,12 +221,6 @@ const DeliveryModal: React.FC = () => {
   const handleSelectedAddress = (address: Address) => {
     setSelectedAddress(address);
   };
-
-  useEffect(() => {
-    if (selectedAddress.name.length > 0 && orderTime.length > 0) {
-      setIsReadyForOrder(true);
-    }
-  }, [orderTime.length, selectedAddress.name.length]);
 
   const handleOrder = () => {
     setOrderType("delivery");
