@@ -24,7 +24,7 @@ const SingleProduct: React.FC<Product> = ({ product }) => {
         ? true
         : false
     );
-  }, [productType]);
+  }, [productType, setOpenModal]);
 
   return (
     <div
