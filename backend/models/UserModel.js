@@ -68,37 +68,37 @@ const productSchema = new mongoose.Schema({
 const invoicesSchema = new mongoose.Schema({
   companyName: {
     type: String,
-    required: true,
   },
   companyAddress: {
     type: String,
-    required: true,
   },
   companyActivity: {
     type: String,
-    required: true,
   },
   companyVAT: {
     type: String,
-    required: true,
   },
   companyOwner: {
     type: String,
-    required: true,
   },
 });
 
 const ordersSchema = new mongoose.Schema(
   {
     products: [productSchema],
-    address: addressSchema,
+    address: {
+      type: addressSchema,
+      required: false,
+    },
+    store: {
+      type: String,
+    },
     deliveryTime: {
       type: String,
       required: true,
     },
     phoneNumber: {
       type: String,
-      required: true,
     },
     floor: {
       type: String,
@@ -114,10 +114,13 @@ const ordersSchema = new mongoose.Schema(
       required: true,
     },
     invoice: {
-      type: invoicesSchema,
+      type: [invoicesSchema],
+    },
+    orderType: {
+      type: String,
     },
     finalPrice: {
-      type: String,
+      type: Number,
     },
   },
   { timestamps: true }
@@ -555,6 +558,7 @@ userSchema.statics.newOrder = async function (
   email,
   products,
   address,
+  store,
   deliveryTime,
   phoneNumber,
   floor,
@@ -562,7 +566,8 @@ userSchema.statics.newOrder = async function (
   comments,
   paymentMethod,
   invoice,
-  finalPrice
+  finalPrice,
+  orderType = ""
 ) {
   try {
     const user = await this.findOne({ email });
@@ -574,12 +579,17 @@ userSchema.statics.newOrder = async function (
     const productObjects = products.map((product) => ({
       name: product.name,
       quantity: product.quantity,
-      modifications: product.modifications,
+      modifications: {
+        added: product.addedToppings,
+        removed: product.removedToppings,
+      },
     }));
 
     user.orders.push({
+      orderType,
       products: productObjects,
       address,
+      store,
       deliveryTime,
       phoneNumber,
       floor,

@@ -262,21 +262,23 @@ export const newOrder = async (req, res) => {
     email,
     products,
     address,
+    store,
     deliveryTime,
-    phoneNumber,
+    phoneNumber = "",
     floor,
     doorBell,
     comments,
     paymentMethod,
     invoice,
     finalPrice,
+    orderType,
   } = req.body;
-
   try {
     const user = await UserModel.newOrder(
       email,
       products,
       address,
+      store,
       deliveryTime,
       phoneNumber,
       floor,
@@ -284,7 +286,8 @@ export const newOrder = async (req, res) => {
       comments,
       paymentMethod,
       invoice,
-      finalPrice
+      finalPrice,
+      orderType
     );
 
     return res.status(200).json({ user, success: true });
