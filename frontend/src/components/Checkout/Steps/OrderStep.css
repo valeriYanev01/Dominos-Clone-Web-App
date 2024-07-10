@@ -1,0 +1,9 @@
+.checkout-final-order-btn {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #e2213d;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}

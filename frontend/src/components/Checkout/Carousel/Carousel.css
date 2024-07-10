@@ -1,0 +1,55 @@
+.checkout-page-carousel {
+  width: fit-content;
+}
+
+.checkout-page-carousel-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: fit-content;
+  gap: 20px;
+}
+
+.checkout-page-carousel-container {
+  background-color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.2);
+}
+
+.checkout-page-carousel-heading {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.checkout-page-carousel-item {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  border-right: 1px solid #55555588;
+  padding-right: 1rem;
+}
+
+.checkout-page-carousel-item span {
+  width: 120px;
+  margin: 0;
+}
+
+.checkout-page-carousel-item span p {
+  margin: 0;
+}
+
+.checkout-page-carousel-image {
+  width: 64px;
+  height: 64px;
+  margin: 0;
+}
+
+.checkout-page-carousel-add-to-basket {
+  cursor: pointer;
+  margin: 0;
+  width: fit-content !important;
+}
