@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import cryptoRandomString from "crypto-random-string";
+import nodemailer from "nodemailer";
 
 const addressSchema = new mongoose.Schema({
   name: {
@@ -560,7 +561,7 @@ userSchema.statics.newOrder = async function (
   address,
   store,
   deliveryTime,
-  phoneNumber,
+  phoneNumber = "",
   floor,
   doorBell,
   comments,
@@ -569,6 +570,161 @@ userSchema.statics.newOrder = async function (
   finalPrice,
   orderType = ""
 ) {
+  const sendEmailForSuccessfulOrder = async () => {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: "dominos.clone01@gmail.com",
+        pass: "qdpk xkkw eaef joot",
+      },
+    });
+
+    const mailOptionsForMe = {
+      from: "dominos.clone01@gmail.com",
+      to: "valeri.t.yanev@gmail.com",
+      subject: `${orderType === "delivery" ? `Delivery for ${address.fullAddress}.` : `Carry Out for ${store}`}`,
+      text: `
+         ${
+           orderType === "delivery"
+             ? `
+            Address: ${address.fullAddress},
+            Time: ${deliveryTime},
+            ${products
+              .map((product) => {
+                return `
+                Name: ${product.name}, 
+                Quantity: ${product.quantity},
+                  ${
+                    product.addedToppings.length > 0 || product.removedToppings.length > 0
+                      ? `Modification: 
+                Added: ${product.addedToppings.join(", ")},
+                Removed: ${product.removedToppings.join(", ")}
+            `
+                      : ""
+                  }`;
+              })
+              .join("\n")}
+            Price: ${finalPrice.toFixed(2)},
+            Phone Number: ${phoneNumber}
+            Floor: ${floor},
+            Door Bell: ${doorBell},
+            Comments: ${comments},
+            Payment Method: ${paymentMethod},
+            ${
+              invoice
+                ? `Invoice: 
+              Name: ${invoice.companyName}
+              Address: ${invoice.companyAddress}
+              Activity: ${invoice.companyActivity}
+              VAT: ${invoice.companyVAT}
+              Owner: ${invoice.companyOwner}
+              `
+                : ""
+            }
+              `
+             : `
+              Store: ${store},
+              Time: ${deliveryTime},
+               ${products
+                 .map((product) => {
+                   return `
+                Name: ${product.name}, 
+                Quantity: ${product.quantity},
+                  ${
+                    product.addedToppings.length > 0 || product.removedToppings.length > 0
+                      ? `Modification: 
+                Added: ${product.addedToppings.join(", ")},
+                Removed: ${product.removedToppings.join(", ")}
+            `
+                      : ""
+                  }`;
+                 })
+                 .join("\n")}
+              Price: ${finalPrice.toFixed(2)},
+              Payment Method: ${paymentMethod}
+               ${
+                 invoice
+                   ? `Invoice: 
+              Name: ${invoice.companyName}
+              Address: ${invoice.companyAddress}
+              Activity: ${invoice.companyActivity}
+              VAT: ${invoice.companyVAT}
+              Owner: ${invoice.companyOwner}
+              `
+                   : ""
+               }
+             `
+         }
+    `,
+    };
+
+    const mailOptionsForOrderer = {
+      from: "dominos.clone01@gmail.com",
+      to: email,
+      subject: `Order - Successful`,
+      text: `
+      Hello,
+
+      You successfully create order for ${
+        orderType === "delivery" ? `delivery to ${address.fullAddress} ` : `pickint at ${store}`
+      } for ${deliveryTime}.
+
+      Your Order: 
+        Products: 
+    ${products
+      .map((product) => {
+        return `
+      Name: ${product.name}, 
+      Quantity: ${product.quantity},
+      ${
+        product.addedToppings.length > 0 || product.removedToppings.length > 0
+          ? `Modification: 
+              Added: ${product.addedToppings.join(", ")},
+              Removed: ${product.removedToppings.join(", ")}
+            `
+          : ""
+      }`;
+      })
+      .join("\n")}
+        Price: ${finalPrice.toFixed(2)}
+          ${
+            invoice
+              ? `Invoice: 
+              Name: ${invoice.companyName}
+              Address: ${invoice.companyAddress}
+              Activity: ${invoice.companyActivity}
+              VAT: ${invoice.companyVAT}
+              Owner: ${invoice.companyOwner}
+              `
+              : ""
+          }
+      Br!
+    `,
+    };
+
+    try {
+      transporter.sendMail(mailOptionsForMe, (error) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: "Failed to send email" });
+        }
+
+        return res.status(200).json({ success: true });
+      });
+
+      if (email) {
+        transporter.sendMail(mailOptionsForOrderer, (error) => {
+          if (error) {
+            return res.status(500).json({ success: false, message: "Failed to send email" });
+          }
+
+          return res.status(200).json({ success: true });
+        });
+      }
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  };
+
   try {
     const user = await this.findOne({ email });
 
@@ -601,6 +757,8 @@ userSchema.statics.newOrder = async function (
     });
 
     const updatedUser = await user.save();
+
+    sendEmailForSuccessfulOrder();
 
     return updatedUser;
   } catch (err) {
