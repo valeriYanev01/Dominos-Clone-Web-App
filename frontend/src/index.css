@@ -22,6 +22,11 @@ p {
   src: url("./font/FUTURA55REGULAR.TTF");
 }
 
+@font-face {
+  font-family: dominos-font-bold;
+  src: url("./font/FUTURABOLD.ttf");
+}
+
 .hide-scrollbar {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5);
