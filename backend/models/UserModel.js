@@ -159,6 +159,9 @@ const couponsSchema = new mongoose.Schema(
     used: {
       type: Boolean,
     },
+    expired: {
+      type: Boolean,
+    },
     usedDate: {
       type: Date,
     },
@@ -201,6 +204,17 @@ const userSchema = new mongoose.Schema(
     },
     stripeCustomerID: {
       type: String,
+    },
+    activeOrder: {
+      isActive: {
+        type: Boolean,
+      },
+      start: {
+        type: Number,
+      },
+      finish: {
+        type: Number,
+      },
     },
   },
   { timestamps: true }
@@ -568,7 +582,9 @@ userSchema.statics.newOrder = async function (
   paymentMethod,
   invoice,
   finalPrice,
-  orderType = ""
+  orderType = "",
+  start = 0,
+  finish = 0
 ) {
   const sendEmailForSuccessfulOrder = async () => {
     const transporter = nodemailer.createTransport({
@@ -595,7 +611,7 @@ userSchema.statics.newOrder = async function (
                 Name: ${product.name}, 
                 Quantity: ${product.quantity},
                   ${
-                    product.addedToppings.length > 0 || product.removedToppings.length > 0
+                    product.addedToppings || product.removedToppings
                       ? `Modification: 
                 Added: ${product.addedToppings.join(", ")},
                 Removed: ${product.removedToppings.join(", ")}
@@ -631,7 +647,7 @@ userSchema.statics.newOrder = async function (
                 Name: ${product.name}, 
                 Quantity: ${product.quantity},
                   ${
-                    product.addedToppings.length > 0 || product.removedToppings.length > 0
+                    product.addedToppings || product.removedToppings
                       ? `Modification: 
                 Added: ${product.addedToppings.join(", ")},
                 Removed: ${product.removedToppings.join(", ")}
@@ -677,7 +693,7 @@ userSchema.statics.newOrder = async function (
       Name: ${product.name}, 
       Quantity: ${product.quantity},
       ${
-        product.addedToppings.length > 0 || product.removedToppings.length > 0
+        product.addedToppings || product.removedToppings
           ? `Modification: 
               Added: ${product.addedToppings.join(", ")},
               Removed: ${product.removedToppings.join(", ")}
@@ -755,6 +771,12 @@ userSchema.statics.newOrder = async function (
       invoice,
       finalPrice,
     });
+
+    user.activeOrder.isActive = true;
+    user.activeOrder.start = start;
+    user.activeOrder.finish = finish;
+
+    user.more += 1;
 
     const updatedUser = await user.save();
 
@@ -854,31 +876,77 @@ userSchema.statics.updateInvoice = async function (
     throw new Error("All fields required");
   }
 
-  const updatedInvoice = await this.findOneAndUpdate(
-    { email, "invoices.companyVAT": companyVAT },
-    {
-      $set: {
-        "invoices.$.companyName": companyName,
-        "invoices.$.companyAddress": companyAddress,
-        "invoices.$.companyActivity": companyActivity,
-        "invoices.$.companyVAT": companyVAT,
-        "invoices.$.companyOwner": companyOwner,
+  try {
+    const updatedInvoice = await this.findOneAndUpdate(
+      { email, "invoices.companyVAT": companyVAT },
+      {
+        $set: {
+          "invoices.$.companyName": companyName,
+          "invoices.$.companyAddress": companyAddress,
+          "invoices.$.companyActivity": companyActivity,
+          "invoices.$.companyVAT": companyVAT,
+          "invoices.$.companyOwner": companyOwner,
+        },
       },
-    },
-    { new: true }
-  );
+      { new: true }
+    );
 
-  return updatedInvoice;
+    return updatedInvoice;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
-userSchema.statics.increaseDominosMore = async function (email) {
-  if (!email) {
-    throw new Error("User not found");
+userSchema.statics.updateCouponUsed = async function (email, _id) {
+  const objectId = new mongoose.Types.ObjectId(_id);
+
+  try {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const updatedUser = await this.findOneAndUpdate(
+      { email, "coupons._id": objectId },
+      { $set: { "coupons.$.used": true } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("Coupon not found");
+    }
+
+    return updatedUser;
+  } catch (err) {
+    throw new Error(err.message);
   }
+};
 
-  const updatedDominosMore = await this.findOneAndUpdate({ email });
+userSchema.statics.updateCouponExpired = async function (email, _id) {
+  const objectId = new mongoose.Types.ObjectId(_id);
 
-  return updatedDominosMore;
+  try {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const updatedUser = await this.findOneAndUpdate(
+      { email, "coupons._id": objectId },
+      { $set: { "coupons.$.expired": true } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("Coupon not found");
+    }
+
+    return updatedUser;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 export const UserModel = mongoose.model("User", userSchema);

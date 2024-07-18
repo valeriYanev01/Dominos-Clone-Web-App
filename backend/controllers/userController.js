@@ -6,10 +6,15 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { UserModel } from "../models/UserModel.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const GOOGLE_RECAPTCHA_SECRET_KEY = process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+const MY_EMAIL = process.env.MY_EMAIL;
+const APP_EMAIL = process.env.APP_EMAIL;
+const GOOGLE_AUTH_PASS = process.env.GOOGLE_AUTH_PASS;
 
 const createToken = (_id, expiration = "1h") => {
   return jwt.sign({ _id }, JWT_SECRET, { expiresIn: expiration });
@@ -272,6 +277,8 @@ export const newOrder = async (req, res) => {
     invoice,
     finalPrice,
     orderType,
+    start,
+    finish,
   } = req.body;
   try {
     const user = await UserModel.newOrder(
@@ -287,7 +294,9 @@ export const newOrder = async (req, res) => {
       paymentMethod,
       invoice,
       finalPrice,
-      orderType
+      orderType,
+      start,
+      finish
     );
 
     return res.status(200).json({ user, success: true });
@@ -334,11 +343,10 @@ export const getCoupons = async (req, res) => {
 
 export const verifyGoogleRecaptchaToken = async (req, res) => {
   const { recaptchaToken } = req.body;
-  const secretKey = "6Ldb0AAqAAAAAF_WMTC_C7MqxGMh3HVWNM9isT8Z";
 
   try {
     const response = await axios.post("https://www.google.com/recaptcha/api/siteverify", null, {
-      params: { secret: secretKey, response: recaptchaToken },
+      params: { secret: GOOGLE_RECAPTCHA_SECRET_KEY, response: recaptchaToken },
     });
 
     const data = response.data;
@@ -367,14 +375,14 @@ export const apply = async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "dominos.clone01@gmail.com",
-      pass: "qdpk xkkw eaef joot",
+      user: APP_EMAIL,
+      pass: GOOGLE_AUTH_PASS,
     },
   });
 
   const mailOptionsForMe = {
-    from: "dominos.clone01@gmail.com",
-    to: "valeri.t.yanev@gmail.com",
+    from: APP_EMAIL,
+    to: MY_EMAIL,
     subject: `Job Application ${name} - CV Attached`,
     text: `
           Name: ${name}
@@ -393,7 +401,7 @@ export const apply = async (req, res) => {
   };
 
   const mailOptionsForApplier = {
-    from: "dominos.clone01@gmail.com",
+    from: APP_EMAIL,
     to: email,
     subject: `Job Application - Successfully Applied`,
     text: `
@@ -500,12 +508,70 @@ export const updateInvoice = async (req, res) => {
   }
 };
 
-export const increaseDominosMore = async (req, res) => {
+export const updateActiveOrder = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const dominosMore = await UserModel.increaseDominosMore(email);
-    console.log(dominosMore);
+    await UserModel.findOneAndUpdate(
+      { email },
+      { $set: { "activeOrder.isActive": false, "activeOrder.start": 0, "activeOrder.finish": 0 } }
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateDominosMore = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (user && user.more === 6) {
+      await UserModel.findOneAndUpdate(
+        { email },
+        {
+          $push: {
+            coupons: {
+              name: "Dominos More",
+              validity: new Date().setMonth(new Date().getMonth() + 6),
+              used: false,
+            },
+          },
+          $inc: { more: -6 },
+        },
+        { new: true }
+      );
+
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(200).json({ success: false });
+    }
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateCouponUsed = async (req, res) => {
+  const { email, _id } = req.body;
+
+  try {
+    const updatedUser = await UserModel.updateCouponUsed(email, _id);
+
+    return res.status(200).json({ success: true, updatedUser });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateCouponExpired = async (req, res) => {
+  const { email, _id } = req.body;
+
+  try {
+    const updatedUser = await UserModel.updateCouponExpired(email, _id);
+
+    return res.status(200).json({ success: true, updatedUser });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

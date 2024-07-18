@@ -14,10 +14,13 @@ import {
   getSingleAddress,
   getUser,
   googleLogin,
-  increaseDominosMore,
   newOrder,
+  updateActiveOrder,
   updateAddress,
   updateConsent,
+  updateCouponExpired,
+  updateCouponUsed,
+  updateDominosMore,
   updateInvoice,
   updateUser,
   userLogin,
@@ -51,7 +54,10 @@ router.put("/new-order", newOrder);
 router.put("/update-address", updateAddress);
 router.put("/update-consent", updateConsent);
 router.put("/update-invoice", updateInvoice);
-router.put("/update-dominos-more", increaseDominosMore);
+router.put("/update-active-order", updateActiveOrder);
+router.put("/update-dominos-more", updateDominosMore);
+router.put("/update-coupon-used", updateCouponUsed);
+router.put("/update-coupon-expired", updateCouponExpired);
 router.delete("/delete-address", deleteAddress);
 router.delete("/account-delete", deleteAccount);
 router.delete("/delete-invoice", deleteInvoice);
