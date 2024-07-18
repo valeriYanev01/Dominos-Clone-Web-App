@@ -3,10 +3,15 @@ import { DealInfo } from "../../../types/Home";
 import React, { useContext } from "react";
 import { ModalContext } from "../../../context/ModalContext";
 import { LoginContext } from "../../../context/LoginContext";
+import { OrderContext } from "../../../context/OrderContext";
+import { useNavigate } from "react-router-dom";
 
 const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method, deal }) => {
   const { setModalType, setOpenModal } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
+  const { activeTracker } = useContext(OrderContext);
+
+  const navigate = useNavigate();
 
   const handleShowModal = (type: "delivery" | "carryOut") => {
     setOpenModal(true);
@@ -33,7 +38,16 @@ const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method, deal
           method.carryOut && method.delivery ? "deal-method-container-space-around" : "deal-method-container "
         }`}
       >
-        <div className="deal-method" onClick={() => handleShowModal("delivery")}>
+        <div
+          className="deal-method"
+          onClick={() => {
+            if (!activeTracker) {
+              handleShowModal("delivery");
+            } else {
+              navigate("/tracker");
+            }
+          }}
+        >
           {method.delivery ? (
             <>
               <img src="/svg/delivery.svg" className="deal-delivery-svg" />
@@ -41,7 +55,16 @@ const SingleDeal: React.FC<DealInfo> = ({ headerImg, heading, desc, method, deal
             </>
           ) : null}
         </div>
-        <div className="deal-method" onClick={() => handleShowModal("carryOut")}>
+        <div
+          className="deal-method"
+          onClick={() => {
+            if (!activeTracker) {
+              handleShowModal("carryOut");
+            } else {
+              navigate("/tracker");
+            }
+          }}
+        >
           {method.carryOut ? (
             <>
               <img src="/svg/carryOut.svg" className="deal-delivery-svg" />

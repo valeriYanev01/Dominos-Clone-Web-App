@@ -4,7 +4,7 @@ import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
 import Heading from "../../Heading/Heading";
 
-type Coupons = {
+export type Coupons = {
   name: string;
   validity: number;
   used: boolean;
@@ -33,23 +33,31 @@ const Coupons: React.FC = () => {
           params: { email: emailLogin },
         });
 
+        console.log(response);
+
         setActiveCoupons([]);
         setUsedCoupons([]);
         setExpiredCoupons([]);
 
-        response.data.coupons.coupons.map((coupon: Coupons) => {
+        response.data.coupons.coupons.map(async (coupon: Coupons) => {
           if (coupon.used === true) {
             setUsedCoupons((prevState) => [...prevState, coupon]);
           }
 
-          if (new Date() > new Date(new Date().setDate(new Date().getDate() + coupon.validity))) {
+          if (new Date() > new Date(coupon.validity)) {
             setExpiredCoupons((prevstate) => [...prevstate, coupon]);
+
+            await axios.put(
+              "http://localhost:3000/api/users/update-coupon-expired",
+              {
+                email: emailLogin,
+                _id: coupon._id,
+              },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
           }
 
-          if (
-            coupon.used === false &&
-            new Date() < new Date(new Date().setDate(new Date().getDate() + coupon.validity))
-          ) {
+          if (coupon.used === false && new Date() < new Date(coupon.validity)) {
             setActiveCoupons((prevState) => [...prevState, coupon]);
           }
         });
@@ -79,7 +87,7 @@ const Coupons: React.FC = () => {
                     <p>{coupon.name}</p>
                     <p>
                       <span>Use before:</span>
-                      {new Date(new Date().setDate(new Date().getDate() + coupon.validity)).toLocaleDateString("en-GB")}
+                      {new Date(coupon.validity).toLocaleDateString("en-GB")}
                     </p>
                   </div>
                 ))}
@@ -95,7 +103,7 @@ const Coupons: React.FC = () => {
                   <div key={coupon._id} className="pc-coupon">
                     <p>{coupon.name}</p>
                     <p>
-                      <span>Used on:</span> {new Date(coupon.usedDate).toLocaleDateString("en-GB")}
+                      <span>Used on:</span> {new Date(coupon.updatedAt).toLocaleDateString("en-GB")}
                     </p>
                   </div>
                 ))}
@@ -112,7 +120,7 @@ const Coupons: React.FC = () => {
                     <p>{coupon.name}</p>
                     <p>
                       <span>Expired on:</span>
-                      {new Date(new Date().setDate(new Date().getDate() + coupon.validity)).toLocaleDateString("en-GB")}
+                      {new Date(coupon.validity).toLocaleDateString("en-GB")}
                     </p>
                   </div>
                 ))}

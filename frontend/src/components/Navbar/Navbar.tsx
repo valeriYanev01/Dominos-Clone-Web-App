@@ -25,7 +25,7 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
-  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket, activeTracker } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -93,6 +93,10 @@ const Navbar = ({ page }: Page) => {
       setShowProfileMenu(false);
       logout({ logoutParams: { returnTo: window.location.origin } });
       localStorage.removeItem("user");
+      localStorage.removeItem("active-tracker");
+      localStorage.removeItem("active-order");
+      localStorage.removeItem("customer_id");
+      localStorage.removeItem("basket-items");
       setLoggedIn(false);
       navigate("/");
     }
@@ -226,6 +230,7 @@ const Navbar = ({ page }: Page) => {
             <span style={{ color: navColors.link, transition: "all 0.4s" }}>BG | </span>
             <span style={{ color: navColors.link, transition: "all 0.4s" }}>EN</span>
           </li>
+
           {loggedIn ? (
             <li>
               <Link to="/tracker" style={{ color: navColors.link, transition: "all 0.4s" }}>
@@ -279,7 +284,7 @@ const Navbar = ({ page }: Page) => {
               DOMINO'S MORE
             </Link>
           </li>
-          {!JSON.parse(localStorage.getItem("active-order") as string) && (
+          {!JSON.parse(localStorage.getItem("active-order") as string) && !activeTracker && (
             <li>
               <span onClick={handleOrderBtn} className="navigation-order">
                 ORDER NOW
@@ -334,14 +339,20 @@ const Navbar = ({ page }: Page) => {
               <li onClick={() => setShowProfileMenu(false)}>
                 <Link to="/profile/privacy-settings">PRIVACY SETTINGS</Link>
               </li>
-              <li onClick={handleLogout}>LOGOUT</li>
+              <li onClick={handleLogout}>
+                <Link to="/">LOGOUT</Link>
+              </li>
             </ul>
           ) : (
             ""
           )}
         </ul>
 
-        {loggedIn && page === "home" && !localStorage.getItem("active-order") ? (
+        {loggedIn &&
+        page === "home" &&
+        localStorage.getItem("active-order") &&
+        !JSON.parse(localStorage.getItem("active-order") as string) &&
+        !activeTracker ? (
           <div className="loggedin-navigation">
             <div onClick={() => handleOpenModal("delivery")}>
               <img src="/images/delivery.png" className="loggedin-navigation-img" />
@@ -353,7 +364,11 @@ const Navbar = ({ page }: Page) => {
               <p>CARRY OUT</p>
             </div>
           </div>
-        ) : loggedIn && page === "home" && localStorage.getItem("active-order") ? (
+        ) : loggedIn &&
+          page === "home" &&
+          localStorage.getItem("active-order") &&
+          JSON.parse(localStorage.getItem("active-order") as string) &&
+          !activeTracker ? (
           <div className="loggedin-navigation">
             <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
             <Link
@@ -369,6 +384,8 @@ const Navbar = ({ page }: Page) => {
         ) : (
           loggedIn &&
           localStorage.getItem("active-order") &&
+          JSON.parse(localStorage.getItem("active-order") as string) &&
+          !activeTracker &&
           page !== "careers" && (
             <ul className="navbar-active-order-container">
               <li
@@ -399,6 +416,7 @@ const Navbar = ({ page }: Page) => {
               </li>
               <li
                 style={
+                  localStorage.getItem("order-details") &&
                   JSON.parse(localStorage.getItem("order-details") as string).type === "delivery"
                     ? { flex: 2 }
                     : { flex: 1 }
@@ -410,7 +428,8 @@ const Navbar = ({ page }: Page) => {
               >
                 <div className="navbar-active-order-step">
                   <img src="/svg/order/step2.svg" className="navbar-active-order-step-img" />
-                  {JSON.parse(localStorage.getItem("order-details") as string).addressLocation ? (
+                  {localStorage.getItem("order-details") &&
+                  JSON.parse(localStorage.getItem("order-details") as string).addressLocation ? (
                     <span className="navbar-active-order-step-text order-type-delivery">
                       {localStorage.getItem("order-details") &&
                         JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
@@ -419,7 +438,8 @@ const Navbar = ({ page }: Page) => {
                     </span>
                   ) : (
                     <span className="navbar-active-order-step-text order-type-carryout">
-                      {JSON.parse(localStorage.getItem("order-details") as string).store}
+                      {localStorage.getItem("order-details") &&
+                        JSON.parse(localStorage.getItem("order-details") as string).store}
                     </span>
                   )}
                 </div>

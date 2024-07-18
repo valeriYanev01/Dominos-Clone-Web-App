@@ -207,7 +207,8 @@
   width: 100%;
 }
 
-.navigation-profile-menu li a {
+.navigation-profile-menu li a,
+.navigation-profile-menu li {
   text-decoration: none;
   color: inherit;
 }
