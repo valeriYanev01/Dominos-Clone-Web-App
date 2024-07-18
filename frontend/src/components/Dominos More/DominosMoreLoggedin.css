@@ -1,0 +1,242 @@
+.dominos-more-in {
+  background-image: url("/images/more/background-blue.png");
+  background-color: #e11d38 !important;
+  background-size: auto;
+  background-position: top;
+}
+
+.dm-bg-container-in {
+  padding-top: 170px;
+}
+
+.dm-content-container-in {
+  padding: 40px;
+  width: 75%;
+  background-color: #fff;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dm-content-in {
+  background-color: #fff;
+  padding: 40px;
+  border: #0278ae 5px dashed;
+}
+
+.dm-logo-in {
+  width: 260px;
+  display: block;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.dm-main-text-in,
+.dm-deal-disclaimer-in {
+  color: #0278ae;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  font-weight: bold !important;
+}
+
+.dm-main-text-in span,
+.dm-deal-disclaimer-in span {
+  color: #e11d38;
+  font-size: inherit;
+}
+
+.dm-deal-text-in {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #0278ae;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dm-deal-text-in span {
+  line-height: 1.5;
+  align-self: center;
+}
+
+.dm-deal-text-in span,
+.dm-deal-text-in div {
+  margin: 0px;
+}
+
+.dm-header-text-in {
+  display: inline-block;
+  padding: 15px 40px;
+  background-color: #0278ae;
+  color: white;
+  font-size: 2rem;
+  letter-spacing: 1.1px;
+  text-shadow: 2.2px 2px #e11d38;
+  font-family: dominos-font-bold;
+  margin: 3rem 0;
+}
+
+.dm-points-container {
+  margin-left: 0;
+}
+
+.dm-points-digits {
+  color: #fff;
+  font-size: 5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px #0278ae;
+  -webkit-text-stroke-color: #0278ae;
+  -webkit-text-stroke-width: 0.1px;
+  line-height: 1;
+}
+
+.dm-points-text {
+  font-family: dominos-font-bold;
+  color: #0278ae;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.dm-how-to-redeem {
+  background-color: #0278ae;
+  display: flex;
+  padding: 4rem 0;
+  color: #fff;
+  margin-top: 5rem;
+  gap: 3rem;
+  justify-content: center;
+  align-items: start;
+  position: relative;
+  width: calc(100% + 2 * 2.8125rem);
+  margin-left: -2.8125rem;
+}
+
+.dm-redeem-heading {
+  position: absolute;
+  top: 0;
+  font-size: 1.5rem;
+  background-color: #e11d38;
+  color: white;
+  letter-spacing: 1.1px;
+  text-shadow: 2.2px 2px #0278ae;
+  transform: translateY(-50%);
+  padding: 1rem 2rem;
+  font-family: dominos-font-bold;
+  letter-spacing: 3px;
+}
+
+.dm-redeem-step {
+  flex: 1;
+  margin: 0;
+}
+
+.dm-redeem-step p,
+.dm-redeem-step span {
+  font-size: 1.2rem;
+  font-weight: normal;
+  width: 90% !important;
+}
+
+.dm-redeem-step span {
+  color: #fff;
+  font-family: dominos-font-bold;
+}
+
+.dm-refer {
+  width: calc(100% + 2 * 2.8125rem);
+  margin-left: -2.8125rem;
+  background-color: #e11d38;
+  margin-top: 4rem;
+  padding: 1rem 0;
+}
+
+.dm-refer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dm-refer-content img,
+.dm-refer-content div {
+  margin: 0;
+}
+
+.dm-refer-content div {
+  background-color: #0278ae;
+  padding: 0.8rem 1em;
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: dominos-font-bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dm-refer-content div:hover {
+  color: #0278ae;
+  background-color: #fff;
+}
+
+.dm-refer p {
+  font-family: dominos-font-bold;
+  letter-spacing: 2px;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.dm-points-history {
+  width: calc(100% + 2 * 2.8125rem);
+  margin-left: -2.8125rem;
+  margin-top: 4rem;
+}
+
+.dm-points-history-text {
+  font-size: 1.5rem;
+  background-color: #0278ae;
+  width: fit-content;
+  color: white;
+  letter-spacing: 1.1px;
+  text-shadow: 2.2px 2px #e11d38;
+  padding: 1rem 2rem;
+  font-family: dominos-font-bold;
+  letter-spacing: 3px;
+}
+
+.dm-points-history-desc {
+  margin-top: 3rem;
+  color: #0278ae;
+  font-weight: bold;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+}
+
+.dm-swiper {
+  margin-top: 3rem;
+}
+
+.swiper-slide {
+  box-shadow: 2px 1px 10px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  display: flex !important;
+  padding: 2rem;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  margin-top: 2rem;
+}
+
+.dm-history-date {
+  color: #e11d38;
+  font-family: dominos-font-bold;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+}
+
+.dm-history-text {
+  line-height: 1;
+  color: #0278ae;
+  font-weight: bold;
+  font-size: 1rem;
+}
