@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Address } from "../types/Address";
 import { ModalContext } from "./ModalContext";
+import { LoginContext } from "./LoginContext";
 
 interface OrderDetails {
   type: string;
@@ -66,6 +67,10 @@ interface OrderContextInterface {
   setFinalPriceNoDiscount: React.Dispatch<React.SetStateAction<number>>;
   isReadyForOrder: boolean;
   setIsReadyForOrder: React.Dispatch<React.SetStateAction<boolean>>;
+  activeTracker: boolean;
+  setActiveTracker: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedCoupon: string;
+  setSelectedCoupon: React.Dispatch<React.SetStateAction<string>>;
 }
 
 class Product {
@@ -155,6 +160,10 @@ export const OrderContext = createContext<OrderContextInterface>({
   setFinalPriceNoDiscount: () => {},
   isReadyForOrder: false,
   setIsReadyForOrder: () => {},
+  activeTracker: false,
+  setActiveTracker: () => {},
+  selectedCoupon: "",
+  setSelectedCoupon: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -200,14 +209,37 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [dealsCount, setDealsCount] = useState(0);
   const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
   const [isReadyForOrder, setIsReadyForOrder] = useState(false);
+  const [activeTracker, setActiveTracker] = useState(() => {
+    const savedData = localStorage.getItem("active-tracker");
+    return savedData && JSON.parse(savedData).active ? true : false;
+  });
+  const [selectedCoupon, setSelectedCoupon] = useState("");
+  console.log(activeTracker);
 
   const { modalType } = useContext(ModalContext);
+  const { loggedIn } = useContext(LoginContext);
+
+  const savedData = localStorage.getItem("active-tracker");
+
+  useEffect(() => {
+    if (savedData && JSON.parse(savedData).active) {
+      setActiveTracker(true);
+    } else {
+      setActiveTracker(false);
+    }
+  }, [savedData]);
 
   useEffect(() => {
     if (orderTime) {
       localStorage.setItem("order-time", orderTime);
     }
   }, [orderTime]);
+
+  useEffect(() => {
+    if (localStorage.getItem("order-time")) {
+      setOrderTime(localStorage.getItem("order-time") as string);
+    }
+  }, []);
 
   useEffect(() => {
     if (new Date().getHours() >= 11) {
@@ -219,6 +251,11 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     if (localStorage.getItem("active-order")) {
       setActiveOrder(true);
     }
+
+    if (localStorage.getItem("active-tracker")) {
+      setActiveOrder(false);
+      localStorage.setItem("active-order", JSON.stringify(false));
+    }
   }, []);
 
   useEffect(() => {
@@ -229,12 +266,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
           .split(" ")
           .join("")
       );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (localStorage.getItem("order-time")) {
-      setOrderTime(localStorage.getItem("order-time") as string);
     }
   }, []);
 
@@ -253,6 +284,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     const combineAndSortItems = (items: BasketItem[]) => {
       const combinedItems = [...items];
+      console.log(items);
 
       for (let i = 0; i < combinedItems.length - 1; i++) {
         if (combinedItems[i].deal) continue;
@@ -260,7 +292,9 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         for (let j = i + 1; j < combinedItems.length; j++) {
           if (
             JSON.stringify(combinedItems[i].toppings) === JSON.stringify(combinedItems[j].toppings) &&
-            combinedItems[i].name === combinedItems[j].name
+            combinedItems[i].name === combinedItems[j].name &&
+            combinedItems[i].size === combinedItems[j].size &&
+            combinedItems[i].crust === combinedItems[j].crust
           ) {
             combinedItems[i].quantity += combinedItems[j].quantity;
             combinedItems.splice(j, 1);
@@ -318,80 +352,99 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   // To determine how many 3rd pizza promotions should be included
   useEffect(() => {
-    let pizzaQuantity = 0;
+    if (itemsInBasket.length > 0) {
+      let pizzaQuantity = 0;
 
-    itemsInBasket.forEach((item) => {
-      if (item.type === "pizza") {
-        pizzaQuantity += item.quantity;
-      }
-    });
-
-    const spreadItemsInBasket = [];
-
-    for (let i = 0; i < itemsInBasket.length; i++) {
-      if (itemsInBasket[i].deal) {
-        continue;
-      } else {
-        for (let j = 0; j < itemsInBasket[i].quantity; j++) {
-          const product = new Product(
-            itemsInBasket[i].name,
-            itemsInBasket[i].price,
-            1,
-            itemsInBasket[i].size || "",
-            itemsInBasket[i].crust || "",
-            itemsInBasket[i].toppings || [],
-            itemsInBasket[i].type
-          );
-
-          spreadItemsInBasket.push(product);
+      itemsInBasket.forEach((item) => {
+        if (item.type === "pizza") {
+          pizzaQuantity += item.quantity;
         }
-      }
-    }
+      });
 
-    if (thirdPizzaPromotions > 0 && itemsInBasket.length > 0) {
-      for (let i = 0; i < thirdPizzaPromotions; i++) {
-        if (spreadItemsInBasket[i].type === "pizza") {
-          spreadItemsInBasket[i].price = "5.50";
-        }
-      }
-    }
+      const spreadItemsInBasket = [];
 
-    for (let i = 0; i < spreadItemsInBasket.length; i++) {
-      for (let j = i + 1; j < spreadItemsInBasket.length; j++) {
-        if (
-          JSON.stringify(spreadItemsInBasket[i].toppings) === JSON.stringify(spreadItemsInBasket[j].toppings) &&
-          spreadItemsInBasket[i].name === spreadItemsInBasket[j].name
-        ) {
-          spreadItemsInBasket[i].quantity += spreadItemsInBasket[j].quantity;
-          spreadItemsInBasket[i].price = String(
-            Number(spreadItemsInBasket[i].price) + Number(spreadItemsInBasket[j].price)
-          );
-          spreadItemsInBasket.splice(j, 1);
-          j--;
-        } else {
+      for (let i = 0; i < itemsInBasket.length; i++) {
+        if (itemsInBasket[i].deal) {
           continue;
+        } else {
+          for (let j = 0; j < itemsInBasket[i].quantity; j++) {
+            const product = new Product(
+              itemsInBasket[i].name,
+              itemsInBasket[i].price,
+              1,
+              itemsInBasket[i].size || "",
+              itemsInBasket[i].crust || "",
+              itemsInBasket[i].toppings || [],
+              itemsInBasket[i].type
+            );
+
+            spreadItemsInBasket.push(product);
+          }
         }
       }
-    }
 
-    setItemsInBasketPlusDiscount(spreadItemsInBasket);
-
-    let price = 0;
-
-    spreadItemsInBasket.forEach((item) => {
-      price += Number(item.price);
-    });
-
-    itemsInBasket.forEach((item) => {
-      if (item.deal) {
-        price += Number(item.price);
+      if (selectedCoupon.length > 0) {
+        if (spreadItemsInBasket[0].type === "pizza") {
+          spreadItemsInBasket[0].price = "0";
+        }
       }
-    });
 
-    setFinalPrice(price);
-    setTotalPizzas(pizzaQuantity);
-    setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
-  }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice]);
+      if (thirdPizzaPromotions > 0 && selectedCoupon.length > 0) {
+        for (let i = 0; i < thirdPizzaPromotions + 1; i++) {
+          if (spreadItemsInBasket[i].type === "pizza" && spreadItemsInBasket[i].price !== "0") {
+            spreadItemsInBasket[i].price = "5.50";
+          }
+        }
+      } else if (thirdPizzaPromotions > 0) {
+        for (let i = 0; i < thirdPizzaPromotions; i++) {
+          if (spreadItemsInBasket[i].type === "pizza" && spreadItemsInBasket[i].price !== "0") {
+            spreadItemsInBasket[i].price = "5.50";
+          }
+        }
+      }
+
+      for (let i = 0; i < spreadItemsInBasket.length; i++) {
+        for (let j = i + 1; j < spreadItemsInBasket.length; j++) {
+          if (
+            JSON.stringify(spreadItemsInBasket[i].toppings) === JSON.stringify(spreadItemsInBasket[j].toppings) &&
+            spreadItemsInBasket[i].name === spreadItemsInBasket[j].name &&
+            spreadItemsInBasket[i].size === spreadItemsInBasket[j].size &&
+            spreadItemsInBasket[i].crust === spreadItemsInBasket[j].crust
+          ) {
+            spreadItemsInBasket[i].quantity += spreadItemsInBasket[j].quantity;
+            spreadItemsInBasket[i].price = String(
+              Number(spreadItemsInBasket[i].price) + Number(spreadItemsInBasket[j].price)
+            );
+            spreadItemsInBasket.splice(j, 1);
+            j--;
+          } else {
+            continue;
+          }
+        }
+      }
+
+      setItemsInBasketPlusDiscount(spreadItemsInBasket);
+
+      let price = 0;
+
+      spreadItemsInBasket.forEach((item) => {
+        price += Number(item.price);
+      });
+
+      itemsInBasket.forEach((item) => {
+        if (item.deal) {
+          price += Number(item.price);
+        }
+      });
+      setFinalPrice(price);
+      setTotalPizzas(pizzaQuantity);
+      if (selectedCoupon.length > 0) {
+        setThirdPizzaPromotions(Math.ceil(totalPizzas / 3 - 1));
+      } else {
+        setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
+      }
+    }
+  }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice, selectedCoupon]);
 
   useEffect(() => {
     if (thirdPizzaPromotions) {
@@ -430,6 +483,50 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       setIsReadyForOrder(false);
     }
   }, [modalType]);
+
+  useEffect(() => {
+    if (loggedIn && localStorage.getItem("order-time")) {
+      let finishOrderTimeHours;
+      let finishOrderTimeMinutes;
+
+      const placedOrderTime = new Date(parseInt(localStorage.getItem("placed-order-time") as string));
+      const placedOrderTimeCopyHours = new Date(placedOrderTime);
+      const placedOrderTimeCopyMinutes = new Date(placedOrderTime);
+
+      if ((localStorage.getItem("order-time") as string) === "NOW") {
+        finishOrderTimeHours = new Date(
+          placedOrderTimeCopyHours.setMinutes(placedOrderTimeCopyHours.getMinutes() + 30)
+        ).getHours();
+        finishOrderTimeMinutes = new Date(
+          placedOrderTimeCopyMinutes.setMinutes(placedOrderTimeCopyMinutes.getMinutes() + 30)
+        ).getMinutes();
+      } else {
+        finishOrderTimeHours = parseInt((localStorage.getItem("order-time") as string).toString().split(":")[0]);
+        finishOrderTimeMinutes = parseInt((localStorage.getItem("order-time") as string).toString().split(":")[1]);
+      }
+
+      const startOrderTimeHours = new Date(JSON.parse(localStorage.getItem("placed-order-time") as string)).getHours();
+      const startOrderTimeMinutes = new Date(
+        JSON.parse(localStorage.getItem("placed-order-time") as string)
+      ).getMinutes();
+
+      const finishTime = new Date(
+        new Date(
+          new Date(new Date().setMinutes(Number(finishOrderTimeMinutes))).setHours(Number(finishOrderTimeHours))
+        ).setSeconds(0)
+      ).getTime();
+
+      const startTime = new Date(
+        new Date(
+          new Date(new Date().setMinutes(Number(startOrderTimeMinutes))).setHours(Number(startOrderTimeHours))
+        ).setSeconds(0)
+      ).getTime();
+
+      if (activeTracker) {
+        localStorage.setItem("active-tracker", JSON.stringify({ active: true, start: startTime, finish: finishTime }));
+      }
+    }
+  }, [activeTracker, loggedIn]);
 
   return (
     <OrderContext.Provider
@@ -476,6 +573,10 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setFinalPriceNoDiscount,
         isReadyForOrder,
         setIsReadyForOrder,
+        activeTracker,
+        setActiveTracker,
+        selectedCoupon,
+        setSelectedCoupon,
       }}
     >
       {children}
