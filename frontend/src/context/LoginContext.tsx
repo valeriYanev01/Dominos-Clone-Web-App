@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { ReactNode, createContext, useEffect, useState } from "react";
+import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import axios from "axios";
+import { OrderContext } from "./OrderContext";
 
 type LoggedIn = boolean;
 type EmailLogin = string;
@@ -80,6 +81,8 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [dominosMorePoints, setDominosMorePoints] = useState(0);
   const [customerID, setCustomerID] = useState("");
 
+  const { setActiveTracker } = useContext(OrderContext);
+
   const { isAuthenticated, user: googleUser } = useAuth0();
 
   const user = localStorage.getItem("user");
@@ -116,25 +119,6 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       };
 
       signGoogleUser();
-    } else {
-      if (token) {
-        const normalLogin = async () => {
-          try {
-            const response = await axios.get("http://localhost:3000/api/users", {
-              headers: { Authorization: `Bearer ${token}` },
-              params: { email: emailLogin },
-            });
-
-            localStorage.setItem("dominos-more", response.data.user.more);
-          } catch (err) {
-            if (axios.isAxiosError(err)) {
-              console.log(err.message);
-            }
-          }
-        };
-
-        normalLogin();
-      }
     }
   }, [emailLogin, googleUser, token, isAuthenticated]);
 
@@ -180,24 +164,82 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     const fetchCustomerID = async () => {
       if (token && emailLogin) {
-        const response = await axios.get("http://localhost:3000/api/users/", {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { email: emailLogin },
-        });
+        try {
+          const response = await axios.get("http://localhost:3000/api/users/", {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { email: emailLogin },
+          });
 
-        setCustomerID(response.data.user.stripeCustomerID);
-        localStorage.setItem("customer_id", customerID);
+          const { stripeCustomerID, more, activeOrder } = response.data.user;
+
+          setCustomerID(stripeCustomerID);
+          localStorage.setItem("customer_id", stripeCustomerID);
+          localStorage.setItem("dominos-more", more);
+
+          if (activeOrder && activeOrder.isActive) {
+            if (new Date().getTime() > activeOrder.finish) {
+              console.log(true);
+              localStorage.setItem("active-tracker", JSON.stringify({ active: false }));
+              localStorage.setItem("placed-order-time", JSON.stringify(0));
+
+              await axios.put(
+                "http://localhost:3000/api/users/update-active-order",
+                { email: emailLogin },
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+
+              setActiveTracker(false);
+            } else {
+              localStorage.setItem(
+                "active-tracker",
+                JSON.stringify({
+                  active: true,
+                  start: activeOrder.start,
+                  finish: activeOrder.finish,
+                })
+              );
+
+              localStorage.setItem("placed-order-time", activeOrder.start);
+            }
+          }
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            console.log(err);
+          }
+        }
       }
     };
 
     fetchCustomerID();
-  }, [token, emailLogin, customerID]);
+    setActiveTracker(true);
+  }, [token, emailLogin, setActiveTracker]);
+
+  useEffect(() => {
+    const updateDominosMorePoints = async () => {
+      await axios.put(
+        "http://localhost:3000/api/users/update-dominos-more",
+        { email: emailLogin },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    };
+
+    if (emailLogin && token && dominosMorePoints === 6) {
+      updateDominosMorePoints();
+    }
+  }, [dominosMorePoints, emailLogin, token]);
 
   useEffect(() => {
     if (!customerID && localStorage.getItem("customer_id")) {
       setCustomerID(localStorage.getItem("customer_id") as string);
     }
   }, [customerID]);
+
+  useEffect(() => {
+    const points = localStorage.getItem("dominos-more");
+    if (points !== null) {
+      setDominosMorePoints(parseInt(points));
+    }
+  }, [dominosMorePoints]);
 
   return (
     <LoginContext.Provider
