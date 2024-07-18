@@ -121,6 +121,7 @@ const Account: React.FC = () => {
             type="password"
             value={currentPass}
             onChange={(e) => setCurrentPass(e.target.value)}
+            disabled={!changeNameField}
           />
         </div>
 
@@ -131,6 +132,7 @@ const Account: React.FC = () => {
             type="password"
             value={newPass}
             onChange={(e) => setNewPass(e.target.value)}
+            disabled={!changeNameField}
           />
         </div>
 
@@ -141,6 +143,7 @@ const Account: React.FC = () => {
             type="password"
             value={confirmPass}
             onChange={(e) => setConfirmPass(e.target.value)}
+            disabled={!changeNameField}
           />
         </div>
 
