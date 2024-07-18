@@ -1,0 +1,122 @@
+.dominos-more-out {
+  background-image: url("/images/more/background.png");
+  background-color: #0278ae !important;
+  background-size: auto;
+  background-position: top;
+}
+
+.dm-bg-container-out {
+  padding-top: 170px;
+}
+
+.dm-content-container-out {
+  padding: 40px;
+  width: 75%;
+  background-color: #fff;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dm-content-out {
+  background-color: #fff;
+  padding: 40px;
+  border: #0278ae 5px dashed;
+}
+
+.dm-logo-out {
+  width: 260px;
+  display: block;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.dm-header-text-out {
+  display: inline-block;
+  padding: 15px 40px;
+  background-color: #e11d38;
+  color: white;
+  font-size: 36px;
+  letter-spacing: 1.1px;
+  text-shadow: 2.2px 2px #0278ae;
+  font-weight: bolder;
+  margin-bottom: 40px;
+}
+
+.dm-main-text-out,
+.dm-deal-disclaimer-out {
+  color: #0278ae;
+  font-size: 24px;
+  font-weight: bolder;
+  margin-bottom: 40px;
+}
+
+.dm-main-text-out span,
+.dm-deal-disclaimer-out span {
+  color: #e11d38;
+  font-weight: bolder;
+}
+
+.dm-deal-text-out {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #0278ae;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dm-deal-text-out span {
+  line-height: 1.5;
+  align-self: center;
+}
+
+.dm-deal-text-out span,
+.dm-deal-text-out div {
+  margin: 0px;
+}
+
+.dm-deal-container-out {
+  line-height: 1;
+}
+
+.dm-deal-text-number-out {
+  font-size: 124px;
+  text-shadow: 6px 4px 7px #0278ae;
+}
+
+.dm-btn-out {
+  background-color: red;
+  margin-bottom: 30px;
+  width: fit-content;
+  border-radius: 5px;
+  color: white;
+  font-size: 30px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 60px;
+}
+
+.dm-login-out {
+  background-color: #0278ae;
+}
+
+.dm-login-out:hover {
+  background-color: #e11d38;
+}
+
+.dm-register-out {
+  background-color: #e11d38;
+}
+
+.dm-register-out:hover {
+  background-color: #0278ae;
+}
+
+.dm-terms-out {
+  font-size: 20px;
+  color: #0278ae;
+  font-weight: bold;
+}
