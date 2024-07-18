@@ -49,11 +49,11 @@ const SelectStoreModal = () => {
   };
 
   return (
-    <div>
+    <div className="select-store-modal">
       <div className="modal-title">
-        <img src="/svg/decorLeftRed.svg" className="deal-decor deal-decor-left modal-decor-left" />
-        <span>SELECT STORE</span>
-        <img src="/svg/decorRightRed.svg" className="deal-decor deal-decor-right modal-decor-right" />
+        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
+        <p>SELECT STORE</p>
+        <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
       <div>
         <p className="modal-desc">STORE</p>

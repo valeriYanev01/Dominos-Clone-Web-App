@@ -1,8 +1,25 @@
+.select-store-modal {
+  max-height: 30vh;
+  overflow: auto;
+}
+
 .modal-title {
   display: flex;
-  margin-bottom: 30px;
+  gap: 2rem;
+  margin-bottom: 2rem;
   font-size: 24px;
   letter-spacing: 1.5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-title p {
+  font-size: 1.5rem;
+}
+
+.modal-title p,
+.modal-title img {
+  margin: 0;
 }
 
 .modal-desc {
@@ -10,14 +27,6 @@
   font-size: 18px;
   letter-spacing: 1.5px;
   margin-bottom: 10px;
-}
-
-.modal-decor-left {
-  left: 30px;
-}
-
-.modal-decor-right {
-  right: 30px;
 }
 
 .modal-store-select {
@@ -28,4 +37,3 @@
   border: 1px solid lightgray;
   outline: none;
 }
-

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import Heading from "../../Heading/Heading";
 import "./CarryOutModal.css";
 import { OrderContext } from "../../../context/OrderContext";
 import CarryOutMap from "../../Map/CarryOutMap";
@@ -145,6 +144,7 @@ const CarryOutModal = () => {
 
   useEffect(() => {
     setOrderTime(deliveryHoursOpenedStore[0]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deliveryHoursOpen = deliveryHoursOpenedStore
@@ -199,7 +199,7 @@ const CarryOutModal = () => {
   };
 
   return (
-    <div>
+    <div className="carryout-modal">
       <div className="carryout-modal-heading">
         <img src="/svg/decorLeftRed.svg" className="deal-decor" />
         <p>SELECT STORE & PICK-UP TIME</p>

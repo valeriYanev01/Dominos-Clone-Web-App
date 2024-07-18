@@ -6,7 +6,6 @@
 .dm-heading {
   display: flex;
   gap: 20px;
-  letter-spacing: 1.5px;
 }
 
 .dm-heading p {
