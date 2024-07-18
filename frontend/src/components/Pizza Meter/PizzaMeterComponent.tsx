@@ -1,12 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../../context/LoginContext";
 import "./PizzaMeterComponent.css";
+import { useLocation } from "react-router-dom";
 
 const PizzaMeterComponent: React.FC = () => {
+  const [inDominosMorePage, setInDominosMorePage] = useState(false);
+
   const { dominosMorePoints } = useContext(LoginContext);
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes("dominos-more")) {
+      setInDominosMorePage(true);
+    }
+  }, [location.pathname]);
+
   return (
-    <div className="pizza-meter-container">
+    <div className="pizza-meter-container" style={inDominosMorePage ? { border: "none" } : {}}>
       <img
         src={`${
           dominosMorePoints === 0
@@ -26,6 +37,7 @@ const PizzaMeterComponent: React.FC = () => {
             : ""
         }`}
         className="pizza-meter"
+        style={inDominosMorePage ? { width: "20rem" } : {}}
       />
     </div>
   );
