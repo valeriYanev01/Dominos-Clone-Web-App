@@ -10,6 +10,8 @@ import PizzaMeterComponent from "../../components/Pizza Meter/PizzaMeterComponen
 import DeliveryStep from "../../components/Checkout/Steps/DeliveryStep";
 import PaymentDetailsStep from "../../components/Checkout/Steps/PaymentDetailsStep";
 import OrderStep from "../../components/Checkout/Steps/OrderStep";
+import { OrderContext } from "../../context/OrderContext";
+import { useNavigate } from "react-router-dom";
 
 export interface Invoice {
   companyActivity: string;
@@ -33,8 +35,16 @@ export const Checkout: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState("");
 
   const { dominosMorePoints, token, emailLogin } = useContext(LoginContext);
-
   const { setSelectedAddress } = useContext(AddressContext);
+  const { itemsInBasket } = useContext(OrderContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (itemsInBasket.length < 1) {
+      navigate("/");
+    }
+  }, [itemsInBasket.length, navigate]);
 
   useEffect(() => {
     setError("");
@@ -73,7 +83,9 @@ export const Checkout: React.FC = () => {
 
         const data = response.data.address;
 
-        setPhoneNumber(data.phoneNumber);
+        if (data.phoneNumber) {
+          setPhoneNumber(data.phoneNumber);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -85,7 +97,10 @@ export const Checkout: React.FC = () => {
   }, [emailLogin, token]);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
+    if (
+      localStorage.getItem("order-details") &&
+      JSON.parse(localStorage.getItem("order-details") as string).type === "delivery"
+    ) {
       setSelectedAddress({
         name: JSON.parse(localStorage.getItem("order-details") as string).addressName,
         fullAddress: JSON.parse(localStorage.getItem("order-details") as string).addressLocation,

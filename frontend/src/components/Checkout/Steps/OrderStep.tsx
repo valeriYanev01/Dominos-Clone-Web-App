@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { BasketItem, OrderContext } from "../../../context/OrderContext";
@@ -38,22 +38,56 @@ const OrderStep: React.FC<Props> = ({
   bell,
   selectedInvoice,
 }) => {
+  const [finishTime, setFinishTime] = useState(0);
+
   const {
     itemsInBasket,
     setItemsInBasket,
     orderTime,
     finalPrice,
+    setFinalPrice,
     dealsCount,
     dealItemsInBasket,
     itemsInBasketPlusDiscount,
     freeDelivery,
     thirdPizzaPromo,
     finalPriceNoDiscount,
+    setActiveTracker,
+    selectedCoupon,
   } = useContext(OrderContext);
-  const { token, emailLogin, customerID, setDominosMorePoints } = useContext(LoginContext);
+  const { token, emailLogin, customerID } = useContext(LoginContext);
   const { selectedAddress } = useContext(AddressContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (itemsInBasket.length > 0) {
+      const cheapestPizza = itemsInBasket.filter((item) => item.type === "pizza")[0];
+
+      console.log(cheapestPizza);
+
+      if (selectedCoupon.length > 0 && cheapestPizza.size === "Medium") {
+        setFinalPrice(finalPrice - parseFloat(cheapestPizza.price));
+      } else {
+        setFinalPrice(finalPrice + parseFloat(cheapestPizza.price));
+      }
+    }
+  }, [itemsInBasket, selectedCoupon, setFinalPrice]);
+
+  useEffect(() => {
+    if (orderTime === "NOW") {
+      setFinishTime(new Date(new Date().getTime() + 1000 * 60 * 30).getTime());
+    } else {
+      const hour = parseInt(orderTime.split(":")[0]);
+      const minutes = parseInt(orderTime.split(":")[1]);
+
+      const finishTimeTemp = new Date(
+        new Date(new Date(new Date().setHours(hour)).setMinutes(minutes)).setSeconds(0)
+      ).getTime();
+
+      setFinishTime(finishTimeTemp);
+    }
+  }, [orderTime]);
 
   const increaseQuantity = (i: number) => {
     const products = [...itemsInBasket];
@@ -118,7 +152,13 @@ const OrderStep: React.FC<Props> = ({
 
     if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
       try {
-        const finalPriceToSend = freeDelivery ? finalPrice : finalPrice + 1.99;
+        let finalPriceToSend;
+
+        if (freeDelivery) {
+          finalPriceToSend = finalPrice;
+        } else {
+          finalPriceToSend = finalPrice + 1.99;
+        }
 
         const response = await axios.put(
           "http://localhost:3000/api/users/new-order",
@@ -136,6 +176,8 @@ const OrderStep: React.FC<Props> = ({
             invoice: selectedInvoice,
             orderType: JSON.parse(localStorage.getItem("order-details") as string).type,
             finalPrice: finalPriceToSend,
+            start: new Date().getTime(),
+            finish: finishTime,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -168,6 +210,8 @@ const OrderStep: React.FC<Props> = ({
             invoice: selectedInvoice,
             orderType: JSON.parse(localStorage.getItem("order-details") as string).type,
             finalPrice,
+            start: new Date().getTime(),
+            finish: finishTime,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -185,7 +229,17 @@ const OrderStep: React.FC<Props> = ({
       }
     }
 
-    setDominosMorePoints((prevState) => prevState + 1);
+    if (selectedCoupon) {
+      await axios.put(
+        "http://localhost:3000/api/users/update-coupon-used",
+        { email: emailLogin, _id: selectedCoupon },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    }
+
+    setActiveTracker(true);
+
+    localStorage.setItem("placed-order-time", JSON.stringify(new Date().getTime()));
   };
 
   return (

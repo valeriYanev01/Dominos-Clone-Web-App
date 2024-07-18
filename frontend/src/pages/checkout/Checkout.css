@@ -64,3 +64,26 @@
   text-align: center;
   letter-spacing: 1px;
 }
+
+.checkout-details-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.checkout-details-delivery,
+.checkout-details-payment,
+.checkout-details-order {
+  flex: 1;
+  background-color: #fff;
+  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  position: relative;
+  margin-top: 0;
+}
+
+.checkout-details-payment-container {
+  flex: 1;
+  margin-top: 0;
+}

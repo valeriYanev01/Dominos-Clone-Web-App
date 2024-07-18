@@ -5,6 +5,8 @@ import CheckoutForm from "../../Profile/PaymentMethods/CheckoutForm";
 import { LoginContext } from "../../../context/LoginContext";
 import axios from "axios";
 import "./PaymentDetailsStep.css";
+import { Coupons } from "../../Profile/Coupons/Coupons";
+import { OrderContext } from "../../../context/OrderContext";
 
 interface PaymentMethod {
   id: string;
@@ -37,8 +39,11 @@ const PaymentDetailsStep: React.FC<Props> = ({
   const [savedPaymentMethods, setSavedPaymentMethods] = useState<PaymentMethod[]>([]);
   const [cardSuccess, setCardSuccess] = useState(false);
   const [showAddNewCard, setShowAddNewCard] = useState(false);
+  const [coupons, setCoupons] = useState<Coupons[]>([]);
+  const [showCoupons, setShowCoupons] = useState(false);
 
   const { token, emailLogin, customerID, setLoggedIn } = useContext(LoginContext);
+  const { setSelectedCoupon } = useContext(OrderContext);
 
   useEffect(() => {
     if (token) {
@@ -117,6 +122,21 @@ const PaymentDetailsStep: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerID, token, showAddNewCard]);
 
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      const response = await axios.get("http://localhost:3000/api/users/get-coupons", {
+        params: { email: emailLogin },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setCoupons(response.data.coupons.coupons.filter((coupon: Coupons) => !coupon.used));
+    };
+
+    if (token && emailLogin) {
+      fetchCoupons();
+    }
+  }, [token, emailLogin]);
+
   const handleDeleteCard = async (paymentMethodID: string) => {
     try {
       const response = await axios.delete("http://localhost:3000/api/payment/delete-payment-method", {
@@ -145,86 +165,118 @@ const PaymentDetailsStep: React.FC<Props> = ({
     }
   };
 
+  const handleSelectCoupon = (checked: boolean, id: string) => {
+    if (checked) {
+      setSelectedCoupon(id);
+    } else {
+      setSelectedCoupon("");
+    }
+  };
+
   return (
-    <div className="checkout-details-payment">
-      <span className="checkout-details-step">2</span>
+    <div className="checkout-details-payment-container">
+      <div className="checkout-details-payment first-payment-step">
+        <span className="checkout-details-step">2</span>
 
-      <p className="checkout-details-delivery-heading">PAYMENT METHOD</p>
+        <p className="checkout-details-delivery-heading">PAYMENT METHOD</p>
 
-      <div
-        onClick={() => {
-          setShowAddNewCard(false);
-          setSelectedPaymentMethod("cash");
-        }}
-        className="checkout-delivery-method"
-      >
-        <input
-          type="radio"
-          name="payment-method"
-          value="cash"
-          checked={selectedPaymentMethod === "cash"}
-          onChange={() => setSelectedPaymentMethod("cash")}
-        />
-        <img src={selectedPaymentMethod === "cash" ? "/svg/checkout/cash-selected.svg" : "/svg/checkout/cash.svg"} />
-        <p>Cash</p>
-      </div>
-
-      <div onClick={() => setSelectedPaymentMethod("card")} className="checkout-delivery-method">
-        <input
-          type="radio"
-          name="payment-method"
-          value="cash"
-          checked={selectedPaymentMethod === "card"}
-          onChange={() => setSelectedPaymentMethod("card")}
-        />
-        <img src={selectedPaymentMethod === "card" ? "/svg/checkout/card-selected.svg" : "/svg/checkout/card.svg"} />
-        <div>
-          <p className="checkout-delivery-method-card">Credit Card</p>
-          <p className="checkout-delivery-method-card-symbol-text">&#10003; No extra charge</p>
+        <div
+          onClick={() => {
+            setShowAddNewCard(false);
+            setSelectedPaymentMethod("cash");
+          }}
+          className="checkout-delivery-method"
+        >
+          <input
+            type="radio"
+            name="payment-method"
+            value="cash"
+            checked={selectedPaymentMethod === "cash"}
+            onChange={() => setSelectedPaymentMethod("cash")}
+          />
+          <img src={selectedPaymentMethod === "cash" ? "/svg/checkout/cash-selected.svg" : "/svg/checkout/cash.svg"} />
+          <p>Cash</p>
         </div>
-      </div>
 
-      {selectedPaymentMethod === "card" && (
-        <div>
-          <ul className="checkout-saved-cards-container">
-            {savedPaymentMethods &&
-              savedPaymentMethods.map((method) => (
-                <li key={method.id}>
-                  <input
-                    type="radio"
-                    name="checkout-selected-card"
-                    id={method.id}
-                    value={method.id}
-                    onChange={() => setSelectedCard(method.id)}
-                  />
-                  <label htmlFor={method.id}>
-                    <span className="checkout-saved-card-brand">{method.card.brand}</span> **** **** ****{" "}
-                    <span className="checkout-saved-card-last4">{method.card.last4}</span>
-                  </label>
-                  <img
-                    className="checkout-single-card-delete"
-                    src="/svg/checkout/delete.svg"
-                    onClick={() => handleDeleteCard(method.id)}
-                  />
-                </li>
-              ))}
-          </ul>
-          <div className="checkout-all-new-invoice-container" onClick={() => setShowAddNewCard(!showAddNewCard)}>
-            <p className="checkout-all-invoice-btn">Add New Card</p>
-            <img className="checkout-all-invoice-btn-img" src="/svg/checkout/plus.svg" />
+        <div onClick={() => setSelectedPaymentMethod("card")} className="checkout-delivery-method">
+          <input
+            type="radio"
+            name="payment-method"
+            value="cash"
+            checked={selectedPaymentMethod === "card"}
+            onChange={() => setSelectedPaymentMethod("card")}
+          />
+          <img src={selectedPaymentMethod === "card" ? "/svg/checkout/card-selected.svg" : "/svg/checkout/card.svg"} />
+          <div>
+            <p className="checkout-delivery-method-card">Credit Card</p>
+            <p className="checkout-delivery-method-card-symbol-text">&#10003; No extra charge</p>
           </div>
         </div>
-      )}
 
-      {showAddNewCard && clientSecret && stripePromise && (
-        <>
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <CheckoutForm setCardError={setCardError} setCardSuccess={setCardSuccess} />
-          </Elements>
+        {selectedPaymentMethod === "card" && (
+          <div>
+            <ul className="checkout-saved-cards-container">
+              {savedPaymentMethods &&
+                savedPaymentMethods.map((method) => (
+                  <li key={method.id}>
+                    <input
+                      type="radio"
+                      name="checkout-selected-card"
+                      id={method.id}
+                      value={method.id}
+                      onChange={() => setSelectedCard(method.id)}
+                    />
+                    <label htmlFor={method.id}>
+                      <span className="checkout-saved-card-brand">{method.card.brand}</span> **** **** ****{" "}
+                      <span className="checkout-saved-card-last4">{method.card.last4}</span>
+                    </label>
+                    <img
+                      className="checkout-single-card-delete"
+                      src="/svg/checkout/delete.svg"
+                      onClick={() => handleDeleteCard(method.id)}
+                    />
+                  </li>
+                ))}
+            </ul>
+            <div className="checkout-all-new-invoice-container" onClick={() => setShowAddNewCard(!showAddNewCard)}>
+              <p className="checkout-all-invoice-btn">Add New Card</p>
+              <img className="checkout-all-invoice-btn-img" src="/svg/checkout/plus.svg" />
+            </div>
+          </div>
+        )}
 
-          {cardError && <p className="checkout-card-error">{cardError}</p>}
-        </>
-      )}
+        {showAddNewCard && clientSecret && stripePromise && (
+          <>
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckoutForm setCardError={setCardError} setCardSuccess={setCardSuccess} />
+            </Elements>
+
+            {cardError && <p className="checkout-card-error">{cardError}</p>}
+          </>
+        )}
+      </div>
+
+      <div className="checkout-details-payment">
+        <h3 className="checkout-details-payment-coupons-heading" onClick={() => setShowCoupons(!showCoupons)}>
+          <img src="/svg/checkout/coupons.svg" />
+          <p>YOUR COUPONS</p>
+        </h3>
+
+        {showCoupons && (
+          <div className="checkout-details-payment-coupons-container">
+            {coupons.map((coupon) => (
+              <div className="checkout-details-payment-coupon" key={coupon._id}>
+                <label htmlFor={coupon._id}>{coupon.name}</label>
+                <input
+                  type="checkbox"
+                  id={coupon._id}
+                  onChange={(e) => handleSelectCoupon(e.target.checked, e.target.id)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

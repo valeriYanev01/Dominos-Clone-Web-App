@@ -248,8 +248,11 @@ const DeliveryStep: React.FC<Props> = ({
           Your address:{" "}
           <span className="checkout-dd-address-details">
             {localStorage.getItem("user") &&
+              localStorage.getItem("order-details") &&
               JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
-            {localStorage.getItem("user") && JSON.parse(localStorage.getItem("order-details") as string).addressName}
+            {localStorage.getItem("user") &&
+              localStorage.getItem("order-details") &&
+              JSON.parse(localStorage.getItem("order-details") as string).addressName}
           </span>
         </p>
       </div>

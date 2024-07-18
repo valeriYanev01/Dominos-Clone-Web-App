@@ -70,3 +70,46 @@
 .checkout-card-error {
   color: #e2213d;
 }
+
+.first-payment-step {
+  margin-bottom: 1rem;
+}
+
+.checkout-details-payment-coupons-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.checkout-details-payment-coupons-heading img,
+.checkout-details-payment-coupons-heading p {
+  margin: 0;
+}
+
+.checkout-details-payment-coupons-heading p {
+  font-size: 1.2rem;
+}
+
+.checkout-details-payment-coupon {
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+}
+
+.checkout-details-payment-coupon label,
+.checkout-details-payment-coupon input {
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkout-details-payment-coupon label {
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.checkout-details-payment-coupon input {
+  transform: scale(1.5);
+}
