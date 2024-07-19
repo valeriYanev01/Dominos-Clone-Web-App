@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { LoginContext } from "../../../context/LoginContext";
@@ -10,6 +10,8 @@ interface Props {
 }
 
 const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
+  const [loading, setLoading] = useState(false);
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -17,10 +19,13 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setCardError("");
 
     if (!stripe || !elements) {
       return;
     }
+
+    setLoading(true);
 
     const cardElement = elements.getElement(CardElement);
 
@@ -51,6 +56,8 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
           if (axios.isAxiosError(err)) {
             setCardError(err.response?.data.error);
           }
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -59,7 +66,7 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
   return (
     <form onSubmit={handleSubmit}>
       <CardElement id="payment-element" className="stripeElement" />
-      <button disabled={!stripe} id="submit" className="submit-button">
+      <button disabled={!stripe} id="submit" className={`submit-button ${loading ? "submit-button-disabled" : ""}`}>
         Save Card
       </button>
     </form>

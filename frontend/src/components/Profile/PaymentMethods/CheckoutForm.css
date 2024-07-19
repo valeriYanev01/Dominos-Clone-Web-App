@@ -23,7 +23,8 @@
   margin-top: 10px;
 }
 
-.submit-button:disabled {
+.submit-button-disabled {
   opacity: 0.5;
-  cursor: default;
+  cursor: default !important;
+  background-color: #555;
 }

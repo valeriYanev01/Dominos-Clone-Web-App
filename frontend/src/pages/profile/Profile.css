@@ -7,7 +7,8 @@
 .profile-addresses,
 .profile-orders,
 .profile-privacy-settings,
-.pc-body {
+.pc-body,
+.saved-payment-methods {
   background-color: #fff;
   width: 80%;
   margin: auto;
