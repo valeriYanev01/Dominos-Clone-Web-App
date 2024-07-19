@@ -214,7 +214,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     return savedData && JSON.parse(savedData).active ? true : false;
   });
   const [selectedCoupon, setSelectedCoupon] = useState("");
-  console.log(activeTracker);
 
   const { modalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -284,7 +283,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     const combineAndSortItems = (items: BasketItem[]) => {
       const combinedItems = [...items];
-      console.log(items);
 
       for (let i = 0; i < combinedItems.length - 1; i++) {
         if (combinedItems[i].deal) continue;
