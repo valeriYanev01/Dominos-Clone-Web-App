@@ -3,6 +3,14 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import cryptoRandomString from "crypto-random-string";
 import nodemailer from "nodemailer";
+import * as crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const MY_EMAIL = process.env.MY_EMAIL;
+const APP_EMAIL = process.env.APP_EMAIL;
+const GOOGLE_AUTH_PASS = process.env.GOOGLE_AUTH_PASS;
 
 const addressSchema = new mongoose.Schema({
   name: {
@@ -216,6 +224,12 @@ const userSchema = new mongoose.Schema(
         type: Number,
       },
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordTokenExpireDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
@@ -287,7 +301,6 @@ userSchema.statics.signup = async function (
   const user = await this.create({
     email,
     password: hash,
-    confirmPassword: hash,
     firstName,
     lastName,
     img,
@@ -590,8 +603,8 @@ userSchema.statics.newOrder = async function (
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
-        user: "dominos.clone01@gmail.com",
-        pass: "qdpk xkkw eaef joot",
+        user: APP_EMAIL,
+        pass: GOOGLE_AUTH_PASS,
       },
     });
 
@@ -946,6 +959,98 @@ userSchema.statics.updateCouponExpired = async function (email, _id) {
     return updatedUser;
   } catch (err) {
     throw new Error(err.message);
+  }
+};
+
+userSchema.statics.forgotPassword = async function (email) {
+  try {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const token = crypto.randomBytes(20).toString("hex");
+
+    user.resetPasswordToken = token;
+    user.resetPasswordTokenExpireDate = Date.now() + 3600000;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: APP_EMAIL,
+        pass: GOOGLE_AUTH_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: APP_EMAIL,
+      to: MY_EMAIL,
+      subject: "Password Reset",
+      text: `Click to reset Password: http://localhost:5173/reset-password/${token}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, _) => {
+      if (error) {
+        throw new Error("Failed to send email");
+      }
+    });
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+userSchema.statics.verifyPasswordResetToken = async function (token) {
+  try {
+    const user = await this.findOne({ resetPasswordToken: token });
+
+    if (!user) {
+      throw new Error("Invalid Token");
+    }
+
+    if (user.resetPasswordTokenExpireDate < Date.now()) {
+      throw new Error("Token has expired");
+    }
+
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+userSchema.statics.resetPassword = async function (password, confirmPassword, token) {
+  if (!password || !confirmPassword) {
+    throw new Error("All fields required");
+  }
+
+  if (password !== confirmPassword) {
+    throw new Error("Passwords do not match");
+  }
+
+  try {
+    const user = await this.findOne({ resetPasswordToken: token });
+
+    if (!user) {
+      throw new Error("Invalid Token");
+    }
+
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
+
+    user.password = hash;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpireDate = undefined;
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  } catch (err) {
+    throw new Error(err);
   }
 };
 

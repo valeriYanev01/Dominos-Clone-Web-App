@@ -7,6 +7,7 @@ import {
   deleteAccount,
   deleteAddress,
   deleteInvoice,
+  forgotPassword,
   getAddresses,
   getCoupons,
   getInvoices,
@@ -15,6 +16,7 @@ import {
   getUser,
   googleLogin,
   newOrder,
+  resetPassword,
   updateActiveOrder,
   updateAddress,
   updateConsent,
@@ -26,11 +28,16 @@ import {
   userLogin,
   userSignup,
   verifyGoogleRecaptchaToken,
+  verifyPasswordResetToken,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { upload } from "../middleware/multerConfig.js";
 
 const router = express.Router();
+
+router.get("/reset-password/:token", verifyPasswordResetToken);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 router.post("/signup", userSignup);
 router.post("/login", userLogin);

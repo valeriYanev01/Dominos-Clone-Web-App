@@ -21,6 +21,8 @@ import { Checkout } from "./pages/checkout/Checkout";
 import Careers from "./pages/careers/Careers";
 
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import NewPassword from "./pages/forgotPassword/NewPassword";
 
 function App() {
   const { openModal } = useContext(ModalContext);
@@ -40,6 +42,10 @@ function App() {
     }
 
     if (!localStorage.getItem("user") && location.pathname.includes("checkout")) {
+      navigate("/");
+    }
+
+    if (localStorage.getItem("user") && location.pathname.includes("forgot-password")) {
       navigate("/");
     }
   }, [loggedIn, navigate, location]);
@@ -66,7 +72,6 @@ function App() {
         <Route path="add-address" element={<AddAddress />} />
         <Route path="tracker" element={<Tracker />} />
         <Route path="checkout" element={<Checkout />} />
-
         <Route
           path="careers"
           element={
@@ -75,6 +80,8 @@ function App() {
             </GoogleReCaptchaProvider>
           }
         />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password/:token" element={<NewPassword />} />
       </Routes>
     </>
   );

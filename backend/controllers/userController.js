@@ -6,7 +6,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { UserModel } from "../models/UserModel.js";
-import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -572,6 +571,42 @@ export const updateCouponExpired = async (req, res) => {
     const updatedUser = await UserModel.updateCouponExpired(email, _id);
 
     return res.status(200).json({ success: true, updatedUser });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    await UserModel.forgotPassword(email);
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const verifyPasswordResetToken = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    await UserModel.verifyPasswordResetToken(token);
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { password, confirmPassword, token } = req.body;
+
+  try {
+    await UserModel.resetPassword(password, confirmPassword, token);
+
+    return res.status(200).json({ success: true });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

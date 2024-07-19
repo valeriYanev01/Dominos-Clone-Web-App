@@ -12,7 +12,7 @@ const LoginModal = () => {
   const [error, setError] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState("1h");
 
-  const { setOpenModal } = useContext(ModalContext);
+  const { setOpenModal, setModalType } = useContext(ModalContext);
   const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
 
   const { loginWithRedirect } = useAuth0();
@@ -69,7 +69,14 @@ const LoginModal = () => {
       </div>
 
       <div className="login-modal-fp-ks">
-        <Link to="/" className="login-modal-forgot-password">
+        <Link
+          to="/forgot-password"
+          className="login-modal-forgot-password"
+          onClick={() => {
+            setOpenModal(false);
+            setModalType("");
+          }}
+        >
           forgot my password
         </Link>
         <div className="login-modal-ks">
