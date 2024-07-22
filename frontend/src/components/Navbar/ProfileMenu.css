@@ -1,0 +1,40 @@
+.navigation-profile-menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  color: #555555b0;
+  font-weight: bold;
+  font-size: 1.125rem;
+  background-color: #fff;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  border-radius: 0.625rem;
+  padding: 0.3125rem;
+  z-index: 50;
+  margin-top: 1rem;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  outline: 1px solid #55555588;
+}
+
+.navigation-profile-menu li {
+  padding-right: 1rem;
+  text-align: right;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  border-bottom: #55555520 solid 2px;
+  margin: 0;
+  width: 100%;
+}
+
+.navigation-profile-menu li a,
+.navigation-profile-menu li {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navigation-profile-menu li:hover {
+  background-color: #5555551c;
+}
