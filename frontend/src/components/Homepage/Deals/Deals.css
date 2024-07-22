@@ -1,54 +1,118 @@
 .deals-container {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  padding: 0 9.375rem;
+  position: relative !important;
+  display: flex !important;
   margin-top: 7.5rem;
+  width: 80%;
 }
 
 .deal-row {
-  display: flex;
-  transition: transform 0.5s ease;
-  width: 150%;
-  justify-content: space-between;
 }
 
 .deal-item {
-  width: 18.125rem;
   transition: all 0.2s ease-in-out;
   margin: 0 !important;
+  cursor: pointer !important;
+}
+
+.single-deal-container {
+  position: relative;
+  background: #fff;
+  flex-direction: column;
   cursor: pointer;
+  overflow: hidden;
 }
 
-.deal-item:hover {
-  scale: 1.02;
-}
-
-.arrow-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  width: 1.875rem;
-  height: 2.5re;
-  z-index: 5;
-  cursor: pointer;
-  background: rgba(111, 64, 9, 0.3);
-}
-
-.arrow-button.left {
-  left: 7.5rem;
-  border-bottom-left-radius: 4px;
+.deal-header-img {
   border-top-left-radius: 4px;
-}
-
-.arrow-button.right {
-  right: 7.5rem;
-  border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
+  position: relative;
+  width: 18rem;
+  height: 11.5rem;
 }
 
-.deal-arrow {
-  height: 1.25rem;
+.deal-svg {
+  height: 2.25rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  transform: translateY(10rem);
+}
+
+.swiper-slide {
+  padding: 0 !important;
+}
+
+.deal-heading {
+  font-size: 1.125rem;
+  min-height: 3.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #0073aa;
+  margin-top: 1rem;
+}
+
+.single-deal-breakline {
+  background-color: #d7d7d7;
+  height: 2px;
+  width: 65%;
+}
+
+.deal-desc {
+  margin-bottom: 3.45rem;
+  height: 5.625rem;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-align: center;
+  overflow: auto;
+  padding: 0 1rem;
+}
+
+.deal-btn-container {
+  width: 92%;
+  text-align: center;
+  background-color: #df223d;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deal-btn {
+  background-color: #df223d;
+  letter-spacing: 1.4px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  padding: 0.625rem;
+}
+
+.deal-method-container,
+.deal-method-container-space-around {
+  margin: 0.6225rem 0;
+  border-top: 2px solid #d7d7d7;
+  color: #0073aa;
+}
+
+.deal-method-container {
+  display: flex;
+  justify-content: center;
+}
+
+.deal-method-container-space-around {
+  display: flex;
+  justify-content: space-around !important;
+}
+
+.deal-method {
+  display: flex;
+  gap: 0.3125rem;
+  margin: 0 !important;
+}
+
+.deal-method-type {
+  margin: auto;
+}
+
+.deal-delivery-svg {
+  width: 1.6rem;
+  height: 2.5rem;
 }

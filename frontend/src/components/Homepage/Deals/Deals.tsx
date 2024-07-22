@@ -1,51 +1,91 @@
-import { useState } from "react";
-import SingleDeal from "./SingleDeal";
+import { useContext } from "react";
 import "./Deals.css";
 import { components } from "../../../data/deals";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import { ModalContext } from "../../../context/ModalContext";
+import { LoginContext } from "../../../context/LoginContext";
+import { OrderContext } from "../../../context/OrderContext";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 
 const Deals = () => {
-  const [startIndex, setStartIndex] = useState(0);
+  const { setModalType, setOpenModal } = useContext(ModalContext);
+  const { loggedIn } = useContext(LoginContext);
+  const { activeTracker } = useContext(OrderContext);
 
-  const handlePrevious = () => {
-    console.log("prev");
-    setStartIndex(startIndex - 1);
-  };
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    setStartIndex(startIndex + 1);
-  };
-
-  const containerWidth = `${150}%`;
-
-  const rowStyle = {
-    width: containerWidth,
-    transform: `translateX(-${startIndex * 17}%)`,
+  const handleShowModal = (type: "delivery" | "carryOut") => {
+    setOpenModal(true);
+    if (loggedIn) {
+      type === "delivery" && setModalType("delivery");
+      type === "carryOut" && setModalType("carryOut");
+    } else {
+      setModalType("login");
+    }
   };
 
   return (
-    <div className="deals-container">
-      <button className="arrow-button left" disabled={startIndex === 0} onClick={handlePrevious}>
-        <img src="/svg/homepage/leftArrow.svg" className="deal-arrow" />
-      </button>
-      <div style={{ overflow: "hidden" }}>
-        <div className="deal-row" style={rowStyle}>
-          {components.map((deal, index) => (
-            <div key={index} className="deal-item">
-              <SingleDeal
-                deal={true}
-                headerImg={deal.headerImg}
-                heading={deal.heading}
-                desc={deal.desc}
-                method={deal.method}
-              />
+    <Swiper className="deals-container" modules={[Pagination, Navigation]} spaceBetween={25} slidesPerView={4}>
+      {components.map((deal) => (
+        <div className="deal-item">
+          <SwiperSlide key={uuid()} className="single-deal-container">
+            <img src={deal.headerImg} className="deal-header-img" />
+            {deal && <img src="/svg/homepage/deal.svg" className="deal-svg" />}
+            <p className="deal-heading">{deal.heading}</p>
+            <div className="single-deal-breakline" />
+            <p className="deal-desc">{deal.desc}</p>
+            <div className="deal-btn-container">
+              <button className="deal-btn">GET THIS DEAL</button>
             </div>
-          ))}
+            <div
+              className={`${
+                deal.method.carryOut && deal.method.delivery
+                  ? "deal-method-container-space-around"
+                  : "deal-method-container "
+              }`}
+            >
+              <div
+                className="deal-method"
+                onClick={() => {
+                  if (!activeTracker) {
+                    handleShowModal("delivery");
+                  } else {
+                    navigate("/tracker");
+                  }
+                }}
+              >
+                {deal.method.delivery ? (
+                  <>
+                    <img src="/svg/delivery.svg" className="deal-delivery-svg" />
+                    <p className="deal-method-type">{deal.method.delivery}</p>
+                  </>
+                ) : null}
+              </div>
+              <div
+                className="deal-method"
+                onClick={() => {
+                  if (!activeTracker) {
+                    handleShowModal("carryOut");
+                  } else {
+                    navigate("/tracker");
+                  }
+                }}
+              >
+                {deal.method.carryOut ? (
+                  <>
+                    <img src="/svg/carryOut.svg" className="deal-delivery-svg" />
+                    <p className="deal-method-type">{deal.method.carryOut}</p>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          </SwiperSlide>
         </div>
-      </div>
-      <button className="arrow-button right" disabled={startIndex === components.length - 4} onClick={handleNext}>
-        <img src="/svg/homepage/rightArrow.svg" className="deal-arrow" />
-      </button>
-    </div>
+      ))}
+    </Swiper>
   );
 };
 

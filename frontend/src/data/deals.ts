@@ -35,15 +35,7 @@ export const components = [
     price: "24.10",
     products: 4
   },
-  {
-    headerImg: "/images/deals/fifth.jpg",
-    heading: "SECOND PIZZA AT HALF PRICE!",
-    desc: "Buy one pizza and get the second one 50% OFF!",
-    method: { carryOut: "CARRY OUT", delivery: "" },
-    steps: [{ pizza: { number: 2, size: "", type: "" } }, { starters: { number: null } }, { chicken: { number: null } }, { pasta: { number: null } }, { drinks: { number: null, size: "", type: "" }, }, { desserts: { number: null, type: "" } }],
-    price: "",
-    products: 2
-  },
+
   {
     headerImg: "/images/deals/sixth.jpg",
     heading: "FAMILY DEAL",
