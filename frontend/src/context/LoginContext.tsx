@@ -163,54 +163,71 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   useEffect(() => {
     const fetchCustomerID = async () => {
-      if (token && emailLogin) {
-        try {
-          const response = await axios.get("http://localhost:3000/api/users/", {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { email: emailLogin },
-          });
+      try {
+        const response = await axios.get("http://localhost:3000/api/users/", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
 
-          const { stripeCustomerID, more, activeOrder } = response.data.user;
+        const { stripeCustomerID, more, activeOrder } = response.data.user;
 
+        if (stripeCustomerID) {
           setCustomerID(stripeCustomerID);
           localStorage.setItem("customer_id", stripeCustomerID);
-          localStorage.setItem("dominos-more", more);
+        } else {
+          try {
+            const response = await axios.post(
+              "http://localhost:3000/api/payment/create-new-customer",
+              {
+                email: emailLogin,
+              },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-          if (activeOrder && activeOrder.isActive) {
-            if (new Date().getTime() > activeOrder.finish) {
-              console.log(true);
-              localStorage.setItem("active-tracker", JSON.stringify({ active: false }));
-              localStorage.setItem("placed-order-time", JSON.stringify(0));
-
-              await axios.put(
-                "http://localhost:3000/api/users/update-active-order",
-                { email: emailLogin },
-                { headers: { Authorization: `Bearer ${token}` } }
-              );
-
-              setActiveTracker(false);
-            } else {
-              localStorage.setItem(
-                "active-tracker",
-                JSON.stringify({
-                  active: true,
-                  start: activeOrder.start,
-                  finish: activeOrder.finish,
-                })
-              );
-
-              localStorage.setItem("placed-order-time", activeOrder.start);
+            setCustomerID(response.data.customerID);
+          } catch (err) {
+            if (axios.isAxiosError(err)) {
+              console.log(err.response?.data.error);
             }
           }
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            console.log(err);
+        }
+        localStorage.setItem("dominos-more", more);
+
+        if (activeOrder && activeOrder.isActive) {
+          if (new Date().getTime() > activeOrder.finish) {
+            localStorage.setItem("active-tracker", JSON.stringify({ active: false }));
+            localStorage.setItem("placed-order-time", JSON.stringify(0));
+
+            await axios.put(
+              "http://localhost:3000/api/users/update-active-order",
+              { email: emailLogin },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            setActiveTracker(false);
+          } else {
+            localStorage.setItem(
+              "active-tracker",
+              JSON.stringify({
+                active: true,
+                start: activeOrder.start,
+                finish: activeOrder.finish,
+              })
+            );
+
+            localStorage.setItem("placed-order-time", activeOrder.start);
           }
+        }
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err);
         }
       }
     };
 
-    fetchCustomerID();
+    if (token && emailLogin) {
+      fetchCustomerID();
+    }
     setActiveTracker(true);
   }, [token, emailLogin, setActiveTracker]);
 

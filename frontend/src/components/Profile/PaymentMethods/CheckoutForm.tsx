@@ -24,7 +24,6 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
     if (!stripe || !elements) {
       return;
     }
-
     setLoading(true);
 
     const cardElement = elements.getElement(CardElement);
@@ -66,6 +65,7 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
   return (
     <form onSubmit={handleSubmit}>
       <CardElement id="payment-element" className="stripeElement" />
+      <p>For example: 4242 4242 4242 4242, valid year, random CVC, random ZIP</p>
       <button disabled={!stripe} id="submit" className={`submit-button ${loading ? "submit-button-disabled" : ""}`}>
         Save Card
       </button>

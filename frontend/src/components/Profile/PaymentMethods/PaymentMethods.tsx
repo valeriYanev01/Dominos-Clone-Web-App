@@ -91,25 +91,31 @@ const PaymentMethods: React.FC = () => {
   }, [customerID, token]);
 
   useEffect(() => {
-    if (token && customerID) {
-      const fetchAllPaymentMethods = async () => {
-        try {
-          const response = await axios.get("http://localhost:3000/api/payment/all-payment-methods", {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { customerID },
-          });
+    const fetchAllPaymentMethods = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/payment/all-payment-methods", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { customerID },
+        });
 
-          setPaymentMethods(response.data.savedPaymentMethods);
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            console.log(err);
-          }
+        setPaymentMethods(response.data.savedPaymentMethods);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err);
         }
-      };
+      }
+    };
 
+    if (token && customerID) {
+      fetchAllPaymentMethods();
+    }
+
+    if (cardSuccess) {
       fetchAllPaymentMethods();
     }
   }, [token, customerID, cardSuccess]);
+
+  console.log(cardSuccess);
 
   useEffect(() => {
     if (cardSuccess) {

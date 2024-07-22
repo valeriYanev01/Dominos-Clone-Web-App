@@ -218,16 +218,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const { modalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
 
-  const savedData = localStorage.getItem("active-tracker");
-
-  useEffect(() => {
-    if (savedData && JSON.parse(savedData).active) {
-      setActiveTracker(true);
-    } else {
-      setActiveTracker(false);
-    }
-  }, [savedData]);
-
   useEffect(() => {
     if (orderTime) {
       localStorage.setItem("order-time", orderTime);
@@ -525,6 +515,16 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       }
     }
   }, [activeTracker, loggedIn]);
+
+  const savedData = localStorage.getItem("active-tracker");
+
+  useEffect(() => {
+    if (savedData && JSON.parse(savedData).active) {
+      setActiveTracker(true);
+    } else {
+      setActiveTracker(false);
+    }
+  }, [savedData]);
 
   return (
     <OrderContext.Provider

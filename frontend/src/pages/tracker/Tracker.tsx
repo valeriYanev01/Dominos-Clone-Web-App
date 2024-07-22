@@ -182,25 +182,23 @@ const Tracker: React.FC = () => {
                 d="M234.1,831.2c-72.3-75.9-116.8-178.5-116.8-291.4c0-229.3,183.5-416.6,411.4-422.4V11.7C242.6,17.6,11.4,252.4,11.4,540c0,139.8,54.7,267.2,143.7,361.7l23.4-48.9L234.1,831.2z"
               ></path>
             </svg>
-            {(localStorage.getItem("active-tracker") &&
-              !JSON.parse(localStorage.getItem("active-tracker") as string).active) ||
-              (activeTracker === false && (
-                <div className="tracker-new-order">
-                  <div>
-                    <p className="tracker-new-order-text">You don't have an active order.</p>
-                    <br />
-                    <span
-                      onClick={() => {
-                        setOpenModal(true);
-                        setModalType("method");
-                      }}
-                      className="tracker-new-order-btn"
-                    >
-                      ORDER
-                    </span>
-                  </div>
+            {!activeTracker && (
+              <div className="tracker-new-order">
+                <div>
+                  <p className="tracker-new-order-text">You don't have an active order.</p>
+                  <br />
+                  <span
+                    onClick={() => {
+                      setOpenModal(true);
+                      setModalType("method");
+                    }}
+                    className="tracker-new-order-btn"
+                  >
+                    ORDER
+                  </span>
                 </div>
-              ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -50,7 +50,6 @@ export const savePaymentMethod = async (req, res) => {
       const customer = await stripe.customers.create({
         email,
       });
-
       user.stripeCustomerID = customer.id;
     }
 
@@ -115,5 +114,27 @@ export const deletePaymentMethod = async (req, res) => {
     return res.status(200).json({ success: true, customerSource });
   } catch (err) {
     return res.status(400).json({ error: "Failed to delete card" });
+  }
+};
+
+export const createNewCustomer = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const customer = await stripe.customers.create({ email });
+
+    user.stripeCustomerID = customer.id;
+
+    await user.save();
+
+    return res.status(200).json({ customerID: user.stripeCustomerID });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 };

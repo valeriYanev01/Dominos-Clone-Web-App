@@ -38,7 +38,15 @@ const Deals = () => {
             <div className="single-deal-breakline" />
             <p className="deal-desc">{deal.desc}</p>
             <div className="deal-btn-container">
-              <button className="deal-btn">GET THIS DEAL</button>
+              <button
+                className="deal-btn"
+                onClick={() => {
+                  setOpenModal(true);
+                  setModalType("method");
+                }}
+              >
+                GET THIS DEAL
+              </button>
             </div>
             <div
               className={`${
