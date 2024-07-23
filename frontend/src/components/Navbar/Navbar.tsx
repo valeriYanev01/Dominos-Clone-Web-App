@@ -204,11 +204,6 @@ const Navbar = ({ page }: Page) => {
           </li>
         </ul>
         <ul className="navigation-list-container-links">
-          <li>
-            <span style={{ color: navColors.link, transition: "all 0.4s" }}>BG | </span>
-            <span style={{ color: navColors.link, transition: "all 0.4s" }}>EN</span>
-          </li>
-
           {loggedIn ? (
             <li>
               <Link to="/tracker" style={{ color: navColors.link, transition: "all 0.4s" }}>
