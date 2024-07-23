@@ -768,6 +768,8 @@ userSchema.statics.newOrder = async function (
         added: product.addedToppings,
         removed: product.removedToppings,
       },
+      crust: product.crust,
+      size: product.size,
     }));
 
     user.orders.push({
