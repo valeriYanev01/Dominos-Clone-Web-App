@@ -39,6 +39,7 @@ interface Order {
 
 const Orders: React.FC = () => {
   const [allOrders, setAllOrders] = useState<Order[]>([]);
+  const [showActiveTrackerMessage, setShowActiveTrackerMessage] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -50,6 +51,7 @@ const Orders: React.FC = () => {
     setOrderTime,
     setFinalPrice,
     setActiveOrder,
+    activeTracker,
   } = useContext(OrderContext);
 
   const navigate = useNavigate();
@@ -70,41 +72,47 @@ const Orders: React.FC = () => {
   }, [token, emailLogin]);
 
   const handleReorder = (order: Order) => {
-    console.log(order);
+    if (activeTracker) {
+      setShowActiveTrackerMessage(true);
 
-    if (order.orderType === "delivery" && order.address && order.address?.fullAddress.length > 0) {
-      setOrderAddress(order.address);
-
-      localStorage.setItem(
-        "order-details",
-        JSON.stringify({
-          type: "delivery",
-          addressLocation: order.address?.fullAddress,
-          addressName: order.address.name,
-          store: order.store,
-        })
-      );
+      setTimeout(() => {
+        setShowActiveTrackerMessage(false);
+      }, 7000);
     } else {
-      localStorage.setItem(
-        "order-details",
-        JSON.stringify({
-          type: "carryOut",
-          store: order.store,
-        })
-      );
+      if (order.orderType === "delivery" && order.address && order.address?.fullAddress.length > 0) {
+        setOrderAddress(order.address);
+
+        localStorage.setItem(
+          "order-details",
+          JSON.stringify({
+            type: "delivery",
+            addressLocation: order.address?.fullAddress,
+            addressName: order.address.name,
+            store: order.store,
+          })
+        );
+      } else {
+        localStorage.setItem(
+          "order-details",
+          JSON.stringify({
+            type: "carryOut",
+            store: order.store,
+          })
+        );
+      }
+
+      localStorage.setItem("active-order", JSON.stringify(true));
+      localStorage.setItem("order-time", String(order.deliveryTime));
+
+      setActiveOrder(true);
+      setOrderType(order.orderType);
+      setOrderStore(order.store);
+      setOrderTime("NOW");
+      setItemsInBasket(order.products);
+      setFinalPrice(order.finalPrice);
+
+      navigate("/checkout");
     }
-
-    localStorage.setItem("active-order", JSON.stringify(true));
-    localStorage.setItem("order-time", String(order.deliveryTime));
-
-    setActiveOrder(true);
-    setOrderType(order.orderType);
-    setOrderStore(order.store);
-    setOrderTime("NOW");
-    setItemsInBasket(order.products);
-    setFinalPrice(order.finalPrice);
-
-    navigate("/checkout");
   };
 
   return (
@@ -148,6 +156,12 @@ const Orders: React.FC = () => {
               <img src="/svg/reorder.svg" className="po-order-again-img" onClick={() => handleReorder(order)} />
             </div>
           ))}
+        </div>
+      )}
+
+      {showActiveTrackerMessage && (
+        <div className="orders-active-order">
+          You already have an active order. Wait for the current order to finish, to make another.
         </div>
       )}
     </div>

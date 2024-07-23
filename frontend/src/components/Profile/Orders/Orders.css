@@ -1,15 +1,15 @@
 .po-all-orders-container {
-  padding-top: 50px;
+  padding-top: 3rem;
 }
 
 .po-order-description-container {
-  margin-left: 100px;
+  margin-left: 6rem;
 }
 
 .po-order-container {
   display: flex;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.625rem;
   align-items: center;
   border-bottom: 1px solid #fe7e7e42;
 }
@@ -18,12 +18,11 @@
   margin: 0;
   margin-left: 50px;
   color: #0073aa;
-  font-size: 16px;
 }
 
 .po-order-description {
   display: inline;
-  margin-right: 10px;
+  margin-right: 0.625rem;
 }
 
 .po-order-quantity {
@@ -36,15 +35,14 @@
 
 .po-order-product-modifications {
   color: #555555cb;
-  font-size: 16px;
 }
 
 .po-order-again-img {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   cursor: pointer;
   margin: 0;
-  margin-right: 50px;
+  margin-right: 3rem;
 }
 
 .po-order-again-img:hover {
@@ -57,5 +55,34 @@
   }
   to {
     rotate: 360deg;
+  }
+}
+
+.orders-active-order {
+  position: fixed;
+  z-index: 99999;
+  left: 6.25rem;
+  bottom: 0.625rem;
+  background-color: #e31837;
+  color: #fff;
+  width: fit-content;
+  padding: 0.625rem;
+  border-radius: 5px;
+  animation: activeOrder 7s both;
+  font-size: 1.2rem;
+}
+
+@keyframes activeOrder {
+  0% {
+    left: -50rem;
+  }
+  20% {
+    left: 1rem;
+  }
+  80% {
+    left: 1rem;
+  }
+  100% {
+    left: -50rem;
   }
 }
