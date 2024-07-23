@@ -59,7 +59,7 @@ const SingleProduct: React.FC<Product> = ({ product, selectedProduct, setSelecte
         ...prevState,
         {
           name: product.name,
-          price: String(product.price[0].medium * quantity),
+          price: String(product.price[0].medium),
           quantity: quantity,
           type: product.type,
         },
