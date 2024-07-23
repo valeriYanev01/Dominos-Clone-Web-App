@@ -53,23 +53,29 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  modifications: [
-    {
-      added: [String],
-      removed: [String],
-    },
-  ],
-  price: {
+  size: {
     type: String,
   },
   crust: {
     type: String,
   },
-  size: {
+  toppings: {
+    type: [String],
+  },
+  removedToppings: {
+    type: [String],
+  },
+  addedToppings: {
+    type: [String],
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: String,
+  },
+  type: {
     type: String,
   },
 });
@@ -763,13 +769,14 @@ userSchema.statics.newOrder = async function (
 
     const productObjects = products.map((product) => ({
       name: product.name,
-      quantity: product.quantity,
-      modifications: {
-        added: product.addedToppings,
-        removed: product.removedToppings,
-      },
-      crust: product.crust,
       size: product.size,
+      crust: product.crust,
+      toppings: product.toppings,
+      addedToppings: product.addedToppings,
+      removedToppings: product.removedToppings,
+      quantity: product.quantity,
+      price: product.price,
+      type: product.type,
     }));
 
     user.orders.push({

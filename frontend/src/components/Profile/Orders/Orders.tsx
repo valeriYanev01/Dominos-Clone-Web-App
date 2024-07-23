@@ -3,25 +3,56 @@ import "./Orders.css";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
 import Heading from "../../Heading/Heading";
+import { BasketItem, OrderContext } from "../../../context/OrderContext";
+import { useNavigate } from "react-router-dom";
+import { Invoice } from "../../../pages/checkout/Checkout";
+import { v4 as uuid } from "uuid";
 
-type Order = {
-  products: {
-    name: string;
-    quantity: number;
-    modifications: {
-      added: string[];
-      removed: string[];
-    }[];
-    _id: string;
-    createdAt: number;
-  }[];
+interface Address {
+  block: string;
+  coordinates: [number, number];
+  doorBell: string;
+  entrance: string;
+  fullAddress: string;
+  name: string;
+  phoneNumber: string;
+  store: string;
   _id: string;
+}
+
+interface Order {
+  address?: Address;
+  comments: string;
   createdAt: string;
-};
+  deliveryTime: string;
+  doorBell: string;
+  finalPrice: number;
+  floor: string;
+  invoice: Invoice;
+  orderType: string;
+  paymentMethod: string;
+  phoneNumber: string;
+  products: BasketItem[];
+  store: string;
+  _id: string;
+}
 
 const Orders: React.FC = () => {
-  const [allOrders, setAllOrders] = useState<Order[]>();
+  const [allOrders, setAllOrders] = useState<Order[]>([]);
+
   const { token, emailLogin } = useContext(LoginContext);
+
+  const {
+    setOrderType,
+    setItemsInBasket,
+    setOrderAddress,
+    setOrderStore,
+    setOrderTime,
+    setFinalPrice,
+    setActiveOrder,
+  } = useContext(OrderContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -38,31 +69,75 @@ const Orders: React.FC = () => {
     }
   }, [token, emailLogin]);
 
+  const handleReorder = (order: Order) => {
+    console.log(order);
+
+    if (order.orderType === "delivery" && order.address && order.address?.fullAddress.length > 0) {
+      setOrderAddress(order.address);
+
+      localStorage.setItem(
+        "order-details",
+        JSON.stringify({
+          type: "delivery",
+          addressLocation: order.address?.fullAddress,
+          addressName: order.address.name,
+          store: order.store,
+        })
+      );
+    } else {
+      localStorage.setItem(
+        "order-details",
+        JSON.stringify({
+          type: "carryOut",
+          store: order.store,
+        })
+      );
+    }
+
+    localStorage.setItem("active-order", JSON.stringify(true));
+    localStorage.setItem("order-time", String(order.deliveryTime));
+
+    setActiveOrder(true);
+    setOrderType(order.orderType);
+    setOrderStore(order.store);
+    setOrderTime("NOW");
+    setItemsInBasket(order.products);
+    setFinalPrice(order.finalPrice);
+
+    navigate("/checkout");
+  };
+
   return (
     <div className="profile-orders">
       <Heading text="MY ORDERS" />
       {allOrders && (
         <div className="po-all-orders-container">
-          {allOrders.map((products, i) => (
-            <div className="po-order-container" key={products._id + i}>
-              <span className="po-order-date">{new Date(products.createdAt).toLocaleDateString("en-GB")}</span>
+          {allOrders.map((order) => (
+            <div className="po-order-container" key={uuid()}>
+              <span className="po-order-date">{new Date(order.createdAt).toLocaleDateString("en-GB")}</span>
               <div className="po-order-description-container">
-                {products.products.map((product) => (
-                  <div className="po-order-description" key={product._id}>
+                {order.products.map((product) => (
+                  <div className="po-order-description" key={uuid()}>
                     <span className="po-order-quantity">{product.quantity}x </span>
                     <span className="po-order-product-name">{product.name}</span>
-                    {product.modifications[0].added.length > 0 && product.modifications[0].removed.length > 0 ? (
+                    {product.addedToppings &&
+                    product.addedToppings.length > 0 &&
+                    product.removedToppings &&
+                    product.removedToppings.length > 0 ? (
                       <span className="po-order-product-modifications">
-                        (Without {product.modifications[0].removed.join(", Without ")}, +
-                        {product.modifications[0].added.join(", +")})
+                        (Without {product.removedToppings.join(", Without ")}, +{product.addedToppings.join(", +")})
                       </span>
-                    ) : product.modifications[0].added.length > 0 && product.modifications[0].removed.length < 1 ? (
+                    ) : product.addedToppings &&
+                      product.addedToppings.length > 0 &&
+                      product.removedToppings &&
+                      product.removedToppings.length < 1 ? (
+                      <span className="po-order-product-modifications">(+{product.addedToppings.join(", +")})</span>
+                    ) : product.addedToppings &&
+                      product.addedToppings.length < 1 &&
+                      product.removedToppings &&
+                      product.removedToppings.length > 0 ? (
                       <span className="po-order-product-modifications">
-                        (+{product.modifications[0].added.join(", +")})
-                      </span>
-                    ) : product.modifications[0].added.length < 1 && product.modifications[0].removed.length > 0 ? (
-                      <span className="po-order-product-modifications">
-                        (Without {product.modifications[0].removed.join(", Without ")})
+                        (Without {product.removedToppings.join(", Without ")})
                       </span>
                     ) : (
                       <span></span>
@@ -70,7 +145,7 @@ const Orders: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <img src="/svg/reorder.svg" className="po-order-again-img" />
+              <img src="/svg/reorder.svg" className="po-order-again-img" onClick={() => handleReorder(order)} />
             </div>
           ))}
         </div>
