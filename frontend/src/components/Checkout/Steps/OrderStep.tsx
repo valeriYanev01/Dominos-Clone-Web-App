@@ -64,14 +64,15 @@ const OrderStep: React.FC<Props> = ({
     if (itemsInBasket.length > 0) {
       const cheapestPizza = itemsInBasket.filter((item) => item.type === "pizza")[0];
 
-      console.log(cheapestPizza);
-
-      if (selectedCoupon.length > 0 && cheapestPizza.size === "Medium") {
-        setFinalPrice(finalPrice - parseFloat(cheapestPizza.price));
-      } else {
-        setFinalPrice(finalPrice + parseFloat(cheapestPizza.price));
+      if (cheapestPizza) {
+        if (selectedCoupon.length > 0 && cheapestPizza.size === "Medium") {
+          setFinalPrice(finalPrice - parseFloat(cheapestPizza.price));
+        } else {
+          setFinalPrice(finalPrice + parseFloat(cheapestPizza.price));
+        }
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsInBasket, selectedCoupon, setFinalPrice]);
 
   useEffect(() => {
