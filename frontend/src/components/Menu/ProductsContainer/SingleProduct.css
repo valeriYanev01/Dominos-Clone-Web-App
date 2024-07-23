@@ -1,0 +1,82 @@
+.menu-spc-other-details {
+  min-height: 8.13rem;
+  display: flex;
+}
+
+.menu-single-product-container {
+  box-shadow: 0 0px 30px rgb(0 0 0 / 15%);
+  flex-basis: 20%;
+  background-color: white;
+  max-width: 14.375rem;
+  margin: 0px;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.menu-single-product-container:hover {
+  transform: scale(1.03);
+}
+
+.menu-spc-title-container {
+  max-width: 100%;
+  padding: 0.625rem 0;
+  margin: 0 0.625rem;
+  overflow: hidden;
+}
+
+.menu-spc-title {
+  font-weight: bold;
+  color: #0073aa;
+  font-size: 1.125rem;
+  padding: 0.625rem 0;
+  margin: 0px 0.625rem;
+  border-bottom: 2px solid #bdbcbc;
+  white-space: nowrap;
+  transition: all 2s ease-in-out;
+}
+
+.menu-spc-img {
+  width: 12.5rem;
+  height: 7.8125rem;
+  margin: 0.625rem 0px;
+}
+
+.menu-spc-drinks-img {
+  height: 13.125rem;
+}
+
+.menu-spc-desc {
+  color: #888;
+  font-weight: bold;
+  font-size: 0.875rem;
+  min-height: 5.3125rem;
+  padding: 0.625rem 0px;
+  line-height: 1.2;
+  overflow-y: auto;
+}
+
+.menu-spc-filter {
+  height: 1.875rem;
+  margin: 0.625rem 0px 0.3125rem 0px;
+}
+
+.menu-filter-svg {
+  height: 1.875rem;
+}
+
+.menu-spc-btn {
+  background-color: #609e29;
+  text-decoration: none;
+  width: 100%;
+  color: white;
+  border: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0.625rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.menu-spc-btn:hover {
+  background-color: #70a83e;
+}

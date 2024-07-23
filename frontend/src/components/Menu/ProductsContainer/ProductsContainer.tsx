@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import "./ProductsContainer.css";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MenuContext } from "../../../context/MenuContext";
 import MenuDeals from "./MenuDeals";
 import { products } from "../../../data/products";
@@ -15,6 +15,9 @@ interface SelectedFilters {
 }
 
 const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
   const { selectedItem } = useContext(MenuContext);
 
   const location = useLocation().pathname.split("/")[3];
@@ -39,7 +42,13 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
               (product) =>
                 product.filter.includes("Vegetarian") && (
                   <div className="menu-single-product-container" key={product.img}>
-                    <SingleProduct product={product} />
+                    <SingleProduct
+                      product={product}
+                      setSelectedProduct={setSelectedProduct}
+                      selectedProduct={selectedProduct}
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                    />
                   </div>
                 )
             )
@@ -54,7 +63,13 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
                     }`}
                     key={product.img}
                   >
-                    <SingleProduct product={product} />
+                    <SingleProduct
+                      product={product}
+                      setSelectedProduct={setSelectedProduct}
+                      selectedProduct={selectedProduct}
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                    />
                   </div>
                 )
             )
@@ -62,15 +77,27 @@ const ProductsContainer: React.FC<SelectedFilters> = ({ selectedFilters }) => {
 
       {location == "deals" && <MenuDeals />}
 
-      {location !== "vegetairan" && nestedFilteredProducts.length > 0
+      {location !== "vegetarian" && nestedFilteredProducts.length > 0
         ? nestedFilteredProducts.map((product) => (
             <div key={product.img} className="menu-single-product-container">
-              <SingleProduct product={product} />
+              <SingleProduct
+                product={product}
+                setSelectedProduct={setSelectedProduct}
+                selectedProduct={selectedProduct}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
             </div>
           ))
         : filteredProducts.map((product) => (
             <div key={product.img} className="menu-single-product-container">
-              <SingleProduct product={product} />
+              <SingleProduct
+                product={product}
+                setSelectedProduct={setSelectedProduct}
+                selectedProduct={selectedProduct}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
             </div>
           ))}
     </div>

@@ -93,6 +93,7 @@ const PizzaQuantity: React.FC<Props> = ({
     if (selectedProduct.price[0].large) {
       setPrice((selectedProduct.price[0].large + (modifiedToppings.length * 2 - toppings.length * 2)) * quantity);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity, selectedCrust, size]);
 
   const handleIncrease = () => {
