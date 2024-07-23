@@ -268,9 +268,10 @@ const PaymentDetailsStep: React.FC<Props> = ({
               <div className="checkout-details-payment-coupon" key={coupon._id}>
                 <label htmlFor={coupon._id}>{coupon.name}</label>
                 <input
-                  type="checkbox"
+                  type="radio"
                   id={coupon._id}
                   onChange={(e) => handleSelectCoupon(e.target.checked, e.target.id)}
+                  name="coupon"
                 />
               </div>
             ))}
