@@ -80,6 +80,37 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+const dealProductsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  crust: {
+    type: String,
+  },
+  quantity: {
+    type: Number,
+  },
+  toppings: {
+    type: [String],
+  },
+  addedToppings: {
+    type: [String],
+  },
+  removedToppings: {
+    type: [String],
+  },
+});
+
+const dealSchema = new mongoose.Schema({
+  products: [dealProductsSchema],
+  price: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+});
+
 const invoicesSchema = new mongoose.Schema({
   companyName: {
     type: String,
@@ -101,6 +132,7 @@ const invoicesSchema = new mongoose.Schema({
 const ordersSchema = new mongoose.Schema(
   {
     products: [productSchema],
+    deals: [dealSchema],
     address: {
       type: addressSchema,
       required: false,
@@ -616,7 +648,7 @@ userSchema.statics.newOrder = async function (
 
     const mailOptionsForMe = {
       from: "dominos.clone01@gmail.com",
-      to: "valeri.t.yanev@gmail.com",
+      to: MY_EMAIL,
       subject: `${orderType === "delivery" ? `Delivery for ${address.fullAddress}.` : `Carry Out for ${store}`}`,
       text: `
          ${
@@ -767,7 +799,18 @@ userSchema.statics.newOrder = async function (
       throw new Error("User not found");
     }
 
-    const productObjects = products.map((product) => ({
+    const nonDealProducts = [];
+    const dealProducts = [];
+
+    products.forEach((product) => {
+      if (product.deal) {
+        dealProducts.push(product);
+      } else {
+        nonDealProducts.push(product);
+      }
+    });
+
+    const nonDealProductObjects = nonDealProducts.map((product) => ({
       name: product.name,
       size: product.size,
       crust: product.crust,
@@ -779,9 +822,23 @@ userSchema.statics.newOrder = async function (
       type: product.type,
     }));
 
+    const dealProductObjects = dealProducts.map((deal) => ({
+      price: deal.price,
+      name: deal.heading,
+      products: deal.deal.map((product) => ({
+        name: product.name,
+        crust: product.crust,
+        quantity: product.quantity,
+        toppings: product.toppings,
+        addedToppings: product.addedToppings,
+        removedToppings: product.removedToppings,
+      })),
+    }));
+
     user.orders.push({
       orderType,
-      products: productObjects,
+      products: nonDealProductObjects,
+      deals: dealProductObjects,
       address,
       store,
       deliveryTime,
@@ -791,7 +848,7 @@ userSchema.statics.newOrder = async function (
       comments,
       paymentMethod,
       invoice,
-      finalPrice,
+      finalPrice: finalPrice.toFixed(2),
     });
 
     user.activeOrder.isActive = true;

@@ -4,6 +4,7 @@ import { components } from "../../../data/deals";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/pagination";
 import { ModalContext } from "../../../context/ModalContext";
 import { LoginContext } from "../../../context/LoginContext";
 import { OrderContext } from "../../../context/OrderContext";
@@ -28,25 +29,29 @@ const Deals = () => {
   };
 
   return (
-    <Swiper className="deals-container" modules={[Pagination, Navigation]} spaceBetween={25} slidesPerView={4}>
+    <Swiper
+      className="deals-container"
+      modules={[Pagination, Navigation]}
+      spaceBetween={25}
+      slidesPerView={4}
+      pagination
+    >
       {components.map((deal) => (
-        <div className="deal-item">
+        <div className="deal-item" key={uuid()}>
           <SwiperSlide key={uuid()} className="single-deal-container">
             <img src={deal.headerImg} className="deal-header-img" />
             {deal && <img src="/svg/homepage/deal.svg" className="deal-svg" />}
             <p className="deal-heading">{deal.heading}</p>
             <div className="single-deal-breakline" />
             <p className="deal-desc">{deal.desc}</p>
-            <div className="deal-btn-container">
-              <button
-                className="deal-btn"
-                onClick={() => {
-                  setOpenModal(true);
-                  setModalType("method");
-                }}
-              >
-                GET THIS DEAL
-              </button>
+            <div
+              className="deal-btn-container"
+              onClick={() => {
+                setOpenModal(true);
+                setModalType("method");
+              }}
+            >
+              <div className="deal-btn">GET THIS DEAL</div>
             </div>
             <div
               className={`${

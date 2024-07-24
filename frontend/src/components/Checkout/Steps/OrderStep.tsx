@@ -72,7 +72,7 @@ const OrderStep: React.FC<Props> = ({
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsInBasket, selectedCoupon, setFinalPrice]);
 
   useEffect(() => {
@@ -242,6 +242,8 @@ const OrderStep: React.FC<Props> = ({
 
     localStorage.setItem("placed-order-time", JSON.stringify(new Date().getTime()));
   };
+
+  console.log(finalPrice);
 
   return (
     <div className="checkout-details-order">

@@ -421,9 +421,11 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
       itemsInBasket.forEach((item) => {
         if (item.deal) {
+          console.log(item);
           price += Number(item.price);
         }
       });
+
       setFinalPrice(price);
       setTotalPizzas(pizzaQuantity);
       if (selectedCoupon.length > 0) {

@@ -33,6 +33,12 @@ interface Order {
   paymentMethod: string;
   phoneNumber: string;
   products: BasketItem[];
+  deals: {
+    name: string;
+    price: string;
+    products: BasketItem[];
+    _id: string;
+  }[];
   store: string;
   _id: string;
 }
@@ -64,7 +70,9 @@ const Orders: React.FC = () => {
           params: { email: emailLogin },
         });
 
-        setAllOrders(response.data.allOrders.orders);
+        const reversedOrdersArray = response.data.allOrders.orders.reverse();
+
+        setAllOrders(reversedOrdersArray);
       };
 
       fetchOrders();
@@ -108,12 +116,52 @@ const Orders: React.FC = () => {
       setOrderType(order.orderType);
       setOrderStore(order.store);
       setOrderTime("NOW");
-      setItemsInBasket(order.products);
+
+      const tempItems = [];
+
+      if (order.deals.length > 0 && order.products.length < 1) {
+        order.deals.forEach((deal) => {
+          tempItems.push({
+            deal: deal.products.map((product) => ({
+              name: product.name,
+              crust: product.crust || "",
+              quantity: product.quantity,
+              toppings: product.toppings || [],
+              addedToppings: product.addedToppings || [],
+              removedToppings: product.removedToppings || [],
+            })),
+            price: deal.price,
+            heading: deal.name,
+          });
+        });
+      } else if (order.products.length > 0 && order.deals.length < 1) {
+        tempItems.push(...order.products);
+      } else if (order.products.length > 0 && order.deals.length > 0) {
+        order.deals.forEach((deal) => {
+          tempItems.push({
+            deal: deal.products.map((product) => ({
+              name: product.name,
+              crust: product.crust || "",
+              quantity: product.quantity,
+              toppings: product.toppings || [],
+              addedToppings: product.addedToppings || [],
+              removedToppings: product.removedToppings || [],
+            })),
+            price: deal.price,
+            heading: deal.name,
+          });
+        });
+
+        tempItems.push(...order.products);
+      }
+      setItemsInBasket(tempItems);
       setFinalPrice(order.finalPrice);
 
       navigate("/checkout");
     }
   };
+
+  allOrders.map((order) => console.log(order));
 
   return (
     <div className="profile-orders">
@@ -150,6 +198,15 @@ const Orders: React.FC = () => {
                     ) : (
                       <span></span>
                     )}
+                  </div>
+                ))}
+
+                {order.deals.map((deal) => (
+                  <div key={deal._id}>
+                    <span className="po-order-deal">
+                      <span className="po-order-deal-quantity">1x </span>
+                      {deal.name}
+                    </span>
                   </div>
                 ))}
               </div>

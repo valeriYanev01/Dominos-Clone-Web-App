@@ -56,6 +56,7 @@ interface Deal {
   }>;
   price: string;
   desc: string;
+  heading: string;
 }
 
 const DealModal: React.FC = () => {
@@ -196,7 +197,7 @@ const DealModal: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const final: Deal = { deal: [], price: "", desc: "" };
+    const final: Deal = { deal: [], price: "", desc: "", heading: "" };
 
     const pizzas = [...selectedPizzas];
     const chicken = [...selectedChicken];
@@ -292,6 +293,7 @@ const DealModal: React.FC = () => {
 
     final.price = String(Number(price).toFixed(2));
     final.desc = deal.desc;
+    final.heading = deal.heading;
 
     // If the pizzas are the same with the same toppings, remove all but 1,
     // and on the one that is left, increase the quantity with how many are removed.

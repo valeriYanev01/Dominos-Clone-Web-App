@@ -4,7 +4,7 @@ import "./SingleProduct.css";
 import { LoginContext } from "../../../context/LoginContext";
 import { OrderContext } from "../../../context/OrderContext";
 
-type Product = {
+interface Props {
   product: {
     type: string;
     name: string;
@@ -17,12 +17,12 @@ type Product = {
   setSelectedProduct: React.Dispatch<React.SetStateAction<string>>;
   quantity: number;
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
-const SingleProduct: React.FC<Product> = ({ product, selectedProduct, setSelectedProduct, quantity, setQuantity }) => {
+const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedProduct, quantity, setQuantity }) => {
   const { setModalType, setOpenModal, setProduct, product: productType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
-  const { itemsInBasket, setItemsInBasket } = useContext(OrderContext);
+  const { setItemsInBasket } = useContext(OrderContext);
 
   useEffect(() => {
     setOpenModal(
@@ -54,7 +54,6 @@ const SingleProduct: React.FC<Product> = ({ product, selectedProduct, setSelecte
     if (loggedIn === false) {
       setModalType("login");
     } else {
-      console.log(itemsInBasket);
       setItemsInBasket((prevState) => [
         ...prevState,
         {

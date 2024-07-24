@@ -4,6 +4,7 @@
 
 .po-order-description-container {
   margin-left: 6rem;
+  display: flex;
 }
 
 .po-order-container {
@@ -35,6 +36,15 @@
 
 .po-order-product-modifications {
   color: #555555cb;
+}
+
+.po-order-deal {
+  color: #0073aa;
+  margin-right: 1rem;
+}
+
+.po-order-deal-quantity {
+  color: #e31837;
 }
 
 .po-order-again-img {
