@@ -69,8 +69,6 @@ const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedP
     }
   };
 
-  console.log(quantity);
-
   return (
     <div
       key={product.name}
