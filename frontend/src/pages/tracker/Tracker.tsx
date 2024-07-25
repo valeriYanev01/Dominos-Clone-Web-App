@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Heading from "../../components/Heading/Heading";
 import { OrderContext } from "../../context/OrderContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ModalContext } from "../../context/ModalContext";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,7 +64,7 @@ const Tracker: React.FC = () => {
     path5: "#f2f4f5",
   });
 
-  const { activeTracker } = useContext(OrderContext);
+  const { activeTracker, activeOrder, orderStore } = useContext(OrderContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
 
   const navigate = useNavigate();
@@ -182,7 +182,7 @@ const Tracker: React.FC = () => {
                 d="M234.1,831.2c-72.3-75.9-116.8-178.5-116.8-291.4c0-229.3,183.5-416.6,411.4-422.4V11.7C242.6,17.6,11.4,252.4,11.4,540c0,139.8,54.7,267.2,143.7,361.7l23.4-48.9L234.1,831.2z"
               ></path>
             </svg>
-            {!activeTracker && (
+            {!activeTracker ? (
               <div className="tracker-new-order">
                 <div>
                   <p className="tracker-new-order-text">You don't have an active order.</p>
@@ -198,6 +198,19 @@ const Tracker: React.FC = () => {
                   </span>
                 </div>
               </div>
+            ) : (
+              activeOrder &&
+              !activeTracker && (
+                <div className="tracker-new-order">
+                  <div>
+                    <p className="tracker-new-order-text">Continue with your order.</p>
+                    <br />
+                    <Link to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}>
+                      <span className="tracker-new-order-btn">CONTINUE</span>
+                    </Link>
+                  </div>
+                </div>
+              )
             )}
           </div>
         </div>
