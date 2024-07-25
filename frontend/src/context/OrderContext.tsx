@@ -10,6 +10,24 @@ interface OrderDetails {
   addressName: string;
 }
 
+export interface SingleDeal {
+  name: string;
+  crust?: string;
+  quantity: number;
+  price: string;
+  addedToppings: string[];
+  removedToppings: string[];
+  heading: string;
+}
+
+interface Deal {
+  deal: SingleDeal;
+  desc: string;
+  heading: string;
+  price: string;
+  quantity: number;
+}
+
 export interface BasketItem {
   name: string;
   size?: string;
@@ -20,8 +38,9 @@ export interface BasketItem {
   quantity: number;
   price: string;
   type: string;
-  deal?: [];
+  deal?: Deal;
   desc?: string;
+  heading?: string;
 }
 
 interface OrderContextInterface {
@@ -419,15 +438,19 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         price += Number(item.price);
       });
 
+      console.log(itemsInBasket);
       itemsInBasket.forEach((item) => {
         if (item.deal) {
-          price += Number(item.price);
+          console.log(item);
+          price += Number(item.price) * item.quantity;
         }
       });
 
       if (!freeDelivery) {
         price += 1.99;
       }
+
+      console.log(price.toFixed(2));
 
       setFinalPrice(price);
       setTotalPizzas(pizzaQuantity);
@@ -468,7 +491,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     itemsInBasket.forEach((item) => {
       if (item.deal) {
-        priceNoDiscount += parseFloat(item.price);
+        priceNoDiscount += parseFloat(item.price) * item.quantity;
       } else {
         priceNoDiscount += parseFloat(item.price) * item.quantity;
       }

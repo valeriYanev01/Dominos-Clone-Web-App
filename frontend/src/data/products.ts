@@ -2,7 +2,7 @@ export const products = [
   {
     type: "pizza",
     name: "Make Your Own!",
-    desc: "Create your own pizza! Choose your size, base, and add any topping combination you wish!",
+    desc: "Mozzarella, Tomato Sauce",
     img: "/images/menu/make-your.png",
     bigImg: "/images/menu/make-your.png",
     filter: [""],

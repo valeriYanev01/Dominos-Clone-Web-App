@@ -45,7 +45,7 @@ interface Products {
   desserts?: Dessert;
 }
 
-interface Deal {
+export interface Deal {
   deal: Array<{
     name: string;
     crust?: string;
@@ -57,6 +57,7 @@ interface Deal {
   price: string;
   desc: string;
   heading: string;
+  quantity: number;
 }
 
 const DealModal: React.FC = () => {
@@ -197,7 +198,7 @@ const DealModal: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const final: Deal = { deal: [], price: "", desc: "", heading: "" };
+    const final: Deal = { deal: [], price: "", desc: "", heading: "", quantity: 0 };
 
     const pizzas = [...selectedPizzas];
     const chicken = [...selectedChicken];
@@ -294,6 +295,7 @@ const DealModal: React.FC = () => {
     final.price = String(Number(price).toFixed(2));
     final.desc = deal.desc;
     final.heading = deal.heading;
+    final.quantity += 1;
 
     // If the pizzas are the same with the same toppings, remove all but 1,
     // and on the one that is left, increase the quantity with how many are removed.

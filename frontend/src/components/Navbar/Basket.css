@@ -41,8 +41,26 @@
   font-weight: bold;
 }
 
+.navigation-basket-deal-heading {
+  display: flex;
+  align-items: center !important;
+}
+
+.navigation-basket-deal-heading span {
+  color: #be1e2d;
+  margin: 0;
+}
+
+.navigation-basket-deal-body {
+  display: flex;
+}
 .navigation-basket-deal-desc {
   flex: 1;
+}
+
+.navigation-basket-deal-desc div,
+.navigation-basket-deal-desc div span {
+  color: #555555dc !important;
 }
 
 .navigation-basket-desc-remove-container {
@@ -143,11 +161,6 @@
   flex-direction: column;
   font-weight: bold;
   color: #555555e6;
-}
-
-.navigation-basket-deal-container {
-  display: flex;
-  justify-content: space-between;
 }
 
 .navigation-basket-deal-symbol {
