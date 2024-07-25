@@ -36,7 +36,7 @@ export const Checkout: React.FC = () => {
 
   const { dominosMorePoints, token, emailLogin } = useContext(LoginContext);
   const { setSelectedAddress } = useContext(AddressContext);
-  const { itemsInBasket } = useContext(OrderContext);
+  const { itemsInBasket, orderType } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -81,6 +81,8 @@ export const Checkout: React.FC = () => {
           },
         });
 
+        console.log(response);
+
         const data = response.data.address;
 
         if (data.phoneNumber) {
@@ -91,10 +93,39 @@ export const Checkout: React.FC = () => {
       }
     };
 
-    if (emailLogin && token) {
+    const fetchAllAddresses = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
+
+        setPhoneNumber(response.data.allAddresses.addresses[0].phoneNumber);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err);
+        }
+      }
+    };
+
+    if (
+      emailLogin &&
+      token &&
+      (orderType === "delivery" ||
+        (localStorage.getItem("order-details") &&
+          JSON.parse(localStorage.getItem("order-details") as string).type === "delivery"))
+    ) {
       fetchAddress();
+    } else if (
+      emailLogin &&
+      token &&
+      (orderType === "carry-out" ||
+        (localStorage.getItem("order-details") &&
+          JSON.parse(localStorage.getItem("order-details") as string).type === "carryOut"))
+    ) {
+      fetchAllAddresses();
     }
-  }, [emailLogin, token]);
+  }, [emailLogin, token, orderType]);
 
   useEffect(() => {
     if (

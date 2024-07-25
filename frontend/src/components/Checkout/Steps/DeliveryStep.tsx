@@ -57,7 +57,7 @@ const DeliveryStep: React.FC<Props> = ({
   const [companyOwner, setCompanyOwner] = useState("");
   const [editInvoice, setEditInvoice] = useState(false);
 
-  const { orderTime } = useContext(OrderContext);
+  const { orderTime, orderType } = useContext(OrderContext);
   const { emailLogin, token } = useContext(LoginContext);
 
   useEffect(() => {
@@ -234,7 +234,7 @@ const DeliveryStep: React.FC<Props> = ({
       <div className="checkout-dd-time">
         <img src="/svg/checkout/timer.svg" />
         <p className="checkout-dd-text">
-          Your order will be delivered in{" "}
+          {orderType === "delivery" ? "Your order will be delivered in " : "Order order will be ready in "}
           <span className="checkout-dd-text-time">
             {finalMinutesForDelivery}
             <span className="checkout-dd-text-aps">'</span>
@@ -242,20 +242,22 @@ const DeliveryStep: React.FC<Props> = ({
         </p>
       </div>
 
-      <div className="checkout-dd-address">
-        <img src="/svg/checkout/place.svg" />
-        <p>
-          Your address:{" "}
-          <span className="checkout-dd-address-details">
-            {localStorage.getItem("user") &&
-              localStorage.getItem("order-details") &&
-              JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
-            {localStorage.getItem("user") &&
-              localStorage.getItem("order-details") &&
-              JSON.parse(localStorage.getItem("order-details") as string).addressName}
-          </span>
-        </p>
-      </div>
+      {orderType === "delivery" && (
+        <div className="checkout-dd-address">
+          <img src="/svg/checkout/place.svg" />
+          <p>
+            Your address:{" "}
+            <span className="checkout-dd-address-details">
+              {localStorage.getItem("user") &&
+                localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressLocation}{" "}
+              {localStorage.getItem("user") &&
+                localStorage.getItem("order-details") &&
+                JSON.parse(localStorage.getItem("order-details") as string).addressName}
+            </span>
+          </p>
+        </div>
+      )}
 
       <div className="checkout-dd-phone-floor">
         <div className="checkout-dd-phone">
@@ -269,28 +271,32 @@ const DeliveryStep: React.FC<Props> = ({
           />
         </div>
 
-        <div className="checkout-dd-floor">
-          <FontAwesomeIcon icon={faStairs} color="#0D6490" />
-          <input
-            value={floor}
-            onChange={(e) => {
-              setFloor(e.target.value);
-            }}
-            placeholder="Floor"
-          />
-        </div>
+        {orderType === "delivery" && (
+          <div className="checkout-dd-floor">
+            <FontAwesomeIcon icon={faStairs} color="#0D6490" />
+            <input
+              value={floor}
+              onChange={(e) => {
+                setFloor(e.target.value);
+              }}
+              placeholder="Floor"
+            />
+          </div>
+        )}
       </div>
 
-      <div className="checkout-dd-door">
-        <FontAwesomeIcon icon={faBell} color="#0D6490" />
-        <input
-          value={bell}
-          onChange={(e) => {
-            setBell(e.target.value);
-          }}
-          placeholder="Door Bell"
-        />
-      </div>
+      {orderType === "delivery" && (
+        <div className="checkout-dd-door">
+          <FontAwesomeIcon icon={faBell} color="#0D6490" />
+          <input
+            value={bell}
+            onChange={(e) => {
+              setBell(e.target.value);
+            }}
+            placeholder="Door Bell"
+          />
+        </div>
+      )}
 
       <div className="checkout-dd-comments">
         <textarea
