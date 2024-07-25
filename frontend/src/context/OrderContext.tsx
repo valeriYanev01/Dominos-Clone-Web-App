@@ -438,10 +438,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         price += Number(item.price);
       });
 
-      console.log(itemsInBasket);
       itemsInBasket.forEach((item) => {
         if (item.deal) {
-          console.log(item);
           price += Number(item.price) * item.quantity;
         }
       });
@@ -449,8 +447,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       if (!freeDelivery) {
         price += 1.99;
       }
-
-      console.log(price.toFixed(2));
 
       setFinalPrice(price);
       setTotalPizzas(pizzaQuantity);
