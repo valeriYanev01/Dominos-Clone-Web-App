@@ -421,10 +421,13 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
       itemsInBasket.forEach((item) => {
         if (item.deal) {
-          console.log(item);
           price += Number(item.price);
         }
       });
+
+      if (!freeDelivery) {
+        price += 1.99;
+      }
 
       setFinalPrice(price);
       setTotalPizzas(pizzaQuantity);
@@ -434,7 +437,15 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setThirdPizzaPromotions(parseInt(String(totalPizzas / 3)));
       }
     }
-  }, [itemsInBasket, totalPizzas, thirdPizzaPromotions, setThirdPizzaPromotions, setFinalPrice, selectedCoupon]);
+  }, [
+    itemsInBasket,
+    totalPizzas,
+    thirdPizzaPromotions,
+    setThirdPizzaPromotions,
+    setFinalPrice,
+    selectedCoupon,
+    freeDelivery,
+  ]);
 
   useEffect(() => {
     if (thirdPizzaPromotions) {

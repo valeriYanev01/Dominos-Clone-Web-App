@@ -153,14 +153,6 @@ const OrderStep: React.FC<Props> = ({
 
     if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
       try {
-        let finalPriceToSend;
-
-        if (freeDelivery) {
-          finalPriceToSend = finalPrice;
-        } else {
-          finalPriceToSend = finalPrice + 1.99;
-        }
-
         const response = await axios.put(
           "http://localhost:3000/api/users/new-order",
           {
@@ -176,7 +168,7 @@ const OrderStep: React.FC<Props> = ({
             paymentMethod: selectedPaymentMethod,
             invoice: selectedInvoice,
             orderType: JSON.parse(localStorage.getItem("order-details") as string).type,
-            finalPrice: finalPriceToSend,
+            finalPrice: parseFloat(finalPrice.toFixed(2)),
             start: new Date().getTime(),
             finish: finishTime,
           },
@@ -210,7 +202,7 @@ const OrderStep: React.FC<Props> = ({
             paymentMethod: selectedPaymentMethod,
             invoice: selectedInvoice,
             orderType: JSON.parse(localStorage.getItem("order-details") as string).type,
-            finalPrice,
+            finalPrice: parseFloat(finalPrice.toFixed(2)),
             start: new Date().getTime(),
             finish: finishTime,
           },
@@ -242,8 +234,6 @@ const OrderStep: React.FC<Props> = ({
 
     localStorage.setItem("placed-order-time", JSON.stringify(new Date().getTime()));
   };
-
-  console.log(finalPrice);
 
   return (
     <div className="checkout-details-order">
