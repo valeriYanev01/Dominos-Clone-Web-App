@@ -267,6 +267,11 @@ const DeliveryModal: React.FC = () => {
                 <img
                   src="/svg/edit.svg"
                   className="dm-address-edit-img"
+                  onClick={() => {
+                    setModalType("");
+                    setOpenModal(false);
+                    navigate("profile/addresses");
+                  }}
                   style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
                 />
                 <img
