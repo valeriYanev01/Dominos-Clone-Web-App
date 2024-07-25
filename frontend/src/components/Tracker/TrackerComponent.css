@@ -42,22 +42,29 @@
   }
 }
 
-.tracker-new-order {
+.tracker-new-order,
+.tracker-continue-order {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.tracker-new-order-text {
+.tracker-new-order-text,
+.tracker-continue-order-text {
   font-size: 1.2rem;
 }
 
-.tracker-new-order-btn {
+.tracker-new-order-btn,
+.tracker-continue-order-btn {
   font-weight: bold;
   color: #fff;
   background-color: #df232d;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
+}
+
+.tracker-continue-order-link {
+  text-decoration: none;
 }
