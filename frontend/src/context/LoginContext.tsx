@@ -113,6 +113,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
           setEmailLogin(response.data.user.email);
         } catch (err) {
           if (axios.isAxiosError(err)) {
+            localStorage.clear();
             console.log(err);
           }
         }
@@ -198,11 +199,17 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
             localStorage.setItem("active-tracker", JSON.stringify({ active: false }));
             localStorage.setItem("placed-order-time", JSON.stringify(0));
 
-            await axios.put(
-              "http://localhost:3000/api/users/update-active-order",
-              { email: emailLogin },
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
+            try {
+              await axios.put(
+                "http://localhost:3000/api/users/update-active-order",
+                { email: emailLogin },
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+            } catch (err) {
+              if (axios.isAxiosError(err)) {
+                console.log(err);
+              }
+            }
 
             setActiveTracker(false);
           } else {
@@ -220,7 +227,8 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         }
       } catch (err) {
         if (axios.isAxiosError(err)) {
-          console.log(err);
+          setLoggedIn(false);
+          localStorage.clear();
         }
       }
     };
@@ -233,11 +241,15 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   useEffect(() => {
     const updateDominosMorePoints = async () => {
-      await axios.put(
-        "http://localhost:3000/api/users/update-dominos-more",
-        { email: emailLogin },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      try {
+        await axios.put(
+          "http://localhost:3000/api/users/update-dominos-more",
+          { email: emailLogin },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      } catch (err) {
+        setLoggedIn(false);
+      }
     };
 
     if (emailLogin && token && dominosMorePoints === 6) {
