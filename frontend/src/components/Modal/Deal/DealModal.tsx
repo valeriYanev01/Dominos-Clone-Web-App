@@ -190,7 +190,7 @@ const DealModal: React.FC = () => {
     }
     setModifiedToppings(newToppings);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [indexes, selectedPizzas]);
+  }, [indexes]);
 
   useEffect(() => {
     setModifiedToppings(toppings);
@@ -602,9 +602,9 @@ const DealModal: React.FC = () => {
                         <p className="dm-toppings-text">TOPPINGS</p>
 
                         <p className="dm-toppings">
-                          {modifiedToppings[i]?.length > toppings[i]?.length
-                            ? modifiedToppings[i]?.join(", ")
-                            : toppings[i]?.join(", ")}
+                          {modifiedToppings[i].length > toppings[i].length
+                            ? modifiedToppings[i].join(", ")
+                            : toppings[i].join(", ")}
                         </p>
 
                         {loggedIn && (
@@ -695,6 +695,7 @@ const DealModal: React.FC = () => {
                       <select
                         className="dm-product-select"
                         key={uuid()}
+                        value={selectedDrinks[i]}
                         onChange={(e) => handleDrinkChange(i, e.target.value)}
                       >
                         {product.drinks?.type === "coke"
