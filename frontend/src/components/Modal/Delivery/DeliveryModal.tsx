@@ -17,6 +17,7 @@ const DeliveryModal: React.FC = () => {
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
   const [error, setError] = useState("");
+  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
@@ -31,7 +32,6 @@ const DeliveryModal: React.FC = () => {
     isOpenForDelivery,
   } = useContext(OrderContext);
   const { selectedAddress, setSelectedAddress } = useContext(AddressContext);
-  const { isReadyForOrder } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -179,6 +179,12 @@ const DeliveryModal: React.FC = () => {
     "22:30",
   ];
 
+  useEffect(() => {
+    if (selectedAddress.name.length > 0 && selectedAddress.fullAddress.length > 0 && orderTime.length > 0) {
+      setIsReadyForOrder(true);
+    }
+  }, [orderTime.length, selectedAddress]);
+
   const deliveryHoursOpen = deliveryHoursOpenedStore
     .map((hour) => {
       if (hour !== "NOW") {
@@ -262,7 +268,9 @@ const DeliveryModal: React.FC = () => {
                     handleSelectedAddress(lastOrderAddress);
                   }
                 }}
-                className={`address-container ${selectedAddress === lastOrderAddress ? "selected-address" : ""}`}
+                className={`address-container ${
+                  selectedAddress.name === lastOrderAddress?.name ? "selected-address" : ""
+                }`}
               >
                 <img
                   src="/svg/edit.svg"
@@ -272,12 +280,12 @@ const DeliveryModal: React.FC = () => {
                     setOpenModal(false);
                     navigate("profile/addresses");
                   }}
-                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress.name === lastOrderAddress?.name ? { display: "block" } : { display: "none" }}
                 />
                 <img
                   src="/svg/greenCheck.svg"
                   className="dm-address-check-img"
-                  style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                  style={selectedAddress.name === lastOrderAddress?.name ? { display: "block" } : { display: "none" }}
                 />
 
                 <p className="dm-address-name">{lastOrderAddressName}</p>
@@ -286,7 +294,7 @@ const DeliveryModal: React.FC = () => {
                   <img
                     src="/svg/addressLocation.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress.name === lastOrderAddress?.name ? { display: "block" } : { display: "none" }}
                   />
                   <p>{lastOrderAddress && lastOrderAddress.fullAddress}</p>
                 </div>
@@ -295,7 +303,7 @@ const DeliveryModal: React.FC = () => {
                   <img
                     src="/svg/addressStore.svg"
                     className="dm-address-location-store"
-                    style={selectedAddress === lastOrderAddress ? { display: "block" } : { display: "none" }}
+                    style={selectedAddress.name === lastOrderAddress?.name ? { display: "block" } : { display: "none" }}
                   />
                   <p>
                     Your Store:{" "}
@@ -314,7 +322,7 @@ const DeliveryModal: React.FC = () => {
                   <div
                     key={address._id}
                     onClick={() => handleSelectedAddress(address)}
-                    className={`address-container ${selectedAddress === address ? "selected-address" : ""}`}
+                    className={`address-container ${selectedAddress.name === address.name ? "selected-address" : ""}`}
                   >
                     <img
                       onClick={() => {
@@ -324,19 +332,19 @@ const DeliveryModal: React.FC = () => {
                       }}
                       src="/svg/edit.svg"
                       className="dm-address-edit-img"
-                      style={selectedAddress === address ? { display: "block" } : { display: "none" }}
+                      style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
                     />
                     <img
                       src="/svg/greenCheck.svg"
                       className="dm-address-check-img"
-                      style={selectedAddress === address ? { display: "block" } : { display: "none" }}
+                      style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
                     />
                     <p className="dm-address-name">{address.name}</p>
                     <div className="dm-address-location-container">
                       <img
                         src="/svg/addressLocation.svg"
                         className="dm-address-location-store"
-                        style={selectedAddress === address ? { display: "block" } : { display: "none" }}
+                        style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
                       />
                       <p>{address.fullAddress}</p>
                     </div>
@@ -345,7 +353,7 @@ const DeliveryModal: React.FC = () => {
                       <img
                         src="/svg/addressStore.svg"
                         className="dm-address-location-store"
-                        style={selectedAddress === address ? { display: "block" } : { display: "none" }}
+                        style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
                       />
                       <p>
                         Your Store: <span className="dm-address-store-name">{address.store}</span>

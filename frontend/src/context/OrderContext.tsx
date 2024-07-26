@@ -1,6 +1,5 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Address } from "../types/Address";
-import { ModalContext } from "./ModalContext";
 import { LoginContext } from "./LoginContext";
 
 interface OrderDetails {
@@ -84,8 +83,6 @@ interface OrderContextInterface {
   setDealsCount: React.Dispatch<React.SetStateAction<number>>;
   finalPriceNoDiscount: number;
   setFinalPriceNoDiscount: React.Dispatch<React.SetStateAction<number>>;
-  isReadyForOrder: boolean;
-  setIsReadyForOrder: React.Dispatch<React.SetStateAction<boolean>>;
   activeTracker: boolean;
   setActiveTracker: React.Dispatch<React.SetStateAction<boolean>>;
   selectedCoupon: string;
@@ -177,8 +174,6 @@ export const OrderContext = createContext<OrderContextInterface>({
   setDealsCount: () => {},
   finalPriceNoDiscount: 0,
   setFinalPriceNoDiscount: () => {},
-  isReadyForOrder: false,
-  setIsReadyForOrder: () => {},
   activeTracker: false,
   setActiveTracker: () => {},
   selectedCoupon: "",
@@ -227,14 +222,12 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [freeDelivery, setFreeDelivery] = useState(false);
   const [dealsCount, setDealsCount] = useState(0);
   const [finalPriceNoDiscount, setFinalPriceNoDiscount] = useState(0);
-  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
   const [activeTracker, setActiveTracker] = useState(() => {
     const savedData = localStorage.getItem("active-tracker");
     return savedData && JSON.parse(savedData).active ? true : false;
   });
   const [selectedCoupon, setSelectedCoupon] = useState("");
 
-  const { modalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
 
   useEffect(() => {
@@ -256,7 +249,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("active-order")) {
+    if (localStorage.getItem("active-order") && JSON.parse(localStorage.getItem("active-order") as string) === true) {
       setActiveOrder(true);
     }
 
@@ -265,6 +258,14 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
       localStorage.setItem("active-order", JSON.stringify(false));
     }
   }, []);
+
+  useEffect(() => {
+    if (activeOrder) {
+      localStorage.setItem("active-order", JSON.stringify(true));
+    } else {
+      localStorage.setItem("active-order", JSON.stringify(false));
+    }
+  }, [activeOrder]);
 
   useEffect(() => {
     if (localStorage.getItem("order-details")) {
@@ -497,14 +498,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [itemsInBasket]);
 
   useEffect(() => {
-    if (modalType === "delivery") {
-      setIsReadyForOrder(true);
-    } else {
-      setIsReadyForOrder(false);
-    }
-  }, [modalType]);
-
-  useEffect(() => {
     if (loggedIn && localStorage.getItem("order-time")) {
       let finishOrderTimeHours;
       let finishOrderTimeMinutes;
@@ -601,8 +594,6 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setFreeDelivery,
         finalPriceNoDiscount,
         setFinalPriceNoDiscount,
-        isReadyForOrder,
-        setIsReadyForOrder,
         activeTracker,
         setActiveTracker,
         selectedCoupon,
