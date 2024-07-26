@@ -11,7 +11,7 @@ export const products = [
   {
     type: "pizza",
     name: "Half and Half",
-    desc: "Combine 2 pizzas in one base!",
+    desc: "Mozzarella, Tomato Sauce",
     img: "/images/menu/half-half.png",
     bigImg: "/images/menu/half-half.png",
     filter: [""],
