@@ -26,7 +26,8 @@ const Navbar = ({ page }: Page) => {
   const { setSelectedItem } = useContext(MenuContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
-  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket, activeTracker } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, itemsInBasket, activeTracker, activeOrder } =
+    useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -257,14 +258,14 @@ const Navbar = ({ page }: Page) => {
               DOMINO'S MORE
             </Link>
           </li>
-          {!JSON.parse(localStorage.getItem("active-order") as string) && !activeTracker && (
+          {!activeOrder && !activeTracker && (
             <li>
               <span onClick={handleOrderBtn} className="navigation-order">
                 ORDER NOW
               </span>
             </li>
           )}
-          {JSON.parse(localStorage.getItem("active-order") as string) && window.location.pathname.includes("menu") && (
+          {activeOrder && window.location.pathname.includes("menu") && (
             <div
               onMouseEnter={() => {
                 setShowBasketOnHover(itemsInBasketQuantity > 0 ? true : false);
@@ -298,11 +299,7 @@ const Navbar = ({ page }: Page) => {
           {showProfileMenu && <ProfileMenu setShowProfileMenu={setShowProfileMenu} />}
         </ul>
 
-        {loggedIn &&
-        page === "home" &&
-        localStorage.getItem("active-order") &&
-        !JSON.parse(localStorage.getItem("active-order") as string) &&
-        !activeTracker ? (
+        {loggedIn && page === "home" && !activeOrder && !activeTracker ? (
           <div className="loggedin-navigation">
             <div onClick={() => handleOpenModal("delivery")}>
               <img src="/images/delivery.png" className="loggedin-navigation-img" />
@@ -314,11 +311,7 @@ const Navbar = ({ page }: Page) => {
               <p>CARRY OUT</p>
             </div>
           </div>
-        ) : loggedIn &&
-          page === "home" &&
-          localStorage.getItem("active-order") &&
-          JSON.parse(localStorage.getItem("active-order") as string) &&
-          !activeTracker ? (
+        ) : loggedIn && page === "home" && activeOrder && !activeTracker ? (
           <div className="loggedin-navigation">
             <p className="loggedin-navigation-text">CONTINUE WITH YOUR ORDER HERE</p>{" "}
             <Link
@@ -333,8 +326,7 @@ const Navbar = ({ page }: Page) => {
           </div>
         ) : (
           loggedIn &&
-          localStorage.getItem("active-order") &&
-          JSON.parse(localStorage.getItem("active-order") as string) &&
+          activeOrder &&
           !activeTracker &&
           page !== "careers" && (
             <ul className="navbar-active-order-container">
