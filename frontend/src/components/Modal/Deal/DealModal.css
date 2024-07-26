@@ -1,7 +1,8 @@
 .deal-modal-container {
   height: 100vh;
   width: 80vw;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .deal-modal-heading {
@@ -141,6 +142,7 @@
   border-radius: 5px;
   font-size: 22px;
   letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
 .deal-add-btn:hover {
