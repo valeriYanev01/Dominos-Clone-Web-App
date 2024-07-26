@@ -37,6 +37,7 @@ interface Order {
     name: string;
     price: string;
     products: BasketItem[];
+    quantity: number;
     _id: string;
   }[];
   store: string;
@@ -80,6 +81,7 @@ const Orders: React.FC = () => {
   }, [token, emailLogin]);
 
   const handleReorder = (order: Order) => {
+    console.log(order);
     if (activeTracker) {
       setShowActiveTrackerMessage(true);
 
@@ -132,6 +134,7 @@ const Orders: React.FC = () => {
             })),
             price: deal.price,
             heading: deal.name,
+            quantity: deal.quantity,
           });
         });
       } else if (order.products.length > 0 && order.deals.length < 1) {
@@ -160,8 +163,6 @@ const Orders: React.FC = () => {
       navigate("/checkout");
     }
   };
-
-  allOrders.map((order) => console.log(order));
 
   return (
     <div className="profile-orders">
@@ -204,7 +205,7 @@ const Orders: React.FC = () => {
                 {order.deals.map((deal) => (
                   <div key={deal._id}>
                     <span className="po-order-deal">
-                      <span className="po-order-deal-quantity">1x </span>
+                      <span className="po-order-deal-quantity">{deal.quantity}x </span>
                       {deal.name}
                     </span>
                   </div>

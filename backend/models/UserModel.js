@@ -109,6 +109,9 @@ const dealSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  quantity: {
+    type: Number,
+  },
 });
 
 const invoicesSchema = new mongoose.Schema({
@@ -833,6 +836,7 @@ userSchema.statics.newOrder = async function (
         addedToppings: product.addedToppings,
         removedToppings: product.removedToppings,
       })),
+      quantity: deal.quantity,
     }));
 
     user.orders.push({
