@@ -25,7 +25,7 @@ interface Product {
 
 const ProductModal: React.FC = () => {
   const [size, setSize] = useState("Medium");
-  const [selectedCrust, setSelectedCrust] = useState<number>(0);
+  const [selectedCrust, setSelectedCrust] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product>({
     type: "",
@@ -36,12 +36,22 @@ const ProductModal: React.FC = () => {
     filter: [],
     price: [{ medium: 0 }, { large: 0 }, { jumbo: 0 }],
   });
-  const [weigh, setWeigh] = useState<number>(385);
+  const [weigh, setWeigh] = useState(385);
   const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
   const [price, setPrice] = useState(0);
   const [modifiedToppings, setModifiedToppings] = useState<string[]>([]);
   const [addToppings, setAddToppings] = useState<string[]>([]);
   const [removeToppings, setRemoveToppings] = useState<string[]>([]);
+
+  const defaultHalfAndHalfPizza = "Make Your Own!";
+  const [firstHalf, setFirstHalf] = useState(defaultHalfAndHalfPizza);
+  const [secondHalf, setSecondHalf] = useState(defaultHalfAndHalfPizza);
+  const [firstHalfToppings, setFirstHalfToppings] = useState<string[]>([]);
+  const [secondHalfToppings, setSecondHalfToppings] = useState<string[]>([]);
+  const [firstHalfModifiedToppings, setFirstHalfModifiedToppings] = useState<string[]>([]);
+  const [secondHalfModifiedToppings, setSecondHalfModifiedToppings] = useState<string[]>([]);
+  const [showEditFirstHalfPizzaToppings, setShowEditFirstHalfPizzaToppings] = useState(false);
+  const [showEditSecondHalfPizzaToppings, setShowEditSecondHalfPizzaToppings] = useState(false);
 
   const { product } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -56,6 +66,7 @@ const ProductModal: React.FC = () => {
 
   useEffect(() => {
     setModifiedToppings(toppings);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -239,6 +250,98 @@ const ProductModal: React.FC = () => {
     setModifiedToppings(newToppings);
   };
 
+  const handleChangeFirstHalfToppings = (topping: string, checked: boolean) => {
+    if (checked === true) {
+      if (firstHalfModifiedToppings.length >= firstHalfToppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price + 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price + 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price + 2.5 * quantity);
+        }
+      }
+    } else {
+      if (firstHalfModifiedToppings.length > firstHalfToppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price - 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price - 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price - 2.5 * quantity);
+        }
+      }
+    }
+
+    const newToppings = [...firstHalfModifiedToppings];
+    const toppingIndex = newToppings.indexOf(topping);
+
+    if (toppingIndex === -1) {
+      newToppings.push(topping);
+    } else {
+      newToppings.splice(toppingIndex, 1);
+
+      if (!topping.includes("Extra")) {
+        const extraToppingIndex = newToppings.findIndex((t) => t.includes("Extra") && t.includes(topping));
+        if (extraToppingIndex !== -1) {
+          newToppings.splice(extraToppingIndex, 1);
+        }
+      }
+    }
+
+    setFirstHalfModifiedToppings(newToppings);
+  };
+
+  const handleChangeSecondHalfToppings = (topping: string, checked: boolean) => {
+    if (checked === true) {
+      if (secondHalfModifiedToppings.length >= secondHalfToppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price + 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price + 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price + 2.5 * quantity);
+        }
+      }
+    } else {
+      if (secondHalfModifiedToppings.length > secondHalfToppings.length) {
+        if (size === "Medium") {
+          setPrice((price) => price - 1.5 * quantity);
+        }
+        if (size === "Large") {
+          setPrice((price) => price - 2 * quantity);
+        }
+        if (size === "Jumbo") {
+          setPrice((price) => price - 2.5 * quantity);
+        }
+      }
+    }
+
+    const newToppings = [...secondHalfModifiedToppings];
+    const toppingIndex = newToppings.indexOf(topping);
+
+    if (toppingIndex === -1) {
+      newToppings.push(topping);
+    } else {
+      newToppings.splice(toppingIndex, 1);
+
+      if (!topping.includes("Extra")) {
+        const extraToppingIndex = newToppings.findIndex((t) => t.includes("Extra") && t.includes(topping));
+        if (extraToppingIndex !== -1) {
+          newToppings.splice(extraToppingIndex, 1);
+        }
+      }
+    }
+
+    setSecondHalfModifiedToppings(newToppings);
+  };
+
   const handleDefault = () => {
     setModifiedToppings(toppings);
     if (size === "Medium") {
@@ -268,6 +371,22 @@ const ProductModal: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    products.forEach((product) => {
+      if (product.name === firstHalf) {
+        setFirstHalfToppings(product.desc.split(", "));
+      }
+    });
+  }, [firstHalf]);
+
+  useEffect(() => {
+    products.forEach((product) => {
+      if (product.name === secondHalf) {
+        setSecondHalfToppings(product.desc.split(", "));
+      }
+    });
+  }, [secondHalf]);
+
   return (
     <div className="product-modal-container">
       <div className="pm-heading-container">
@@ -296,7 +415,7 @@ const ProductModal: React.FC = () => {
           </div>
 
           {/* ----------------PIZZA-------------------- */}
-          {selectedProduct.type === "pizza" && (
+          {selectedProduct.type === "pizza" && product[0] !== "Half and Half" ? (
             <>
               <div className="pm-options-container">
                 {/* for premium pizzas */}
@@ -390,71 +509,213 @@ const ProductModal: React.FC = () => {
                   : ""}
               </div>
             </>
+          ) : (
+            <div>
+              {/* For half and half pizza */}
+              <div>
+                <p>SIZE</p>
+                <select onChange={(e) => setSize(e.target.value)}>
+                  <option value="Medium">Medium (6 Slices)</option>
+                  <option value="Large">Large (8 Slices)</option>
+                  <option value="Jumbo">Jumbo (12 Slices)</option>
+                </select>
+              </div>
+
+              <select>
+                {size === "Medium"
+                  ? productOptions.medium.map((crust) => <option>{crust.title}</option>)
+                  : size === "Large"
+                  ? productOptions.large.map((crust) => <option>{crust.title}</option>)
+                  : size === "Jumbo"
+                  ? productOptions.jumbo.map((crust) => <option>{crust.title}</option>)
+                  : ""}
+              </select>
+
+              <div>
+                <div key={uuid()}>
+                  <p>PRODUCT</p>
+                  <select
+                    onChange={(e) => {
+                      setFirstHalf(e.target.value);
+                    }}
+                    key={uuid()}
+                    value={firstHalf}
+                  >
+                    {products
+                      .filter((p) => p.type === "pizza" && p.name !== "Half and Half")
+                      .map((product) => (
+                        <option key={uuid()}>{product.name}</option>
+                      ))}
+                  </select>
+
+                  <div className="pm-desc">
+                    <div className="pm-toppings-btn">
+                      <p className="edit-toppings-text">TOPPINGS</p>
+                      {loggedIn && (
+                        <div className="logged-topping-container">
+                          <div className="toppings-default" onClick={handleDefault}>
+                            DEFAULT
+                          </div>
+                          <div
+                            className="edit-toppings-container"
+                            onClick={() => {
+                              setShowEditFirstHalfPizzaToppings(!showEditFirstHalfPizzaToppings);
+                            }}
+                          >
+                            <span
+                              className="edit-toppings-btn"
+                              onClick={() =>
+                                setFirstHalfModifiedToppings(
+                                  firstHalfModifiedToppings.length > 0 ? firstHalfModifiedToppings : firstHalfToppings
+                                )
+                              }
+                            >
+                              <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
+                              <p>CUSTOMIZE</p>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <p>
+                      {firstHalfModifiedToppings.length > 0
+                        ? firstHalfModifiedToppings.join(", ")
+                        : firstHalfToppings.join(" ")}
+                    </p>
+                  </div>
+                </div>
+
+                <div key={uuid()}>
+                  <p>PRODUCT</p>
+                  <select
+                    onChange={(e) => {
+                      setSecondHalf(e.target.value);
+                    }}
+                    key={uuid()}
+                    value={secondHalf}
+                  >
+                    {products
+                      .filter((p) => p.type === "pizza" && p.name !== "Half and Half")
+                      .map((product) => (
+                        <option key={uuid()}>{product.name}</option>
+                      ))}
+                  </select>
+                  <div className="pm-desc">
+                    <div className="pm-toppings-btn">
+                      <p className="edit-toppings-text">TOPPINGS</p>
+                      {loggedIn && (
+                        <div className="logged-topping-container">
+                          <div className="toppings-default" onClick={handleDefault}>
+                            DEFAULT
+                          </div>
+                          <div
+                            className="edit-toppings-container"
+                            onClick={() => {
+                              setShowEditSecondHalfPizzaToppings(!showEditSecondHalfPizzaToppings);
+                            }}
+                          >
+                            <span
+                              className="edit-toppings-btn"
+                              onClick={() =>
+                                setSecondHalfModifiedToppings(
+                                  secondHalfModifiedToppings.length > 0
+                                    ? secondHalfModifiedToppings
+                                    : secondHalfToppings
+                                )
+                              }
+                            >
+                              <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
+                              <p>CUSTOMIZE</p>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <p>
+                      {secondHalfModifiedToppings.length > 0
+                        ? secondHalfModifiedToppings.join(", ")
+                        : secondHalfToppings.join(" ")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
           {/* ----------------PIZZA END-------------------- */}
 
-          <div className="pm-desc-container">
-            <div className="pm-desc">
-              <div className="pm-toppings-btn">
-                <p className="edit-toppings-text">TOPPINGS</p>
-                {loggedIn && (
-                  <div className="logged-topping-container">
-                    <div className="toppings-default" onClick={handleDefault}>
-                      DEFAULT
-                    </div>
-                    <div
-                      className="edit-toppings-container"
-                      onClick={() => {
-                        setShowEditPizzaToppings(!showEditPizzaToppings);
-                      }}
-                    >
-                      <span
-                        className="edit-toppings-btn"
-                        onClick={() => setModifiedToppings(modifiedToppings.length > 0 ? modifiedToppings : toppings)}
+          {product[0] !== "Half and Half" ? (
+            <div className="pm-desc-container">
+              <div className="pm-desc">
+                <div className="pm-toppings-btn">
+                  <p className="edit-toppings-text">TOPPINGS</p>
+                  {loggedIn && (
+                    <div className="logged-topping-container">
+                      <div className="toppings-default" onClick={handleDefault}>
+                        DEFAULT
+                      </div>
+                      <div
+                        className="edit-toppings-container"
+                        onClick={() => {
+                          setShowEditPizzaToppings(!showEditPizzaToppings);
+                        }}
                       >
-                        <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
-                        <p>CUSTOMIZE</p>
-                      </span>
+                        <span
+                          className="edit-toppings-btn"
+                          onClick={() => setModifiedToppings(modifiedToppings.length > 0 ? modifiedToppings : toppings)}
+                        >
+                          <img src="/svg/menu/pizzaOptions/edit.svg" className="edit-toppings-img" />
+                          <p>CUSTOMIZE</p>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+                <p>{modifiedToppings.length > 0 ? modifiedToppings.join(", ") : desc.split("")}</p>
               </div>
-              <p>{modifiedToppings.length > 0 ? modifiedToppings.join(", ") : desc.split("")}</p>
-            </div>
 
-            {selectedProduct.type === "pizza" ? (
-              <div className="pm-order-container">
-                <PizzaQuantity
-                  quantity={quantity}
-                  selectedProduct={selectedProduct}
-                  setQuantity={setQuantity}
-                  size={size}
-                  selectedCrust={selectedCrust}
-                  weigh={weigh}
-                  price={price}
-                  setPrice={setPrice}
-                  toppings={toppings}
-                  modifiedToppings={modifiedToppings}
-                  finalPizzaProduct={finalPizzaProduct}
-                />
+              {selectedProduct.type === "pizza" ? (
+                <div className="pm-order-container">
+                  <PizzaQuantity
+                    quantity={quantity}
+                    selectedProduct={selectedProduct}
+                    setQuantity={setQuantity}
+                    size={size}
+                    selectedCrust={selectedCrust}
+                    weigh={weigh}
+                    price={price}
+                    setPrice={setPrice}
+                    toppings={toppings}
+                    modifiedToppings={modifiedToppings}
+                    finalPizzaProduct={finalPizzaProduct}
+                  />
+                </div>
+              ) : (
+                // For other products that need the modal but don't have crust or size
+                <div className="pm-order-container">
+                  <OtherProductsQuantity
+                    quantity={quantity}
+                    setQuantity={setQuantity}
+                    price={price}
+                    modifiedToppings={modifiedToppings}
+                    selectedProduct={selectedProduct}
+                    setPrice={setPrice}
+                    toppings={toppings}
+                    weigh={weigh}
+                    finalPizzaProduct={finalPizzaProduct}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <div>
+                <div></div>
+                <div></div>
               </div>
-            ) : (
-              // For other products that need the modal but don't have crust or size
-              <div className="pm-order-container">
-                <OtherProductsQuantity
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                  price={price}
-                  modifiedToppings={modifiedToppings}
-                  selectedProduct={selectedProduct}
-                  setPrice={setPrice}
-                  toppings={toppings}
-                  weigh={weigh}
-                  finalPizzaProduct={finalPizzaProduct}
-                />
-              </div>
-            )}
-          </div>
+
+              <div></div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -481,6 +742,74 @@ const ProductModal: React.FC = () => {
                         id={`${i}-additional ${uuid()}`}
                         checked={modifiedToppings.includes(`Extra ${t}`)}
                         onChange={(e) => handleChangeToppings(`Extra ${t}`, e.target.checked)}
+                      />
+                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showEditFirstHalfPizzaToppings && (
+        <div className="toppings-container">
+          {allToppings.map((topping) => (
+            <div key={uuid()} className="all-toppings">
+              <h3 className="topping-name">{topping.name}</h3>
+              {topping.toppings.map((t, i) => (
+                <div key={uuid()} className="topping">
+                  <input
+                    type="checkbox"
+                    id={`${uuid()}`}
+                    checked={firstHalfModifiedToppings.includes(t)}
+                    onChange={(e) => {
+                      handleChangeFirstHalfToppings(t, e.target.checked);
+                    }}
+                  />
+                  <label htmlFor={`${uuid()}`}>{t}</label>
+                  {firstHalfModifiedToppings.includes(t) && (
+                    <div className="additional-topping">
+                      <input
+                        type="checkbox"
+                        id={`${i}-additional ${uuid()}`}
+                        checked={firstHalfModifiedToppings.includes(`Extra ${t}`)}
+                        onChange={(e) => handleChangeFirstHalfToppings(`Extra ${t}`, e.target.checked)}
+                      />
+                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showEditSecondHalfPizzaToppings && (
+        <div className="toppings-container">
+          {allToppings.map((topping) => (
+            <div key={uuid()} className="all-toppings">
+              <h3 className="topping-name">{topping.name}</h3>
+              {topping.toppings.map((t, i) => (
+                <div key={uuid()} className="topping">
+                  <input
+                    type="checkbox"
+                    id={`${uuid()}`}
+                    checked={secondHalfModifiedToppings.includes(t)}
+                    onChange={(e) => {
+                      handleChangeSecondHalfToppings(t, e.target.checked);
+                    }}
+                  />
+                  <label htmlFor={`${uuid()}`}>{t}</label>
+                  {secondHalfModifiedToppings.includes(t) && (
+                    <div className="additional-topping">
+                      <input
+                        type="checkbox"
+                        id={`${i}-additional ${uuid()}`}
+                        checked={secondHalfModifiedToppings.includes(`Extra ${t}`)}
+                        onChange={(e) => handleChangeSecondHalfToppings(`Extra ${t}`, e.target.checked)}
                       />
                       <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
                     </div>
