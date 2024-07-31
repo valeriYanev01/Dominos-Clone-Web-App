@@ -113,3 +113,9 @@
 .checkout-details-payment-coupon input {
   transform: scale(1.5);
 }
+
+.no-medium-pizza-error {
+  color: #e2213d;
+  text-align: center;
+  font-size: 1.2rem;
+}

@@ -8,6 +8,7 @@ import { Invoice } from "../../../pages/checkout/Checkout";
 import "./OrderStep.css";
 import DealItem from "../../Navbar/Basket/DealItem";
 import NonDealItem from "../../Navbar/Basket/NonDealItem";
+import { v4 as uuid } from "uuid";
 
 interface Props {
   selectedCard: string;
@@ -220,13 +221,15 @@ const OrderStep: React.FC<Props> = ({
         {itemsInBasket
           .filter((item) => item.deal)
           .map((item, i) => (
-            <DealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
+            <DealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
           ))}
 
         {itemsInBasket.length > 0 &&
           itemsInBasket
             .filter((item) => !item.deal)
-            .map((item, i) => <NonDealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} />)}
+            .map((item, i) => (
+              <NonDealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
+            ))}
 
         {freeDelivery ? (
           <p className="navigation-basket-promo-text">

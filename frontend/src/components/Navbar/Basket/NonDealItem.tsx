@@ -9,8 +9,15 @@ interface Props {
 }
 
 const NonDealItem: React.FC<Props> = ({ removeItemFromBasket, item, i }) => {
-  const { itemsInBasket, setItemsInBasket, itemsInBasketPlusDiscount, thirdPizzaPromo, dealsCount } =
-    useContext(OrderContext);
+  const {
+    itemsInBasket,
+    setItemsInBasket,
+    itemsInBasketPlusDiscount,
+    thirdPizzaPromo,
+    dealsCount,
+    setSelectedCoupon,
+    setShowCoupons,
+  } = useContext(OrderContext);
 
   const increaseQuantity = (i: number) => {
     const products = [...itemsInBasket];
@@ -100,8 +107,46 @@ const NonDealItem: React.FC<Props> = ({ removeItemFromBasket, item, i }) => {
             </span>
           </div>
         </div>
-        {thirdPizzaPromo && item.type === "pizza" && (
+
+        {thirdPizzaPromo &&
+        item.type === "pizza" &&
+        itemsInBasketPlusDiscount[i] &&
+        parseFloat(itemsInBasketPlusDiscount[i].price) > 0 ? (
           <p className="navigation-basket-promo-text">Third Pizza for 5.50 Lv.</p>
+        ) : thirdPizzaPromo &&
+          item.type === "pizza" &&
+          itemsInBasketPlusDiscount[i] &&
+          parseInt(itemsInBasketPlusDiscount[i].price) === 0 ? (
+          <p className="navigation-basket-promo-text">
+            DOMINOS MORE FREE MEDIUM PIZZA{" "}
+            <span
+              className="navigation-basket-promo-text-remove-coupon"
+              onClick={() => {
+                setShowCoupons(false);
+                setSelectedCoupon("");
+              }}
+            >
+              X
+            </span>
+          </p>
+        ) : !thirdPizzaPromo &&
+          item.type === "pizza" &&
+          itemsInBasketPlusDiscount[i] &&
+          parseInt(itemsInBasketPlusDiscount[i].price) === 0 ? (
+          <p className="navigation-basket-promo-text">
+            DOMINOS MORE FREE MEDIUM PIZZA{" "}
+            <span
+              className="navigation-basket-promo-text-remove-coupon"
+              onClick={() => {
+                setShowCoupons(false);
+                setSelectedCoupon("");
+              }}
+            >
+              X
+            </span>
+          </p>
+        ) : (
+          ""
         )}
 
         <div className="navigation-basket-quantity-price-container">

@@ -181,6 +181,7 @@ const DealModal: React.FC = () => {
 
   useEffect(() => {
     const newToppings = [...toppings];
+
     for (let i = 0; i < indexes; i++) {
       products.forEach((product) => {
         if (product.name === selectedPizzas[i]) {
@@ -189,8 +190,7 @@ const DealModal: React.FC = () => {
       });
     }
     setModifiedToppings(newToppings);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [indexes]);
+  }, [indexes, selectedPizzas, setModifiedToppings, toppings]);
 
   useEffect(() => {
     setModifiedToppings(toppings);
@@ -601,11 +601,17 @@ const DealModal: React.FC = () => {
                       <div>
                         <p className="dm-toppings-text">TOPPINGS</p>
 
-                        <p className="dm-toppings">
-                          {modifiedToppings[i].length > toppings[i].length
-                            ? modifiedToppings[i].join(", ")
-                            : toppings[i].join(", ")}
-                        </p>
+                        <div className="dm-toppings">
+                          {modifiedToppings.length > 0 && toppings.length > 0 ? (
+                            modifiedToppings[i].length > toppings[i].length ? (
+                              modifiedToppings[i].join(", ")
+                            ) : (
+                              toppings[i].join(", ")
+                            )
+                          ) : (
+                            <p>loading</p>
+                          )}
+                        </div>
 
                         {loggedIn && (
                           <div className="logged-topping-container dm-logged-topping-container">
@@ -769,13 +775,13 @@ const DealModal: React.FC = () => {
                 <div key={uuid()} className="topping">
                   <input
                     type="checkbox"
-                    id={`${uuid()}`}
+                    id={uuid()}
                     checked={modifiedToppings[pizzaIndex]?.length > 0 && modifiedToppings[pizzaIndex].includes(t)}
                     onChange={(e) => {
                       handleChangeToppings(t, e.target.checked);
                     }}
                   />
-                  <label htmlFor={`${uuid()}`}>{t}</label>
+                  <label htmlFor={uuid()}>{t}</label>
                   {modifiedToppings[pizzaIndex].includes(t) && (
                     <div className="additional-topping">
                       <input

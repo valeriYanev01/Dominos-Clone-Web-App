@@ -40,10 +40,9 @@ const PaymentDetailsStep: React.FC<Props> = ({
   const [cardSuccess, setCardSuccess] = useState(false);
   const [showAddNewCard, setShowAddNewCard] = useState(false);
   const [coupons, setCoupons] = useState<Coupons[]>([]);
-  const [showCoupons, setShowCoupons] = useState(false);
 
   const { token, emailLogin, customerID, setLoggedIn } = useContext(LoginContext);
-  const { setSelectedCoupon } = useContext(OrderContext);
+  const { selectedCoupon, setSelectedCoupon, showCoupons, setShowCoupons } = useContext(OrderContext);
 
   useEffect(() => {
     if (token) {
@@ -272,6 +271,7 @@ const PaymentDetailsStep: React.FC<Props> = ({
                   id={coupon._id}
                   onChange={(e) => handleSelectCoupon(e.target.checked, e.target.id)}
                   name="coupon"
+                  checked={selectedCoupon === coupon._id}
                 />
               </div>
             ))}

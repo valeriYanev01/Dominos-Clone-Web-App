@@ -4,6 +4,7 @@ import { BasketItem, OrderContext } from "../../../context/OrderContext";
 import { Link } from "react-router-dom";
 import NonDealItem from "./NonDealItem";
 import DealItem from "./DealItem";
+import { v4 as uuid } from "uuid";
 
 interface Props {
   setShowBasketOnHover: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,13 +30,13 @@ const Basket: React.FC<Props> = ({ setShowBasketOnHover }) => {
       {itemsInBasket
         .filter((item) => item.deal)
         .map((item, i) => (
-          <DealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
+          <DealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} key={uuid()} />
         ))}
 
       {itemsInBasket.length > 0 &&
         itemsInBasket
           .filter((item) => !item.deal)
-          .map((item, i) => <NonDealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} />)}
+          .map((item, i) => <NonDealItem removeItemFromBasket={removeItemFromBasket} item={item} i={i} key={uuid()} />)}
 
       {freeDelivery ? (
         <p className="navigation-basket-promo-text">

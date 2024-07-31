@@ -8,6 +8,7 @@ import { allToppings } from "../../../data/toppings";
 import { LoginContext } from "../../../context/LoginContext";
 import PizzaQuantity from "./PizzaQuantity";
 import OtherProductsQuantity from "./OtherProductsQuantity";
+import HalfAndHalfPizzaQuantity from "./HalfAndHalfPizzaQuantity";
 
 interface Product {
   type: string;
@@ -52,6 +53,30 @@ const ProductModal: React.FC = () => {
   const [secondHalfModifiedToppings, setSecondHalfModifiedToppings] = useState<string[]>([]);
   const [showEditFirstHalfPizzaToppings, setShowEditFirstHalfPizzaToppings] = useState(false);
   const [showEditSecondHalfPizzaToppings, setShowEditSecondHalfPizzaToppings] = useState(false);
+  const [halfAndHalfFirstSelectedProduct, setHalfAndHalfFirstSelectedProduct] = useState<Product>({
+    type: "",
+    name: "",
+    desc: "",
+    img: "",
+    bigImg: "",
+    filter: [],
+    price: [{ medium: 0 }, { large: 0 }, { jumbo: 0 }],
+  });
+  const [halfAndHalfSecondSelectedProduct, setHalfAndHalfSecondSelectedProduct] = useState<Product>({
+    type: "",
+    name: "",
+    desc: "",
+    img: "",
+    bigImg: "",
+    filter: [],
+    price: [{ medium: 0 }, { large: 0 }, { jumbo: 0 }],
+  });
+  const [firstHalfPrice, setFirstHalfPrice] = useState(0);
+  const [secondHalfPrice, setSecondHalfPrice] = useState(0);
+  const [firstHalfAddedToppings, setFirstHalfAddedToppings] = useState<string[]>([]);
+  const [firstHalfRemovedToppings, setFirstHalfRemovedToppings] = useState<string[]>([]);
+  const [secondHalfRemovedToppings, setSecondHalfRemovedToppings] = useState<string[]>([]);
+  const [secondHalfAddedToppings, setSecondHalfAddedToppings] = useState<string[]>([]);
 
   const { product } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
@@ -68,6 +93,14 @@ const ProductModal: React.FC = () => {
     setModifiedToppings(toppings);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setFirstHalfModifiedToppings(firstHalfToppings);
+  }, [firstHalfToppings]);
+
+  useEffect(() => {
+    setSecondHalfModifiedToppings(secondHalfToppings);
+  }, [secondHalfToppings]);
 
   useEffect(() => {
     products.map((p) => {
@@ -111,23 +144,190 @@ const ProductModal: React.FC = () => {
     setAddToppings(newAddedToppings);
   }, [modifiedToppings, name]);
 
+  useEffect(() => {
+    if (firstHalfModifiedToppings.length > 0) {
+      const newAddedToppingsSet = new Set<string>();
+      let newAddedToppings = [] as string[];
+
+      const newRemovedToppingsSet = new Set<string>();
+      let newRemovedToppings = [] as string[];
+
+      let currentProductToppings = [] as string[];
+
+      products.forEach((product) => {
+        if (product.name === firstHalf) {
+          currentProductToppings = product.desc.split(", ");
+        }
+      });
+
+      firstHalfModifiedToppings.forEach((topping) => {
+        if (!currentProductToppings.includes(topping)) {
+          newAddedToppingsSet.add(topping);
+        }
+      });
+
+      currentProductToppings.forEach((topping) => {
+        if (!firstHalfModifiedToppings.includes(topping)) {
+          newRemovedToppingsSet.add(topping);
+          console.log(newRemovedToppingsSet);
+        }
+      });
+
+      newAddedToppings = Array.from(newAddedToppingsSet);
+      newRemovedToppings = Array.from(newRemovedToppingsSet);
+
+      setFirstHalfRemovedToppings(newRemovedToppings);
+      setFirstHalfAddedToppings(newAddedToppings);
+    }
+  }, [firstHalf, firstHalfModifiedToppings]);
+
+  useEffect(() => {
+    if (secondHalfModifiedToppings.length > 0) {
+      const newAddedToppingsSet = new Set<string>();
+      let newAddedToppings = [] as string[];
+
+      const newRemovedToppingsSet = new Set<string>();
+      let newRemovedToppings = [] as string[];
+
+      let currentProductToppings = [] as string[];
+
+      products.forEach((product) => {
+        if (product.name === secondHalf) {
+          currentProductToppings = product.desc.split(", ");
+        }
+      });
+
+      secondHalfModifiedToppings.forEach((topping) => {
+        if (!currentProductToppings.includes(topping)) {
+          newAddedToppingsSet.add(topping);
+        }
+      });
+
+      currentProductToppings.forEach((topping) => {
+        if (!secondHalfModifiedToppings.includes(topping)) {
+          newRemovedToppingsSet.add(topping);
+        }
+      });
+
+      newAddedToppings = Array.from(newAddedToppingsSet);
+      newRemovedToppings = Array.from(newRemovedToppingsSet);
+
+      setSecondHalfRemovedToppings(newRemovedToppings);
+      setSecondHalfAddedToppings(newAddedToppings);
+    }
+  }, [secondHalf, secondHalfModifiedToppings]);
+
+  useEffect(() => {
+    if (firstHalf.length > 0) {
+      products.forEach((product) => {
+        if (product.name === firstHalf) {
+          setHalfAndHalfFirstSelectedProduct(product);
+        }
+      });
+    }
+  }, [firstHalf]);
+
+  useEffect(() => {
+    if (selectedProduct.name === "Half and Half") {
+      if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+        setPrice(firstHalfPrice + secondHalfPrice + 2.5);
+      } else {
+        setPrice(firstHalfPrice + secondHalfPrice);
+      }
+    }
+  }, [firstHalfPrice, secondHalfPrice, selectedCrust, selectedProduct.name]);
+
+  useEffect(() => {
+    if (selectedProduct.name === "Half and Half") {
+      if (firstHalf.length > 0) {
+        products.forEach((product) => {
+          if (product.name === firstHalf) {
+            setHalfAndHalfFirstSelectedProduct(product);
+
+            if (size === "Medium") {
+              const tempPrice = halfAndHalfFirstSelectedProduct.price[0].medium;
+              if (tempPrice) {
+                setFirstHalfPrice(tempPrice / 2);
+              }
+            } else if (size === "Large") {
+              const tempPrice = halfAndHalfFirstSelectedProduct.price[1].large;
+              if (tempPrice) {
+                setFirstHalfPrice(tempPrice / 2);
+              }
+            } else {
+              const tempPrice = halfAndHalfFirstSelectedProduct.price[2].jumbo;
+              if (tempPrice) {
+                setFirstHalfPrice(tempPrice / 2);
+              }
+            }
+          }
+        });
+      }
+    }
+  }, [firstHalf, halfAndHalfFirstSelectedProduct.price, selectedProduct.name, size]);
+
+  useEffect(() => {
+    if (selectedProduct.name === "Half and Half") {
+      if (secondHalf.length > 0) {
+        products.forEach((product) => {
+          if (product.name === secondHalf) {
+            setHalfAndHalfSecondSelectedProduct(product);
+
+            if (size === "Medium") {
+              const tempPrice = halfAndHalfSecondSelectedProduct.price[0].medium;
+              if (tempPrice) {
+                setSecondHalfPrice(tempPrice / 2);
+              }
+            } else if (size === "Large") {
+              const tempPrice = halfAndHalfSecondSelectedProduct.price[1].large;
+              if (tempPrice) {
+                setSecondHalfPrice(tempPrice / 2);
+              }
+            } else {
+              const tempPrice = halfAndHalfSecondSelectedProduct.price[2].jumbo;
+              if (tempPrice) {
+                setSecondHalfPrice(tempPrice / 2);
+              }
+            }
+          }
+        });
+      }
+    }
+  }, [halfAndHalfSecondSelectedProduct.price, secondHalf, selectedProduct.name, size]);
+
   const finalPizzaProduct = {
     name: name,
     size: product[4] === "pizza" ? size : "",
     crust:
       product[4] === "pizza"
-        ? selectedCrust === 0
-          ? "Hand Tossed"
-          : selectedCrust === 1
-          ? "Italian Style"
-          : selectedCrust === 2
-          ? "Gluten Free"
-          : selectedCrust === 3
-          ? "With Philadelphia"
-          : selectedCrust === 4
-          ? "With Mozzarella"
-          : selectedCrust === 5
-          ? "With Pepperoni"
+        ? size === "Medium"
+          ? selectedCrust === 0
+            ? "Hand Tossed"
+            : selectedCrust === 1
+            ? "Italian Style"
+            : selectedCrust === 2
+            ? "Gluten Free"
+            : ""
+          : size === "Large"
+          ? selectedCrust === 0
+            ? "Hand Tossed"
+            : selectedCrust === 1
+            ? "Italian Style"
+            : selectedCrust === 2
+            ? "Thin Crust"
+            : selectedCrust === 3
+            ? "With Philadelphia"
+            : selectedCrust === 4
+            ? "With Mozzarella"
+            : selectedCrust === 5
+            ? "With Pepperoni"
+            : ""
+          : size === "Jumbo"
+          ? selectedCrust === 0
+            ? "Hand Tossed"
+            : selectedCrust === 1
+            ? "Italian Style"
+            : ""
           : ""
         : "",
     toppings: modifiedToppings,
@@ -251,28 +451,32 @@ const ProductModal: React.FC = () => {
   };
 
   const handleChangeFirstHalfToppings = (topping: string, checked: boolean) => {
+    if (showEditSecondHalfPizzaToppings) {
+      setShowEditSecondHalfPizzaToppings(false);
+    }
+
     if (checked === true) {
       if (firstHalfModifiedToppings.length >= firstHalfToppings.length) {
         if (size === "Medium") {
-          setPrice((price) => price + 1.5 * quantity);
+          setPrice((price) => price + 0.75);
         }
         if (size === "Large") {
-          setPrice((price) => price + 2 * quantity);
+          setPrice((price) => price + 1);
         }
         if (size === "Jumbo") {
-          setPrice((price) => price + 2.5 * quantity);
+          setPrice((price) => price + 1.25);
         }
       }
     } else {
       if (firstHalfModifiedToppings.length > firstHalfToppings.length) {
         if (size === "Medium") {
-          setPrice((price) => price - 1.5 * quantity);
+          setPrice((price) => price - 0.75);
         }
         if (size === "Large") {
-          setPrice((price) => price - 2 * quantity);
+          setPrice((price) => price - 1);
         }
         if (size === "Jumbo") {
-          setPrice((price) => price - 2.5 * quantity);
+          setPrice((price) => price - 1.25);
         }
       }
     }
@@ -300,25 +504,25 @@ const ProductModal: React.FC = () => {
     if (checked === true) {
       if (secondHalfModifiedToppings.length >= secondHalfToppings.length) {
         if (size === "Medium") {
-          setPrice((price) => price + 1.5 * quantity);
+          setPrice((price) => price + 0.75);
         }
         if (size === "Large") {
-          setPrice((price) => price + 2 * quantity);
+          setPrice((price) => price + 1);
         }
         if (size === "Jumbo") {
-          setPrice((price) => price + 2.5 * quantity);
+          setPrice((price) => price + 1.25);
         }
       }
     } else {
       if (secondHalfModifiedToppings.length > secondHalfToppings.length) {
         if (size === "Medium") {
-          setPrice((price) => price - 1.5 * quantity);
+          setPrice((price) => price - 0.75);
         }
         if (size === "Large") {
-          setPrice((price) => price - 2 * quantity);
+          setPrice((price) => price - 1);
         }
         if (size === "Jumbo") {
-          setPrice((price) => price - 2.5 * quantity);
+          setPrice((price) => price - 1.25);
         }
       }
     }
@@ -371,6 +575,80 @@ const ProductModal: React.FC = () => {
     }
   };
 
+  const handleDefaultFirstHalf = () => {
+    setFirstHalfModifiedToppings(firstHalfToppings);
+
+    if (size === "Medium") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[0].medium;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[0].medium;
+
+      if (firstPrice && secondPrice) {
+        if (selectedCrust === 2) {
+          setPrice((Number(firstPrice / 2 + secondPrice / 2) + 3.1) * quantity);
+        } else {
+          setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+        }
+      }
+    }
+    if (size === "Large") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[1].large;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[1].large;
+
+      if (firstPrice && secondPrice) {
+        if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+          setPrice((Number(firstPrice / 2 + secondPrice / 2) + 2.5) * quantity);
+        } else {
+          setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+        }
+      }
+    }
+    if (size === "Jumbo") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[2].jumbo;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[2].jumbo;
+
+      if (firstPrice && secondPrice) {
+        setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+      }
+    }
+  };
+
+  const handleDefaultSecondHalf = () => {
+    setSecondHalfModifiedToppings(secondHalfToppings);
+
+    if (size === "Medium") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[0].medium;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[0].medium;
+
+      if (firstPrice && secondPrice) {
+        if (selectedCrust === 2) {
+          setPrice((Number(firstPrice / 2 + secondPrice / 2) + 3.1) * quantity);
+        } else {
+          setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+        }
+      }
+    }
+    if (size === "Large") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[1].large;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[1].large;
+
+      if (firstPrice && secondPrice) {
+        if (selectedCrust === 3 || selectedCrust === 4 || selectedCrust === 5) {
+          setPrice((Number(firstPrice / 2 + secondPrice / 2) + 2.5) * quantity);
+        } else {
+          setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+        }
+      }
+    }
+    if (size === "Jumbo") {
+      const firstPrice = halfAndHalfFirstSelectedProduct.price[2].jumbo;
+      const secondPrice = halfAndHalfSecondSelectedProduct.price[2].jumbo;
+
+      if (firstPrice && secondPrice) {
+        setPrice(Number(firstPrice / 2 + secondPrice / 2) * quantity);
+      }
+    }
+  };
+
   useEffect(() => {
     products.forEach((product) => {
       if (product.name === firstHalf) {
@@ -386,6 +664,40 @@ const ProductModal: React.FC = () => {
       }
     });
   }, [secondHalf]);
+
+  const handleHalfAndHalfCrustChange = (crust: string) => {
+    setSelectedCrust(0);
+
+    if (size === "Medium") {
+      if (crust.includes("Hand")) {
+        setSelectedCrust(0);
+      } else if (crust.includes("Italian")) {
+        setSelectedCrust(1);
+      } else {
+        setSelectedCrust(2);
+      }
+    } else if (size === "Large") {
+      if (crust.includes("Hand")) {
+        setSelectedCrust(0);
+      } else if (crust.includes("Italian")) {
+        setSelectedCrust(1);
+      } else if (crust.includes("Thin")) {
+        setSelectedCrust(2);
+      } else if (crust.includes("Philadelphia")) {
+        setSelectedCrust(3);
+      } else if (crust.includes("mozzarella")) {
+        setSelectedCrust(4);
+      } else {
+        setSelectedCrust(5);
+      }
+    } else if (size === "Jumbo") {
+      if (crust.includes("Hand")) {
+        setSelectedCrust(0);
+      } else {
+        setSelectedCrust(1);
+      }
+    }
+  };
 
   return (
     <div className="product-modal-container">
@@ -510,29 +822,41 @@ const ProductModal: React.FC = () => {
               </div>
             </>
           ) : (
-            <div>
+            <div className="half-and-half-pizza-container">
               {/* For half and half pizza */}
-              <div>
-                <p>SIZE</p>
-                <select onChange={(e) => setSize(e.target.value)}>
-                  <option value="Medium">Medium (6 Slices)</option>
-                  <option value="Large">Large (8 Slices)</option>
-                  <option value="Jumbo">Jumbo (12 Slices)</option>
-                </select>
+              <div className="hah-size-crust-container">
+                <div className="hah-size">
+                  <p>SIZE</p>
+                  <select
+                    onChange={(e) => {
+                      setSelectedCrust(0);
+                      setSize(e.target.value);
+                    }}
+                  >
+                    <option value="Medium">Medium (6 Slices)</option>
+                    <option value="Large">Large (8 Slices)</option>
+                    <option value="Jumbo">Jumbo (12 Slices)</option>
+                  </select>
+                </div>
+
+                <div className="hah-crust">
+                  <p>CRUST</p>
+                  <select onChange={(e) => handleHalfAndHalfCrustChange(e.target.value)}>
+                    {size === "Medium"
+                      ? productOptions.medium.map((crust) => <option>{crust.title}</option>)
+                      : size === "Large"
+                      ? productOptions.large.map((crust) => <option>{crust.title}</option>)
+                      : size === "Jumbo"
+                      ? productOptions.jumbo.map((crust) => <option>{crust.title}</option>)
+                      : ""}
+                  </select>
+                </div>
               </div>
 
-              <select>
-                {size === "Medium"
-                  ? productOptions.medium.map((crust) => <option>{crust.title}</option>)
-                  : size === "Large"
-                  ? productOptions.large.map((crust) => <option>{crust.title}</option>)
-                  : size === "Jumbo"
-                  ? productOptions.jumbo.map((crust) => <option>{crust.title}</option>)
-                  : ""}
-              </select>
+              <div className="hah-products-container">
+                <div key={uuid()} className="hah-first-product">
+                  <p className="hah-product-heading">1</p>
 
-              <div>
-                <div key={uuid()}>
                   <p>PRODUCT</p>
                   <select
                     onChange={(e) => {
@@ -542,7 +866,14 @@ const ProductModal: React.FC = () => {
                     value={firstHalf}
                   >
                     {products
-                      .filter((p) => p.type === "pizza" && p.name !== "Half and Half")
+                      .filter(
+                        (p) =>
+                          p.type === "pizza" &&
+                          p.name !== "Half and Half" &&
+                          p.name !== "Pulled Beef" &&
+                          p.name !== "Pizza Parma" &&
+                          p.name !== "Pizza Milano"
+                      )
                       .map((product) => (
                         <option key={uuid()}>{product.name}</option>
                       ))}
@@ -553,13 +884,20 @@ const ProductModal: React.FC = () => {
                       <p className="edit-toppings-text">TOPPINGS</p>
                       {loggedIn && (
                         <div className="logged-topping-container">
-                          <div className="toppings-default" onClick={handleDefault}>
+                          <div className="toppings-default" onClick={handleDefaultFirstHalf}>
                             DEFAULT
                           </div>
                           <div
                             className="edit-toppings-container"
                             onClick={() => {
-                              setShowEditFirstHalfPizzaToppings(!showEditFirstHalfPizzaToppings);
+                              if (showEditSecondHalfPizzaToppings) {
+                                setTimeout(() => {
+                                  setShowEditFirstHalfPizzaToppings(true);
+                                }, 500);
+                                setShowEditSecondHalfPizzaToppings(false);
+                              } else {
+                                setShowEditFirstHalfPizzaToppings(!showEditFirstHalfPizzaToppings);
+                              }
                             }}
                           >
                             <span
@@ -580,12 +918,14 @@ const ProductModal: React.FC = () => {
                     <p>
                       {firstHalfModifiedToppings.length > 0
                         ? firstHalfModifiedToppings.join(", ")
-                        : firstHalfToppings.join(" ")}
+                        : firstHalfToppings.join(", ")}
                     </p>
                   </div>
                 </div>
 
-                <div key={uuid()}>
+                <div key={uuid()} className="hah-second-product">
+                  <p className="hah-product-heading">2</p>
+
                   <p>PRODUCT</p>
                   <select
                     onChange={(e) => {
@@ -595,7 +935,14 @@ const ProductModal: React.FC = () => {
                     value={secondHalf}
                   >
                     {products
-                      .filter((p) => p.type === "pizza" && p.name !== "Half and Half")
+                      .filter(
+                        (p) =>
+                          p.type === "pizza" &&
+                          p.name !== "Half and Half" &&
+                          p.name !== "Pulled Beef" &&
+                          p.name !== "Pizza Parma" &&
+                          p.name !== "Pizza Milano"
+                      )
                       .map((product) => (
                         <option key={uuid()}>{product.name}</option>
                       ))}
@@ -605,13 +952,20 @@ const ProductModal: React.FC = () => {
                       <p className="edit-toppings-text">TOPPINGS</p>
                       {loggedIn && (
                         <div className="logged-topping-container">
-                          <div className="toppings-default" onClick={handleDefault}>
+                          <div className="toppings-default" onClick={handleDefaultSecondHalf}>
                             DEFAULT
                           </div>
                           <div
                             className="edit-toppings-container"
                             onClick={() => {
-                              setShowEditSecondHalfPizzaToppings(!showEditSecondHalfPizzaToppings);
+                              if (showEditFirstHalfPizzaToppings) {
+                                setTimeout(() => {
+                                  setShowEditSecondHalfPizzaToppings(true);
+                                }, 500);
+                                setShowEditFirstHalfPizzaToppings(false);
+                              } else {
+                                setShowEditSecondHalfPizzaToppings(!showEditSecondHalfPizzaToppings);
+                              }
                             }}
                           >
                             <span
@@ -634,10 +988,29 @@ const ProductModal: React.FC = () => {
                     <p>
                       {secondHalfModifiedToppings.length > 0
                         ? secondHalfModifiedToppings.join(", ")
-                        : secondHalfToppings.join(" ")}
+                        : secondHalfToppings.join(", ")}
                     </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="pm-order-container">
+                <HalfAndHalfPizzaQuantity
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  firstHalf={firstHalf}
+                  secondHalf={secondHalf}
+                  size={size}
+                  weigh={size === "Medium" ? 385 : size === "Large" ? 570 : size === "Jumbo" ? 800 : 0}
+                  price={price}
+                  crust={selectedCrust}
+                  halfAndHalfFirstSelectedProduct={halfAndHalfFirstSelectedProduct}
+                  halfAndHalfSecondSelectedProduct={halfAndHalfSecondSelectedProduct}
+                  firstHalfAddedToppings={firstHalfAddedToppings}
+                  firstHalfRemovedToppings={firstHalfRemovedToppings}
+                  secondHalfRemovedToppings={secondHalfRemovedToppings}
+                  secondHalfAddedToppings={secondHalfAddedToppings}
+                />
               </div>
             </div>
           )}
@@ -754,71 +1127,78 @@ const ProductModal: React.FC = () => {
       )}
 
       {showEditFirstHalfPizzaToppings && (
-        <div className="toppings-container">
-          {allToppings.map((topping) => (
-            <div key={uuid()} className="all-toppings">
-              <h3 className="topping-name">{topping.name}</h3>
-              {topping.toppings.map((t, i) => (
-                <div key={uuid()} className="topping">
-                  <input
-                    type="checkbox"
-                    id={`${uuid()}`}
-                    checked={firstHalfModifiedToppings.includes(t)}
-                    onChange={(e) => {
-                      handleChangeFirstHalfToppings(t, e.target.checked);
-                    }}
-                  />
-                  <label htmlFor={`${uuid()}`}>{t}</label>
-                  {firstHalfModifiedToppings.includes(t) && (
-                    <div className="additional-topping">
-                      <input
-                        type="checkbox"
-                        id={`${i}-additional ${uuid()}`}
-                        checked={firstHalfModifiedToppings.includes(`Extra ${t}`)}
-                        onChange={(e) => handleChangeFirstHalfToppings(`Extra ${t}`, e.target.checked)}
-                      />
-                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <>
+          <p>FIRST HALF - {firstHalf}</p>
+
+          <div className="toppings-container">
+            {allToppings.map((topping) => (
+              <div key={uuid()} className="all-toppings">
+                <h3 className="topping-name">{topping.name}</h3>
+                {topping.toppings.map((t, i) => (
+                  <div key={uuid()} className="topping">
+                    <input
+                      type="checkbox"
+                      id={`${uuid()}`}
+                      checked={firstHalfModifiedToppings.length > 0 && firstHalfModifiedToppings.includes(t)}
+                      onChange={(e) => {
+                        handleChangeFirstHalfToppings(t, e.target.checked);
+                      }}
+                    />
+                    <label htmlFor={`${uuid()}`}>{t}</label>
+                    {firstHalfModifiedToppings.includes(t) && (
+                      <div className="additional-topping">
+                        <input
+                          type="checkbox"
+                          id={`${i}-additional ${uuid()}`}
+                          checked={firstHalfModifiedToppings.includes(`Extra ${t}`)}
+                          onChange={(e) => handleChangeFirstHalfToppings(`Extra ${t}`, e.target.checked)}
+                        />
+                        <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {showEditSecondHalfPizzaToppings && (
-        <div className="toppings-container">
-          {allToppings.map((topping) => (
-            <div key={uuid()} className="all-toppings">
-              <h3 className="topping-name">{topping.name}</h3>
-              {topping.toppings.map((t, i) => (
-                <div key={uuid()} className="topping">
-                  <input
-                    type="checkbox"
-                    id={`${uuid()}`}
-                    checked={secondHalfModifiedToppings.includes(t)}
-                    onChange={(e) => {
-                      handleChangeSecondHalfToppings(t, e.target.checked);
-                    }}
-                  />
-                  <label htmlFor={`${uuid()}`}>{t}</label>
-                  {secondHalfModifiedToppings.includes(t) && (
-                    <div className="additional-topping">
-                      <input
-                        type="checkbox"
-                        id={`${i}-additional ${uuid()}`}
-                        checked={secondHalfModifiedToppings.includes(`Extra ${t}`)}
-                        onChange={(e) => handleChangeSecondHalfToppings(`Extra ${t}`, e.target.checked)}
-                      />
-                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <>
+          <p>SECOND HALF - {secondHalf}</p>
+          <div className="toppings-container">
+            {allToppings.map((topping) => (
+              <div key={uuid()} className="all-toppings">
+                <h3 className="topping-name">{topping.name}</h3>
+                {topping.toppings.map((t, i) => (
+                  <div key={uuid()} className="topping">
+                    <input
+                      type="checkbox"
+                      id={`${uuid()}`}
+                      checked={secondHalfModifiedToppings.length > 0 && secondHalfModifiedToppings.includes(t)}
+                      onChange={(e) => {
+                        handleChangeSecondHalfToppings(t, e.target.checked);
+                      }}
+                    />
+                    <label htmlFor={`${uuid()}`}>{t}</label>
+                    {secondHalfModifiedToppings.includes(t) && (
+                      <div className="additional-topping">
+                        <input
+                          type="checkbox"
+                          id={`${i}-additional ${uuid()}`}
+                          checked={secondHalfModifiedToppings.includes(`Extra ${t}`)}
+                          onChange={(e) => handleChangeSecondHalfToppings(`Extra ${t}`, e.target.checked)}
+                        />
+                        <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

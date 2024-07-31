@@ -132,6 +132,12 @@
   height: 2.5rem;
 }
 
+.navigation-basket-promo-text-remove-coupon {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+
 .navigation-basket-quantity-control-img {
   width: 2rem;
   height: 2rem;

@@ -40,6 +40,16 @@ export interface BasketItem {
   deal?: Deal;
   desc?: string;
   heading?: string;
+  firstHalf?: {
+    name: string;
+    addedToppings?: string[];
+    removedToppings?: string[];
+  };
+  secondHalf?: {
+    name: string;
+    addedToppings?: string[];
+    removedToppings?: string[];
+  };
 }
 
 interface OrderContextInterface {
@@ -87,6 +97,8 @@ interface OrderContextInterface {
   setActiveTracker: React.Dispatch<React.SetStateAction<boolean>>;
   selectedCoupon: string;
   setSelectedCoupon: React.Dispatch<React.SetStateAction<string>>;
+  showCoupons: boolean;
+  setShowCoupons: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 class Product {
@@ -178,6 +190,8 @@ export const OrderContext = createContext<OrderContextInterface>({
   setActiveTracker: () => {},
   selectedCoupon: "",
   setSelectedCoupon: () => {},
+  showCoupons: false,
+  setShowCoupons: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -227,6 +241,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     return savedData && JSON.parse(savedData).active ? true : false;
   });
   const [selectedCoupon, setSelectedCoupon] = useState("");
+  const [showCoupons, setShowCoupons] = useState(false);
 
   const { loggedIn } = useContext(LoginContext);
 
@@ -299,10 +314,17 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
         for (let j = i + 1; j < combinedItems.length; j++) {
           if (
-            JSON.stringify(combinedItems[i].toppings) === JSON.stringify(combinedItems[j].toppings) &&
-            combinedItems[i].name === combinedItems[j].name &&
-            combinedItems[i].size === combinedItems[j].size &&
-            combinedItems[i].crust === combinedItems[j].crust
+            (combinedItems[i].name !== "Half and Half" &&
+              JSON.stringify(combinedItems[i].toppings) === JSON.stringify(combinedItems[j].toppings) &&
+              combinedItems[i].name === combinedItems[j].name &&
+              combinedItems[i].size === combinedItems[j].size &&
+              combinedItems[i].crust === combinedItems[j].crust) ||
+            (combinedItems[i].name === "Half and Half" &&
+              combinedItems[i].name === combinedItems[j].name &&
+              combinedItems[i].size === combinedItems[j].size &&
+              combinedItems[i].crust === combinedItems[j].crust &&
+              JSON.stringify(combinedItems[i].firstHalf) === JSON.stringify(combinedItems[j].firstHalf) &&
+              JSON.stringify(combinedItems[i].secondHalf) === JSON.stringify(combinedItems[j].secondHalf))
           ) {
             combinedItems[i].quantity += combinedItems[j].quantity;
             combinedItems.splice(j, 1);
@@ -476,7 +498,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [thirdPizzaPromotions]);
 
   useEffect(() => {
-    if (finalPrice > 30) {
+    if (finalPrice >= 30) {
       setFreeDelivery(true);
     } else {
       setFreeDelivery(false);
@@ -598,6 +620,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setActiveTracker,
         selectedCoupon,
         setSelectedCoupon,
+        showCoupons,
+        setShowCoupons,
       }}
     >
       {children}

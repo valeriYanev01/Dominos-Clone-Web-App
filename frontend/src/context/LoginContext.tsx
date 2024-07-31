@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import { OrderContext } from "./OrderContext";
 
 type LoggedIn = boolean;
@@ -144,22 +144,24 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [user]);
 
   useEffect(() => {
-    const decodedToken = jwt.decode(token) as JwtPayload | string;
+    if (token) {
+      const decodedToken = jwtDecode<JwtPayload>(token);
 
-    const interval = setInterval(() => {
-      if (typeof decodedToken !== "string" && decodedToken?.exp) {
-        const expirationTokenDate = new Date(decodedToken.exp * 1000);
+      const interval = setInterval(() => {
+        if (typeof decodedToken !== "string" && decodedToken?.exp) {
+          const expirationTokenDate = new Date(decodedToken.exp * 1000);
 
-        if (new Date() > expirationTokenDate) {
-          localStorage.removeItem("user");
-          setLoggedIn(false);
-          setEmailLogin("");
-          clearInterval(interval);
+          if (new Date() > expirationTokenDate) {
+            localStorage.removeItem("user");
+            setLoggedIn(false);
+            setEmailLogin("");
+            clearInterval(interval);
+          }
         }
-      }
-    }, 60000);
+      }, 60000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, [token]);
 
   useEffect(() => {
