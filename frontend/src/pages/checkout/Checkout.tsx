@@ -81,8 +81,6 @@ export const Checkout: React.FC = () => {
           },
         });
 
-        console.log(response);
-
         const data = response.data.address;
 
         if (data.phoneNumber) {

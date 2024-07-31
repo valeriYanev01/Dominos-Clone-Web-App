@@ -60,9 +60,6 @@ const PizzaQuantity: React.FC<Props> = ({
   const { setItemsInBasket } = useContext(OrderContext);
 
   useEffect(() => {
-    if (selectedProduct.price[0].medium && !selectedProduct.price[1].large && !selectedProduct.price[2].jumbo) {
-      console.log(true);
-    }
     if (selectedProduct.price[0].medium && selectedProduct.price[1].large && selectedProduct.price[2].jumbo) {
       if (size === "Medium") {
         if (selectedCrust === 2) {
