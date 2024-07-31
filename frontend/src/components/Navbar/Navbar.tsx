@@ -7,7 +7,7 @@ import { MenuContext } from "../../context/MenuContext";
 import { ModalContext, ModalType } from "../../context/ModalContext";
 import { LoginContext } from "../../context/LoginContext";
 import { OrderContext } from "../../context/OrderContext";
-import Basket from "./Basket";
+import Basket from "./Basket/Basket";
 import ProfileNav from "./ProfileNav";
 import ProfileMenu from "./ProfileMenu";
 
