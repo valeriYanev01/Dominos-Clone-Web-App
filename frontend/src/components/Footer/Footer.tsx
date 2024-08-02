@@ -30,8 +30,11 @@ const Footer = () => {
           </div>
         </div>
         <div className="contacts">
-          <Link to="tel:0877843424">
+          <Link to="tel:0877843424" className="contacts-phone-number">
             <img src="/svg/footer/number.svg" className="footer-svg number" />
+          </Link>
+          <Link to="tel:0877843424" className="contacts-phone-mobile">
+            <img src="/svg/footer/phone.svg" className="footer-svg" />
           </Link>
           <Link to="https://www.facebook.com/DominosBulgaria" target="blank">
             <img src="/svg/footer/facebook.svg" className="footer-svg" />

@@ -7,9 +7,10 @@ interface Props {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
   navColors: NavColors;
+  showMobileLinks: boolean;
 }
 
-const Logo: React.FC<Props> = ({ setOpenModal, setModalType, navColors }) => {
+const Logo: React.FC<Props> = ({ setOpenModal, setModalType, navColors, showMobileLinks }) => {
   return (
     <ul className="navigation-list-container-logo">
       <li>
@@ -33,47 +34,47 @@ const Logo: React.FC<Props> = ({ setOpenModal, setModalType, navColors }) => {
               <g>
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M173.7,60.1h-28c-0.9,0-1.7,0.7-1.7,1.7v62.9c0,0.9,0.7,1.7,1.7,1.7h28c22,0,36.3-13,36.3-33.2       C210.1,73.1,195.8,60.1,173.7,60.1 M173.7,108.9h-9.5V77.6h9.6c10,0,15.9,5.8,15.9,15.6C189.7,101,184.2,108.9,173.7,108.9"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M334,77.2c-7.7,0-14,4.2-16.8,8.4c-2.1-5.6-6.7-8.4-13.8-8.4c-7.9,0-13.8,4-15.9,6.7V80       c0-0.9-0.7-1.7-1.7-1.7h-14.5c-0.9,0-1.7,0.7-1.7,1.7v44.7c0,0.9,0.7,1.7,1.7,1.7h14.5c0.9,0,1.7-0.7,1.7-1.7V96.8v0       c1.1-1.2,3.2-3.8,7.3-3.8c3.5,0,5.5,1.9,5.5,5.4v26.4c0,0.9,0.7,1.7,1.7,1.7h14.5c0.9,0,1.7-0.7,1.7-1.7V96.8       c1-1.2,3.2-3.8,7.3-3.8c3.5,0,5.5,2,5.5,5.4v26.4c0,0.9,0.7,1.7,1.7,1.7h14.5c0.9,0,1.7-0.7,1.7-1.7V91.6       C348.8,82.3,343.5,77.2,334,77.2"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M372.3,78.4h-14.5c-0.9,0-1.7,0.7-1.7,1.7v44.7c0,0.9,0.7,1.7,1.7,1.7h14.5c0.9,0,1.7-0.8,1.7-1.7V80       C374,79.1,373.2,78.4,372.3,78.4"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M365.5,54.8c-5.5,0-10,4.5-10,10c0,5.5,4.5,10,10,10c5.5,0,10-4.5,10-10C375.5,59.3,371,54.8,365.5,54.8"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M415.9,77.2c-9.3,0-14.3,4.2-16.5,6.7V80c0-0.9-0.8-1.7-1.7-1.7h-14.5c-0.9,0-1.7,0.7-1.7,1.7v44.7       c0,0.9,0.8,1.7,1.7,1.7h14.5c0.9,0,1.7-0.7,1.7-1.7V96.8c1.2-1.3,3.3-3.8,7.6-3.8c4.6,0,7,2.3,7,6.8v24.9       c0,0.9,0.7,1.7,1.7,1.7h14.5c0.9,0,1.7-0.7,1.7-1.7V92.3C431.9,82.8,426,77.2,415.9,77.2"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M238.9,77c-14,0-25.3,11.3-25.3,25.3c0,14,11.3,25.3,25.3,25.3c14,0,25.3-11.3,25.3-25.3       C264.2,88.3,252.9,77,238.9,77 M238.9,110.6c-4.8,0-8.6-3.9-8.6-8.7c0-4.8,3.9-8.6,8.6-8.6c4.8,0,8.6,3.9,8.6,8.6       C247.6,106.7,243.7,110.6,238.9,110.6"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M462.6,77c-14,0-25.3,11.3-25.3,25.3c0,14,11.3,25.3,25.3,25.3c14,0,25.3-11.3,25.3-25.3       C487.9,88.4,476.6,77,462.6,77 M462.6,110.7c-4.8,0-8.6-3.9-8.6-8.7c0-4.8,3.9-8.6,8.6-8.6c4.8,0,8.6,3.9,8.6,8.6       C471.2,106.8,467.4,110.7,462.6,110.7"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M501.9,62.9C501.9,62.9,501.9,62.9,501.9,62.9C501.9,62.8,501.9,62.8,501.9,62.9c0-0.1,0-0.1,0-0.2l0,0       c-1.1-5-6.6-8.6-11.9-7.5c-5.4,1.1-9,6.2-7.9,11.2c0.9,4.2,4.6,7.1,8.9,7.4c-0.3,1.7-1.8,3.2-3,3.9c-0.8,0.5-0.3,1.4-0.3,1.4       l1.1,1.7c0.3,0.6,0.8,0.8,1.4,0.6C501.1,76.8,503,67.4,501.9,62.9"
                 />
                 <path
                   className="logo-letter"
-                  style={{ fill: navColors.svgLetters }}
+                  style={showMobileLinks ? { fill: "#0078ae" } : { fill: navColors.svgLetters }}
                   d="M514.8,92.6c0-1.8,2.3-2.6,5.2-2.6c5.8,0,9.1,1.7,12.8,4.1c0.4,0.3,0.9,0.3,1.3,0.2       c0.4-0.1,0.8-0.4,1.1-0.8L540,85c0.4-0.8,0.2-1.8-0.6-2.3c-4-2.4-9.9-5.5-20.2-5.5c-14.8,0-22.7,7-21.4,17       c2.3,17.6,29.7,11.6,29.3,17.6c-0.1,1.4-2.5,2.4-6.7,2.4c-5.4,0-11.6-2.7-15.5-5.1c-0.4-0.2-0.9-0.3-1.3-0.2       c-0.4,0.1-0.8,0.4-1,0.8l-5.7,9.5c-0.4,0.8-0.2,1.7,0.5,2.2c5.4,3.7,14.2,6.1,21.9,6.1c14.8,0,23.4-6.4,23.4-16.8       C542.7,91.4,514.9,97.4,514.8,92.6"
                 />
                 <path
@@ -93,6 +94,7 @@ const Logo: React.FC<Props> = ({ setOpenModal, setModalType, navColors }) => {
           </svg>
         </Link>
       </li>
+
       <li>
         <Link
           onClick={() => {

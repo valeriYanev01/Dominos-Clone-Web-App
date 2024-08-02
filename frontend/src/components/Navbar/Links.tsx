@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { LoginContext } from "../../context/LoginContext";
 import { Link, useLocation } from "react-router-dom";
 import { OrderContext } from "../../context/OrderContext";
@@ -12,12 +12,21 @@ interface Props {
   showProfileMenu: boolean;
   setShowProfileMenu: React.Dispatch<React.SetStateAction<boolean>>;
   navColors: NavColors;
+  showBasketOnHover: boolean;
+  setShowBasketOnHover: React.Dispatch<React.SetStateAction<boolean>>;
+  itemsInBasketQuantity: number;
+  setItemsInBasketQuantity: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Links: React.FC<Props> = ({ showProfileMenu, setShowProfileMenu, navColors }) => {
-  const [itemsInBasketQuantity, setItemsInBasketQuantity] = useState(0);
-  const [showBasketOnHover, setShowBasketOnHover] = useState(false);
-
+const Links: React.FC<Props> = ({
+  showProfileMenu,
+  setShowProfileMenu,
+  navColors,
+  showBasketOnHover,
+  setShowBasketOnHover,
+  itemsInBasketQuantity,
+  setItemsInBasketQuantity,
+}) => {
   const { loggedIn } = useContext(LoginContext);
   const { activeOrder, activeTracker, itemsInBasket } = useContext(OrderContext);
   const { setOpenModal, setModalType } = useContext(ModalContext);
@@ -34,7 +43,7 @@ const Links: React.FC<Props> = ({ showProfileMenu, setShowProfileMenu, navColors
       }
     }, 0);
     setItemsInBasketQuantity(totalQuantity);
-  }, [itemsInBasket]);
+  }, [itemsInBasket, setItemsInBasketQuantity]);
 
   const handleOrderBtn = () => {
     setOpenModal(true);
