@@ -5,7 +5,7 @@ import SingleGadgetLink from "./SingleGadgetLink";
 const GadgetsLinks = () => {
   return (
     <>
-      <div>
+      <div className="gadget">
         <SingleGadgetLink
           bgColor="#e31837"
           title="PIZZA TRACKER"
@@ -17,7 +17,7 @@ const GadgetsLinks = () => {
         />
       </div>
 
-      <div>
+      <div className="gadget">
         <SingleGadgetLink
           bgColor="#e31837"
           title="CAREERS"
@@ -29,7 +29,7 @@ const GadgetsLinks = () => {
         />
       </div>
 
-      <div>
+      <div className="gadget">
         <SingleGadgetLink
           bgColor="#006491"
           title="SUBSCRIBE NOW"

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Deals.css";
 import { components } from "../../../data/deals";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,11 +12,27 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 const Deals = () => {
+  const [fromMobile, setFromMobile] = useState(false);
+
   const { setModalType, setOpenModal } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
   const { activeTracker } = useContext(OrderContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFromMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleShowModal = (type: "delivery" | "carryOut") => {
     setOpenModal(true);
@@ -33,8 +49,8 @@ const Deals = () => {
       className="deals-container"
       modules={[Pagination, Navigation]}
       spaceBetween={25}
-      slidesPerView={4}
-      pagination
+      slidesPerView={fromMobile ? 1 : 4}
+      pagination={true}
     >
       {components.map((deal) => (
         <div className="deal-item" key={uuid()}>

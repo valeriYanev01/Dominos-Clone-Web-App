@@ -1,10 +1,10 @@
 .deal-container {
   position: absolute;
   z-index: 2;
-  top: 130px;
-  left: 230px;
-  width: 550px;
-  padding: 10px;
+  top: 8rem;
+  left: 14.375rem;
+  width: 34.375rem;
+  padding: 0.625rem;
   border: 2px solid lightgray;
   background: radial-gradient(circle at top left, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(circle at top right, transparent 8px, lightgray 8px 10px, transparent 0 0),
@@ -26,7 +26,7 @@
     radial-gradient(10px circle at bottom left, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(10px circle at bottom right, transparent 8px, lightgray 8px 10px, white 10px);
   z-index: 4;
-  padding: 30px;
+  padding: 2rem;
   mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 10px, black 10px),
     radial-gradient(circle at 100% 0, transparent 0, transparent 10px, black 10px),
     radial-gradient(circle at 0 100%, transparent 0, transparent 10px, black 10px),
@@ -35,34 +35,42 @@
   mask-repeat: no-repeat;
   mask-size: 60% 60%;
   border: 2px solid lightgray;
-  max-height: 330px;
-  max-width: 525px;
+  max-height: 20.625rem;
+  max-width: 32.8125rem;
 }
 
 .deal-caption {
   text-align: center;
   font-weight: 800;
-  font-size: 46px;
-  line-height: 49px;
-  margin-bottom: 15px;
+  font-size: 3rem;
+  line-height: 3rem;
+  margin-bottom: 1rem;
   color: #f30530;
   text-shadow: 1px 1px 0 #fff, 2px 2px 0 rgba(50, 50, 50, 0.985);
-  padding: 0 40px;
+  padding: 0 2.5rem;
 }
 
 .deal-valid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 28px;
   font-weight: 900;
-  padding: 10px 0;
+  padding: 0.625rem 0;
   text-align: center;
   border-top: dotted lightgray 2px;
   border-bottom: dotted lightgray 2px;
 }
 
+.deal-valid,
+.deal-valid img {
+  margin: 0;
+}
+
 .deal-decor {
-  height: 30px;
+  height: 2rem;
 }
 
 .deal-decor-left {
@@ -76,7 +84,40 @@
 }
 
 .deal-desc {
-  margin-top: 30px;
-  font-size: 18px;
-  line-height: 22px;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .deal-container {
+    top: 10rem;
+    left: 0;
+    right: 0;
+    width: 95vw;
+    padding: 0.5rem;
+  }
+
+  .second-layer {
+    padding: 0.5rem;
+  }
+
+  .deal-caption {
+    font-size: 2.2rem;
+  }
+
+  .deal-valid {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

@@ -1,7 +1,27 @@
 .gadgets {
-  margin: 30px auto;
+  margin: 2rem auto;
   width: 80%;
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
-  grid-gap: 15px;
+  grid-gap: 1rem;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .gadgets {
+    margin: 0 !important;
+    width: 100vw !important;
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

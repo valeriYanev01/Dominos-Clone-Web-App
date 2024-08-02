@@ -10,9 +10,7 @@ const AverageTime = () => {
           className="deal-decor-left deal-decor"
           style={{ paddingLeft: "20px", width: "55px", height: "50px" }}
         />
-        <span className="gadgets-delivery-text">
-          The average delivery time <span className="gadgets-now-text">now</span> of our stores is:
-        </span>
+        <span className="gadgets-delivery-text">The average delivery time of our stores is:</span>
         <div>
           <span className="gadgets-delivery-number blue">2</span>
           <span className="gadgets-delivery-number red">0</span>

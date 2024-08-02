@@ -1,20 +1,20 @@
 .gadgets-average-time {
   grid-column: 1/3;
   grid-row: 1/1;
-  padding: 30px 50px;
+  padding: 2rem 3rem;
   display: flex;
   position: relative;
-  box-shadow: 0 0px 30px rgb(0 0 0 / 15%);
+  box-shadow: 0 0px 2rem rgb(0 0 0 / 15%);
   background-color: white;
   width: 100%;
   border-radius: 5px;
 }
 
 .gadgets-live-svg {
-  width: 50px;
+  width: 3rem;
   position: absolute;
-  top: 15px;
-  left: 30px;
+  top: 1rem;
+  left: 2rem;
   animation: liveSvg 2s infinite;
 }
 
@@ -36,26 +36,22 @@
 }
 
 .gadgets-delivery-text {
-  margin-top: 48px;
-  font-size: 28px;
+  margin-top: 3rem;
+  font-size: 1.75rem;
   display: inline-block;
   width: 55%;
 }
 
-.gadgets-now-text {
-  color: #006491;
-}
-
 .gadgets-delivery-number {
-  font-size: 112px;
+  font-size: 7rem;
   color: white;
-  padding: 10px 15px;
-  border-radius: 10px;
+  padding: 0.625rem 1rem;
+  border-radius: 0.625rem;
 }
 
 .blue {
   background-color: #006491;
-  margin-right: 10px;
+  margin-right: 0.625rem;
 }
 
 .red {
@@ -63,9 +59,41 @@
 }
 
 .gadgets-apostrophy {
-  font-size: 112px;
+  font-size: 7rem;
   color: #e31837;
   vertical-align: middle;
-  margin-top: -120px;
+  margin-top: -7.5rem;
   display: inline-block;
+}
+
+@media screen and (max-width: 480px) {
+  .gadgets-delivery-text {
+    font-size: 1.2rem;
+  }
+
+  .gadgets-delivery-minutes-container {
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .gadgets-delivery-number {
+    font-size: 3rem;
+  }
+
+  .blue {
+    margin: 0.25rem;
+  }
+
+  .gadgets-apostrophy {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

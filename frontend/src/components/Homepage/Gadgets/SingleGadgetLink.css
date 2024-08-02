@@ -38,3 +38,21 @@
   text-align: center;
   border-radius: 5px;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .single-gadget-link {
+    width: 95vw !important;
+    margin: 1rem 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

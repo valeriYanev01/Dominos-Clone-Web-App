@@ -48,3 +48,22 @@
   right: 0;
   bottom: 0;
 }
+
+@media screen and (max-width: 480px) {
+  .gadgets-download {
+    margin-top: 2rem;
+  }
+
+  .gadgets-download-phone {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

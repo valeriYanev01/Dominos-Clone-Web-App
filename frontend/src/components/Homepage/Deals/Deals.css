@@ -1,8 +1,9 @@
 .deals-container {
   position: relative !important;
   display: flex !important;
-  margin-top: 7.5rem;
+  margin-top: 4.5rem;
   width: 80%;
+  padding: 3rem 0 !important;
 }
 
 .deal-item {
@@ -43,7 +44,8 @@
 
 .deal-heading {
   font-size: 1.125rem;
-  min-height: 3.5rem;
+  height: 4rem;
+  overflow-y: auto;
   font-weight: bold;
   text-align: center;
   color: #0073aa;
@@ -114,4 +116,26 @@
 .deal-delivery-svg {
   width: 1.6rem;
   height: 2.5rem;
+}
+
+.swiper-pagination {
+  position: absolute !important;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .swiper {
+    margin: 0;
+    padding: 3rem 0 !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }
