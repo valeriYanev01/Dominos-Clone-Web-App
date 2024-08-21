@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { userRouter } from "./routes/userRoutes.js";
-import { paymentRouter } from "./routes/paymentRoutes.js";
+import { userRouter } from "../routes/userRoutes.js";
+import { paymentRouter } from "../routes/paymentRoutes.js";
+
+process.env.NODE_ENV = "production";
 
 dotenv.config();
 
