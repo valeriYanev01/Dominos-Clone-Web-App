@@ -25,16 +25,11 @@ const LoginModal = () => {
     setError("");
     try {
       const response = await axios.post(
-        "https://dominos-clone-backend-fy8w25l12-valeriyanev01s-projects.vercel.app/api/users/login",
+        "https://dominos-clone-backend-aklq6syh7-valeriyanev01s-projects.vercel.app/api/users/login",
         {
           email,
           password,
           keepLoggedIn,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
 
