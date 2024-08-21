@@ -19,14 +19,6 @@ export interface SingleDeal {
   heading: string;
 }
 
-interface Deal {
-  deal: SingleDeal;
-  desc: string;
-  heading: string;
-  price: string;
-  quantity: number;
-}
-
 export interface BasketItem {
   name: string;
   size?: string;
@@ -37,7 +29,14 @@ export interface BasketItem {
   quantity: number;
   price: string;
   type: string;
-  deal?: Deal;
+  deal?: Array<{
+    name: string;
+    crust?: string;
+    quantity: number;
+    toppings?: string[];
+    addedToppings?: string[];
+    removedToppings?: string[];
+  }>;
   desc?: string;
   heading?: string;
   firstHalf?: {

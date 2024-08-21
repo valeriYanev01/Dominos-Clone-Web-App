@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import "./DealModal.css";
 import { ModalContext } from "../../../context/ModalContext";
 import { products } from "../../../data/products";
-import { OrderContext } from "../../../context/OrderContext";
+import { BasketItem, OrderContext } from "../../../context/OrderContext";
 import { LoginContext } from "../../../context/LoginContext";
 import { allToppings } from "../../../data/toppings";
 
@@ -79,7 +79,7 @@ const DealModal: React.FC = () => {
   const [price, setPrice] = useState("");
   const [size, setSize] = useState("");
   const [pizzaIndex, setPizzaIndex] = useState(0);
-  const [finalDeal, setFinalDeal] = useState();
+  const [finalDeal, setFinalDeal] = useState<BasketItem>();
   const [showEditPizzaToppings, setShowEditPizzaToppings] = useState(false);
 
   const { deal, setOpenModal, setModalType } = useContext(ModalContext);
@@ -198,7 +198,21 @@ const DealModal: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const final: Deal = { deal: [], price: "", desc: "", heading: "", quantity: 0 };
+    const final: BasketItem = {
+      price: "",
+      desc: "",
+      heading: "",
+      quantity: 0,
+      name: "",
+      type: "",
+      addedToppings: [],
+      removedToppings: [],
+      crust: "",
+      firstHalf: { name: "", addedToppings: [], removedToppings: [] },
+      secondHalf: { name: "", addedToppings: [], removedToppings: [] },
+      size: "",
+      toppings: [],
+    };
 
     const pizzas = [...selectedPizzas];
     const chicken = [...selectedChicken];
@@ -254,7 +268,7 @@ const DealModal: React.FC = () => {
         newAddedToppings = Array.from(newAddedToppingsSet);
         newRemovedToppings = Array.from(newRemovedToppingsSet);
 
-        if (pizza) {
+        if (pizza && final.deal) {
           final.deal.push({
             name: pizza,
             crust: selectedCrust[i],
@@ -266,27 +280,27 @@ const DealModal: React.FC = () => {
         }
       } else if (chicken.length > 0) {
         const newChicken = chicken.shift();
-        if (newChicken) {
+        if (newChicken && final.deal) {
           final.deal.push({ name: newChicken, quantity: 1 });
         }
       } else if (pastas.length > 0) {
         const pasta = pastas.shift();
-        if (pasta) {
+        if (pasta && final.deal) {
           final.deal.push({ name: pasta, quantity: 1 });
         }
       } else if (drinks.length > 0) {
         const drink = drinks.shift();
-        if (drink) {
+        if (drink && final.deal) {
           final.deal.push({ name: drink, quantity: 1 });
         }
       } else if (starters.length > 0) {
         const starter = starters.shift();
-        if (starter) {
+        if (starter && final.deal) {
           final.deal.push({ name: starter, quantity: 1 });
         }
       } else if (desserts.length > 0) {
         const dessert = desserts.shift();
-        if (dessert) {
+        if (dessert && final.deal) {
           final.deal.push({ name: dessert, quantity: 1 });
         }
       }
@@ -299,15 +313,17 @@ const DealModal: React.FC = () => {
 
     // If the pizzas are the same with the same toppings, remove all but 1,
     // and on the one that is left, increase the quantity with how many are removed.
-    for (let i = 0; i < final.deal.length; i++) {
-      for (let j = i + 1; j < final.deal.length; j++) {
-        if (
-          final.deal[i].name === final.deal[j].name &&
-          JSON.stringify(final.deal[i].toppings) === JSON.stringify(final.deal[j].toppings)
-        ) {
-          final.deal[j].quantity += 1;
-          final.deal.splice(i, 1);
-          j--;
+    if (final.deal) {
+      for (let i = 0; i < final.deal.length; i++) {
+        for (let j = i + 1; j < final.deal.length; j++) {
+          if (
+            final.deal[i].name === final.deal[j].name &&
+            JSON.stringify(final.deal[i].toppings) === JSON.stringify(final.deal[j].toppings)
+          ) {
+            final.deal[j].quantity += 1;
+            final.deal.splice(i, 1);
+            j--;
+          }
         }
       }
     }
@@ -754,6 +770,7 @@ const DealModal: React.FC = () => {
             </div>
           ))}
       </div>
+
       {price && (
         <div className="dm-add-btn-price-container">
           <span className="dm-price-container">

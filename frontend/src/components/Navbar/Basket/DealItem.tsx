@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BasketItem, OrderContext, SingleDeal } from "../../../context/OrderContext";
+import { BasketItem, OrderContext } from "../../../context/OrderContext";
 import { v4 as uuid } from "uuid";
 
 interface Props {
@@ -40,7 +40,7 @@ const DealItem: React.FC<Props> = ({ removeItemFromBasket, item, i }) => {
         <div className="navigation-basket-deal-body">
           <div className="navigation-basket-deal-desc">
             {item.deal &&
-              item.deal.map((i: SingleDeal) => (
+              item.deal.map((i) => (
                 <div key={uuid()}>
                   {i.crust ? <span>{i.crust} </span> : ""}
                   <span className="navigation-basket-deal-name">

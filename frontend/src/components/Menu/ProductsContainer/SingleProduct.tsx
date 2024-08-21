@@ -4,6 +4,11 @@ import "./SingleProduct.css";
 import { LoginContext } from "../../../context/LoginContext";
 import { OrderContext } from "../../../context/OrderContext";
 
+type Price =
+  | { medium: number; large?: undefined; jumbo?: undefined }
+  | { medium?: undefined; large: number; jumbo?: undefined }
+  | { medium?: undefined; large?: undefined; jumbo: number };
+
 interface Props {
   product: {
     type: string;
@@ -12,7 +17,7 @@ interface Props {
     img: string;
     bigImg?: string;
     filter: string[];
-    price: [{ medium: []; large: []; jumbo: [] }];
+    price: Price[];
   };
   selectedProduct: string;
   setSelectedProduct: React.Dispatch<React.SetStateAction<string>>;
