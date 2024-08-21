@@ -5,7 +5,7 @@
 
 .carryout-modal-heading {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   letter-spacing: 1.5px;
   justify-content: center;
   align-items: center;
@@ -22,4 +22,34 @@
 
 .com-map {
   margin-top: 1rem;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .carryout-modal-heading p {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .com-address p,
+  .com-address select,
+  .com-store-order-time p,
+  .com-store-order-time select {
+    font-size: 1rem !important;
+    align-self: center;
+  }
+
+  .com-order-btn {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

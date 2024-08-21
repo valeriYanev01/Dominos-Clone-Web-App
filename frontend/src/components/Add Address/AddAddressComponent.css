@@ -1,16 +1,15 @@
 .ad-content {
   background-color: #fff;
   width: 70vw;
-  margin-top: 120px;
-  margin-bottom: 50px;
-  padding: 20px;
+  margin-top: 7.5rem;
+  margin-bottom: 3rem;
+  padding: 1.2rem;
   box-shadow: 10px -5px 70px rgba(0, 0, 0, 0.25);
 }
 
 .ad-title {
   display: flex;
-  font-size: 26px;
-  gap: 30px;
+  gap: 2rem;
   justify-content: center;
   align-items: center;
   font-weight: bold;
@@ -22,12 +21,12 @@
 }
 
 .ad-title p {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 }
 
 .ad-body-text {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
   letter-spacing: 1px;
   color: #555;
 }
@@ -36,12 +35,12 @@
 .ad-address-name input {
   padding: 5px;
   color: #555;
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: #f2f4f5;
   border: 1px solid rgb(207, 207, 207);
   border-radius: 5px;
   width: 100%;
-  margin: 10px 0;
+  margin: 0.625rem 0;
 }
 
 .ad-body-input:focus,
@@ -53,35 +52,87 @@
 .ad-address-name {
   display: flex;
   flex-direction: column;
-  margin: 30px 0 10px 0;
+  margin: 2rem 0 0.625rem 0;
   color: #555;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .ad-address-name label {
   margin: 0;
+  font-size: 1.25rem;
 }
 
 .address-info-container label {
   color: #555;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .ad-add-address-btn {
   background-color: #609e29;
   color: #fff;
   text-align: center;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   width: 25%;
   margin-right: 0;
-  margin-top: 50px;
-  font-size: 22px;
+  margin-top: 3rem;
+  font-size: 1.375rem;
   letter-spacing: 1px;
 }
 .ad-add-address-btn:hover {
   background-color: #78ac36;
+}
+
+@media screen and (max-width: 480px) {
+  .ad-content {
+    width: 90vw;
+  }
+
+  .ad-title p {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .ad-title {
+    margin-bottom: 1rem;
+  }
+
+  .ad-body-text {
+    font-size: 1.1rem;
+  }
+
+  .ad-body-input,
+  .ad-address-name input {
+    font-size: 1rem;
+  }
+
+  .ad-address-name,
+  .ad-address-name input {
+    margin: 0;
+  }
+
+  .ad-address-name label,
+  .ad-address-name input,
+  .address-info-container label,
+  .address-info-container input {
+    font-size: 1rem !important;
+  }
+
+  .ad-add-address-btn {
+    margin: 0;
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

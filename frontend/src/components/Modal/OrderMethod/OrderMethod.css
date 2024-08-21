@@ -1,6 +1,6 @@
 .om-heading {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   letter-spacing: 1.5px;
   justify-content: center;
   align-items: center;
@@ -26,13 +26,41 @@
 .om-method {
   color: #0d6490;
   cursor: pointer;
-  padding: 50px;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 1.25rem;
   letter-spacing: 1.5px;
 }
 
 .om-method img {
-  width: 100px;
+  min-width: 6.25rem;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .om-heading p {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .om-method {
+    padding: 0;
+    padding: 1rem 0;
+  }
+
+  .om-method img {
+    max-width: 4rem;
+    min-width: 4rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

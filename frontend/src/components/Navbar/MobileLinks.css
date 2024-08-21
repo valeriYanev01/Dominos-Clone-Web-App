@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 999;
+  z-index: 9999;
   background-color: #fff;
 }
 
@@ -41,8 +41,6 @@
 .navigation-more,
 .navigation-order {
   color: #fff !important;
-  font-weight: bold;
-  margin: 1rem !important;
 }
 
 .nav-mobile-special {

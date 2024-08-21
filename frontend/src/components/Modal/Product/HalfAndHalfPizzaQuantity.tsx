@@ -133,36 +133,38 @@ const HalfAndHalfPizzaQuantity: React.FC<Props> = ({
   };
 
   return (
-    <div className="pm-qty-weigh-container">
-      <p>QUANTITY</p>
-      <div className="pm-qty-weigh">
-        <div className="navigation-basket-price-container">
-          <span
-            onClick={handleDecrease}
-            className={`navigation-basket-quantity-control
+    <div className="pm-desc-container">
+      <div className="pm-qty-weigh-container">
+        <p>QUANTITY</p>
+        <div className="pm-qty-weigh">
+          <div className="navigation-basket-price-container">
+            <span
+              onClick={handleDecrease}
+              className={`navigation-basket-quantity-control
                         ${quantity < 2 ? "navigation-basket-decrease-quantity-disabled" : ""}`}
-          >
-            {quantity < 2 ? (
-              <img src="/svg/basket/minus-disabled.svg" className="navigation-basket-quantity-control-img" />
-            ) : (
-              <img src="/svg/basket/minus.svg" className="navigation-basket-quantity-control-img" />
-            )}
-          </span>
-          <span className="navigation-basket-quantity-text">{quantity}</span>
-          <span onClick={handleIncrease} className="navigation-basket-quantity-control">
-            <img src="/svg/basket/plus.svg" className="navigation-basket-quantity-control-img" />
-          </span>
+            >
+              {quantity < 2 ? (
+                <img src="/svg/basket/minus-disabled.svg" className="navigation-basket-quantity-control-img" />
+              ) : (
+                <img src="/svg/basket/minus.svg" className="navigation-basket-quantity-control-img" />
+              )}
+            </span>
+            <span className="navigation-basket-quantity-text">{quantity}</span>
+            <span onClick={handleIncrease} className="navigation-basket-quantity-control">
+              <img src="/svg/basket/plus.svg" className="navigation-basket-quantity-control-img" />
+            </span>
+          </div>
+          <div className="weight-container">
+            <img src="/svg/weight.svg" className="weight-img" />
+            <p className="pm-weight-text">{weigh} g</p>
+          </div>
         </div>
-        <div className="weight-container">
-          <img src="/svg/weight.svg" className="weight-img" />
-          <p className="pm-weight-text">{weigh} g</p>
+
+        <div className="pm-order-btn-container" onClick={handleAddToBasket}>
+          <img src="/svg/basket.svg" className="pm-order-img" />
+
+          {<div className="pm-add-btn">{(price * quantity).toFixed(2)}</div>}
         </div>
-      </div>
-
-      <div className="pm-order-btn-container" onClick={handleAddToBasket}>
-        <img src="/svg/basket.svg" className="pm-order-img" />
-
-        {<div className="pm-add-btn">{(price * quantity).toFixed(2)}</div>}
       </div>
     </div>
   );

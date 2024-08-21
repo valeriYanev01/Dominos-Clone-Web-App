@@ -12,6 +12,7 @@ interface Props {
     img: string;
     bigImg?: string;
     filter: string[];
+    price: [{ medium: []; large: []; jumbo: [] }];
   };
   selectedProduct: string;
   setSelectedProduct: React.Dispatch<React.SetStateAction<string>>;
@@ -77,11 +78,20 @@ const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedP
         setProduct([product.name, product.img, product.desc, product.bigImg || "", product.type]);
       }}
     >
-      <div className="menu-spc-title-container" onClick={showAdditionalMenu}>
+      <div
+        className="menu-spc-title-container"
+        onClick={() => {
+          setQuantity(1);
+          showAdditionalMenu();
+        }}
+      >
         <p className="menu-spc-title">{product.name}</p>
       </div>
       <img
-        onClick={showAdditionalMenu}
+        onClick={() => {
+          setQuantity(1);
+          showAdditionalMenu();
+        }}
         src={product.img}
         className={`menu-spc-img ${product.type === "drinks" ? "menu-spc-drinks-img" : ""}`}
       />
@@ -89,7 +99,10 @@ const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedP
       {selectedProduct !== product.name ? (
         <div>
           <p
-            onClick={showAdditionalMenu}
+            onClick={() => {
+              setQuantity(1);
+              showAdditionalMenu();
+            }}
             className={`menu-spc-desc ${product.type === "drinks" ? "menu-spc-drinks-desc" : ""}`}
           >
             {product.desc}
@@ -118,7 +131,13 @@ const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedP
               <span></span>
             </div>
           )}
-          <button className="menu-spc-btn" onClick={showAdditionalMenu}>
+          <button
+            className="menu-spc-btn"
+            onClick={() => {
+              setQuantity(1);
+              showAdditionalMenu();
+            }}
+          >
             CHOOSE
           </button>
         </div>
@@ -154,7 +173,7 @@ const SingleProduct: React.FC<Props> = ({ product, selectedProduct, setSelectedP
             </div>
             <div className="menu-spc-other-price">
               <p>PRICE</p>
-              <p>{(product.price[0].medium * quantity).toFixed(2)} BGN</p>
+              <p>{parseFloat(String((product.price[0].medium as unknown as number) * quantity)).toFixed(2)} BGN</p>
             </div>
           </div>
           <button className="menu-spc-btn" onClick={handleAddToBasket}>

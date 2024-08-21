@@ -6,48 +6,48 @@
 }
 
 .dm-bg-container-out {
-  padding-top: 170px;
+  padding-top: 10.625rem;
 }
 
 .dm-content-container-out {
-  padding: 40px;
+  padding: 2.5rem;
   width: 75%;
   background-color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
 .dm-content-out {
   background-color: #fff;
-  padding: 40px;
+  padding: 2.5rem;
   border: #0278ae 5px dashed;
 }
 
 .dm-logo-out {
-  width: 260px;
+  width: 16.25rem;
   display: block;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
   cursor: pointer;
 }
 
 .dm-header-text-out {
   display: inline-block;
-  padding: 15px 40px;
+  padding: 1rem 2.5rem;
   background-color: #e11d38;
   color: white;
-  font-size: 36px;
+  font-size: 2.25rem;
   letter-spacing: 1.1px;
   text-shadow: 2.2px 2px #0278ae;
   font-weight: bolder;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
 .dm-main-text-out,
 .dm-deal-disclaimer-out {
   color: #0278ae;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bolder;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
 .dm-main-text-out span,
@@ -59,12 +59,12 @@
 .dm-deal-text-out {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  font-size: 28px;
+  gap: 1.25rem;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #0278ae;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
 .dm-deal-text-out span {
@@ -82,21 +82,21 @@
 }
 
 .dm-deal-text-number-out {
-  font-size: 124px;
+  font-size: 7.75rem;
   text-shadow: 6px 4px 7px #0278ae;
 }
 
 .dm-btn-out {
   background-color: red;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
   width: fit-content;
   border-radius: 5px;
   color: white;
-  font-size: 30px;
+  font-size: 2rem;
   letter-spacing: 2px;
   font-weight: bold;
   cursor: pointer;
-  padding: 10px 60px;
+  padding: 0.625rem 3.75rem;
 }
 
 .dm-login-out {
@@ -116,7 +116,62 @@
 }
 
 .dm-terms-out {
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #0278ae;
   font-weight: bold;
+}
+
+@media screen and (max-width: 480px) {
+  .dm-content-container-out {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .dm-content-out {
+    padding: 1rem;
+  }
+
+  .dm-logo-out {
+    width: 10rem;
+  }
+
+  .dm-header-text-out {
+    font-size: 1.2rem;
+  }
+
+  .dm-main-text-out,
+  .dm-deal-disclaimer-out {
+    font-size: 1rem;
+  }
+
+  .dm-main-text-out span,
+  .dm-deal-disclaimer-out span {
+    font-size: 0.8rem;
+  }
+
+  .dm-deal-text-out span:nth-child(2) {
+    font-size: 1.2rem !important;
+  }
+
+  .dm-deal-text-number-out {
+    font-size: 4rem;
+  }
+
+  .dm-btn-out {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dm-terms-out {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

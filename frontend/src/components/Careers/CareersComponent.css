@@ -25,9 +25,6 @@
   letter-spacing: 0.5mm;
 }
 
-.careers-body {
-}
-
 .careers-body-text {
   font-size: 1.1rem;
 }
@@ -243,4 +240,79 @@
   100% {
     left: -500px;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .careers-container {
+    width: 90vw;
+  }
+
+  .careers-heading p {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .careers-body-text,
+  .careers-body-benefits li {
+    font-size: 1rem;
+  }
+
+  .careers-body-benefits {
+    padding-left: 0 !important;
+  }
+
+  .careers-jobs-container p,
+  .careers-personal-details p {
+    font-size: 1.1rem;
+  }
+
+  .careers-personal-details-field-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .careers-personal-details-field-container label,
+  .careers-personal-details-field-container input,
+  .careers-personal-details-field-single label,
+  .careers-personal-details-field-single input {
+    font-size: 1rem;
+  }
+
+  .careers-positions-text {
+    font-size: 1.1rem;
+  }
+
+  .careers-positions label,
+  .careers-positions input {
+    font-size: 1rem;
+  }
+
+  .careers-upload-cv p {
+    font-size: 1.1rem;
+  }
+
+  .careers-cv-conditions-container {
+    width: 100%;
+  }
+
+  .careers-conditions input {
+    transform: scale(1.5);
+  }
+
+  .careers-conditions label {
+    font-size: 0.9rem;
+  }
+
+  .careers-required-fields-text {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

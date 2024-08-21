@@ -1,6 +1,6 @@
 .pm-qty-weigh {
   display: flex;
-  gap: 50px;
+  gap: 3rem;
 }
 
 .weight-container {
@@ -10,7 +10,7 @@
 }
 
 .weight-img {
-  width: 60px;
+  width: 3.75rem;
 }
 
 .pm-weight-text {
@@ -18,17 +18,17 @@
   color: #fff;
   bottom: 0;
   font-weight: 100;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .pm-order-btn-container {
   display: flex;
   background-color: #609e29;
   justify-content: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 0.675rem;
+  padding: 0.675rem;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   border-radius: 5px;
   width: 100%;
   color: #fff;
@@ -45,4 +45,30 @@
 .pm-order-img {
   width: 30px;
   margin: 0;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .pm-qty-weigh {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pm-qty-weigh div {
+    margin: 0;
+  }
+
+  .pm-order-btn-container {
+    margin-bottom: 3rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

@@ -148,3 +148,47 @@
 .deal-add-btn:hover {
   background-color: #78ac36;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .deal-modal-container {
+    width: 100vw;
+  }
+
+  .deal-modal-heading p {
+    font-size: 1.2rem;
+  }
+
+  .deal-modal-deal-description {
+    width: 80%;
+  }
+
+  .dm-steps-container {
+    flex-direction: column;
+  }
+
+  .dm-step-side-border {
+    border-left: none;
+    border-top: dashed 2px #55555588;
+  }
+
+  .dm-add-btn-price-container {
+    width: 100%;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+  }
+
+  .dm-price-number {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

@@ -5,16 +5,16 @@
 .pas-addresses {
   flex: 2;
   margin: 0;
-  margin-top: 50px;
+  margin-top: 3rem;
   text-align: center;
   color: #0d6490;
-  padding: 0 10px;
+  padding: 0 0.625rem;
 }
 
 .pas-single-address {
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   text-align: left;
-  font-size: 20px;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 
@@ -25,17 +25,17 @@
 .pas-settings {
   border-left: 2px dashed #5555556b;
   border-right: 2px dashed #5555556b;
-  padding: 0 30px;
+  padding: 0 2rem;
   flex: 10;
 }
 
 .pas-settings-address-container input {
-  padding: 5px;
+  padding: 0.3125rem;
   color: #555;
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: #f2f4f5;
   border: 1px solid rgb(207, 207, 207);
-  border-radius: 5px;
+  border-radius: 0.3125rem;
 }
 
 .pas-body input:focus {
@@ -62,17 +62,17 @@
 }
 
 #address-streetName {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .your-store-text {
-  margin: 10px 0;
-  padding: 10px 20px;
+  margin: 0.625rem 0;
+  padding: 0.625rem 1.25rem;
   color: #3c763d;
   background-color: #dff0d8;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   font-weight: normal;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .your-store-text2 {
@@ -82,13 +82,13 @@
 .address-settings-details-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .address-settings-details-container div {
   display: flex;
   margin: 0;
-  column-gap: 20px;
+  column-gap: 1.25rem;
 }
 
 .address-info-container {
@@ -98,12 +98,12 @@
 }
 
 .address-info-container input {
-  padding: 5px;
+  padding: 0.3125rem;
   color: #555;
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: #f2f4f5;
   border: 1px solid rgb(207, 207, 207);
-  border-radius: 5px;
+  border-radius: 0.3125rem;
 }
 
 .address-info-container label {
@@ -112,19 +112,42 @@
 
 .pas-edit-save,
 .pas-edit-delete {
-  padding: 20px 10px;
+  padding: 1.25rem 0.625rem;
   border-radius: 50%;
   color: white;
   text-align: center;
-  margin: 0 20px 0 20px;
+  margin: 0 1.25rem 0 1.25rem;
   cursor: pointer;
 }
 
 .pas-edit-save {
   background-color: #5cb85c;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .pas-edit-delete {
   background-color: #df232d;
+}
+
+@media screen and (max-width: 480px) {
+  .your-store-text {
+    font-size: 1rem;
+  }
+
+  .address-settings-details-container {
+    gap: 0;
+  }
+
+  .address-settings-details-container div {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

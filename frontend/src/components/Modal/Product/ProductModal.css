@@ -45,7 +45,7 @@
 }
 
 .pm-name-container p {
-  font-size: 34px;
+  font-size: 2rem;
   text-transform: uppercase;
   color: #0073aa;
 }
@@ -54,8 +54,8 @@
   border-top: 2px dashed #5555555d;
   width: 90%;
   display: flex;
-  padding: 10px 0;
-  margin-bottom: 20px;
+  padding: 0.625rem 0;
+  margin-bottom: 1.25rem;
 }
 
 .pm-options {
@@ -73,7 +73,7 @@
 
 .pm-options p {
   color: #337ab7;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -86,8 +86,8 @@
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: repeat(3, 33%);
-  gap: 10px;
-  padding: 0 10px;
+  gap: 0.625rem;
+  padding: 0 0.625rem;
 }
 
 .pm-pizza-crust-container div {
@@ -118,20 +118,20 @@
 
 .edit-toppings-container {
   display: flex;
-  gap: 30px;
+  gap: 2rem;
   width: fit-content;
   background-color: #0073aa;
   color: #fff;
   font-size: 14px;
   padding: 5px;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   cursor: pointer;
 }
 
 .logged-topping-container {
   display: flex;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .toppings-default {
@@ -155,8 +155,8 @@
 }
 
 .toppings-container input {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .all-toppings {
@@ -167,11 +167,11 @@
 }
 
 .topping-name {
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bold;
   text-decoration: underline;
   margin: 0;
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 }
 
 .topping {
@@ -185,7 +185,7 @@
 }
 
 .additional-topping {
-  margin-left: 10px;
+  margin-left: 0.625rem;
 }
 
 .additional-topping input {
@@ -219,7 +219,7 @@
 .hah-second-product select {
   border: 1px solid #e3e4e5;
   background-color: #e3e4e581;
-  padding: 10px;
+  padding: 0.625rem;
   min-width: 18rem;
 }
 
@@ -247,7 +247,96 @@
   color: #e31837;
   border: 2px solid #e31837;
   border-radius: 50%;
-  padding: 2px 10px;
+  padding: 2px 0.625rem;
   font-size: 1.2rem;
   cursor: default;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .product-modal-container {
+    width: 100vw !important;
+  }
+
+  .pm-heading-image-pizza {
+    transform: none;
+  }
+
+  .pm-heading-image-img {
+    width: 70vw !important;
+    margin-top: 2rem;
+  }
+
+  .pm-info-container-pizza {
+    margin: 0;
+  }
+
+  .pm-name-container {
+    align-items: center;
+  }
+
+  .pm-name-container p {
+    font-size: 1.5rem !important;
+  }
+
+  .pm-name-container > .deal-decor {
+    margin: 0;
+  }
+
+  .pm-options-container {
+    width: 100%;
+  }
+
+  .pm-options {
+    padding: 0;
+  }
+
+  .pm-options p {
+    font-size: 1rem;
+  }
+
+  .pm-options img {
+    width: 3rem;
+  }
+
+  .pm-pizza-crust-container {
+    display: flex;
+    flex-direction: column !important;
+  }
+
+  .close-modal-product {
+    top: 7% !important;
+  }
+
+  /* FOR HALF AND HALF PIZZAS */
+
+  .hah-size-crust-container,
+  .hah-products-container {
+    flex-direction: column;
+  }
+
+  .hah-size-crust-container {
+    gap: 2rem;
+    margin: 2rem 1rem;
+  }
+
+  .hah-products-container {
+    width: 100%;
+  }
+
+  .hah-first-product,
+  .hah-second-product {
+    margin-left: 1rem;
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

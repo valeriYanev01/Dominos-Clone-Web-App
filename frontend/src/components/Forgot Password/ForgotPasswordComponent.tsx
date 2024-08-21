@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./ForgotPasswordComponent.css";
-import Heading from "../Heading/Heading";
 import axios from "axios";
 
 const ForgotPasswordComponent: React.FC = () => {
@@ -9,6 +8,7 @@ const ForgotPasswordComponent: React.FC = () => {
   const [error, setError] = useState("");
 
   const handleSendNewPassword = async () => {
+    navigator.vibrate(50);
     setError("");
     try {
       const response = await axios.post("http://localhost:3000/api/users/forgot-password", { email });
@@ -25,7 +25,11 @@ const ForgotPasswordComponent: React.FC = () => {
 
   return (
     <div className="forgot-password-container">
-      <Heading text="FORGOT MY PASSWORD" />
+      <div className="modal-title fp-modal-title">
+        <img src="/svg/decorLeftRed.svg" className="deal-decor" />
+        <span>FORGOT MY PASSWORD</span>
+        <img src="/svg/decorRightRed.svg" className="deal-decor" />
+      </div>
 
       <div className="forgot-password-content">
         <p>

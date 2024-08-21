@@ -85,8 +85,10 @@ const LoginModal = () => {
         </div>
       </div>
 
-      <div className="login-modal-login-container" onClick={handleLogin}>
-        <div className="login-modal-login">Login</div>
+      <div className="login-modal-login-container">
+        <div className="login-modal-login" onClick={handleLogin}>
+          Login
+        </div>
       </div>
 
       {error && <p>{error}</p>}
@@ -94,10 +96,8 @@ const LoginModal = () => {
       <div className="login-modal-signup-text">New member? Signup Now!</div>
 
       <div className="login-modal-register-container">
-        <Link className="login-modal-register-link" to="/signup">
-          <div onClick={() => setOpenModal(false)} className="login-modal-register">
-            Register
-          </div>
+        <Link className="login-modal-register-link" to="/signup" onClick={() => setOpenModal(false)}>
+          <div className="login-modal-register">Register</div>
         </Link>
       </div>
     </div>

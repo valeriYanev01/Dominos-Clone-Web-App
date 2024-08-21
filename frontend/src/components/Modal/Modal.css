@@ -21,7 +21,7 @@
   z-index: 30 !important;
   border: 2px solid lightgray;
   background: #fff;
-  padding: 10px;
+  padding: 0.625rem;
   transform: translate(-50%, -50%);
   box-shadow: 5px 20px 15px 10px rgba(0, 0, 0, 0.2);
 }
@@ -36,7 +36,7 @@
     radial-gradient(10px circle at bottom left, transparent 8px, lightgray 8px 10px, transparent 0 0),
     radial-gradient(10px circle at bottom right, transparent 8px, lightgray 8px 10px, white 10px);
   z-index: 4;
-  padding: 30px;
+  padding: 2rem;
   mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 10px, black 10px),
     radial-gradient(circle at 100% 0, transparent 0, transparent 10px, black 10px),
     radial-gradient(circle at 0 100%, transparent 0, transparent 10px, black 10px),
@@ -48,7 +48,7 @@
 }
 
 .modal-login-inner-layer {
-  padding: 0px 30px;
+  padding: 0px 2rem;
 }
 
 .close-modal {
@@ -62,7 +62,7 @@
 .close-modal:before {
   content: "\2716";
   color: white;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   background-color: #0d6490;
   border-radius: 50%;
 }
@@ -77,4 +77,38 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .modall {
+    padding: 0 !important;
+  }
+  .abra {
+    width: 90%;
+  }
+
+  .inner-layer {
+    padding: 1rem;
+  }
+
+  .close-modal {
+    top: -5%;
+    right: -5%;
+  }
+
+  .close-modal-product {
+    top: 5% !important;
+    right: 10% !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

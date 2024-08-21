@@ -4,14 +4,14 @@
   padding: 0;
   cursor: pointer;
   justify-content: space-between;
-  gap: 10px;
+  gap: 0.625rem;
   margin: 0;
   width: 100%;
   align-items: center;
 }
 
 .pm-pizza-crust-img {
-  width: 60px;
+  width: 3.75rem;
 }
 
 .pm-pizza-crust-select-container {
@@ -19,16 +19,16 @@
 }
 
 .pm-pizza-crust-select {
-  width: 25px;
-  height: 25px;
+  width: 1.5625rem;
+  height: 1.5625rem;
   background-color: #ddd;
   border-radius: 50%;
   position: absolute;
-  right: 10px;
+  right: 0.625rem;
 }
 
 .pm-pizza-crust-info {
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .active-crust {
@@ -47,7 +47,7 @@
 .pm-pizza-crust-title {
   color: #0073aa;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .pm-pizza-crust-desc {
@@ -58,7 +58,7 @@
 .pm-desc-container {
   display: flex;
   justify-content: space-between;
-  padding: 50px;
+  padding: 3rem;
   align-items: start;
 }
 
@@ -68,11 +68,11 @@
   height: 100%;
   font-weight: bold;
   color: #555;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .pm-desc p:first-child {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .pm-order-container {
@@ -86,23 +86,71 @@
 
 .pm-qty-weigh-container {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #555;
-  font-size: 20px;
+  font-size: 1.25rem;
   border-left: 2px dashed #5555556d;
-  padding-left: 10px;
+  padding-left: 0.625rem;
 }
 
 .pm-quantity-text {
-  font-size: 30px;
-  margin: 0 20px;
+  font-size: 2rem;
+  margin: 0 1.25rem;
 }
 
 .pm-quantity-increase,
 .pm-quantity-decrease {
   border: 2px solid #555;
-  padding: 0px 10px;
+  padding: 0px 0.625rem;
   border-radius: 50%;
   vertical-align: middle;
   cursor: pointer;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .pm-desc-container {
+    flex-direction: column;
+    padding: 0;
+    border-top: 2px dashed #5555555d;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .pm-desc {
+    width: 90%;
+  }
+
+  .pm-order-container {
+    width: 100%;
+  }
+
+  .pm-order-container > div {
+    width: 100% !important;
+  }
+
+  .pm-qty-weigh-container {
+    margin-top: 1rem;
+  }
+
+  .pm-qty-weigh-container {
+    border: none;
+    padding: 0 !important;
+    padding-bottom: 2rem;
+  }
+
+  .pm-qty-weigh {
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

@@ -11,6 +11,7 @@ dotenv.config();
 const MY_EMAIL = process.env.MY_EMAIL;
 const APP_EMAIL = process.env.APP_EMAIL;
 const GOOGLE_AUTH_PASS = process.env.GOOGLE_AUTH_PASS;
+const EMAIL_SERVICE = process.env.EMAIL_SERVICE;
 
 const addressSchema = new mongoose.Schema({
   name: {
@@ -77,6 +78,28 @@ const productSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+  },
+  firstHalf: {
+    name: {
+      type: String,
+    },
+    addedToppings: {
+      type: [String],
+    },
+    removedToppings: {
+      type: [String],
+    },
+  },
+  secondHalf: {
+    name: {
+      type: String,
+    },
+    addedToppings: {
+      type: [String],
+    },
+    removedToppings: {
+      type: [String],
+    },
   },
 });
 
@@ -642,7 +665,7 @@ userSchema.statics.newOrder = async function (
 ) {
   const sendEmailForSuccessfulOrder = async () => {
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      service: EMAIL_SERVICE,
       auth: {
         user: APP_EMAIL,
         pass: GOOGLE_AUTH_PASS,
@@ -650,93 +673,116 @@ userSchema.statics.newOrder = async function (
     });
 
     const mailOptionsForMe = {
-      from: "dominos.clone01@gmail.com",
+      from: APP_EMAIL,
       to: MY_EMAIL,
       subject: `${orderType === "delivery" ? `Delivery for ${address.fullAddress}.` : `Carry Out for ${store}`}`,
       text: `
-         ${
-           orderType === "delivery"
-             ? `
-            Address: ${address.fullAddress},
-            Time: ${deliveryTime},
-            ${products
-              .map((product) => {
-                return `
-                Name: ${product.name}, 
-                Quantity: ${product.quantity},
-                  ${
-                    product.addedToppings || product.removedToppings
-                      ? `Modification: 
-                Added: ${product.addedToppings.join(", ")},
-                Removed: ${product.removedToppings.join(", ")}
-            `
-                      : ""
-                  }`;
-              })
-              .join("\n")}
-            Price: ${finalPrice.toFixed(2)},
-            Phone Number: ${phoneNumber}
-            Floor: ${floor},
-            Door Bell: ${doorBell},
-            Comments: ${comments},
-            Payment Method: ${paymentMethod},
-            ${
-              invoice
-                ? `Invoice: 
-              Name: ${invoice.companyName}
-              Address: ${invoice.companyAddress}
-              Activity: ${invoice.companyActivity}
-              VAT: ${invoice.companyVAT}
-              Owner: ${invoice.companyOwner}
-              `
-                : ""
-            }
-              `
-             : `
-              Store: ${store},
-              Time: ${deliveryTime},
-               ${products
-                 .map((product) => {
-                   return `
-                Name: ${product.name}, 
-                Quantity: ${product.quantity},
-                  ${
-                    product.addedToppings || product.removedToppings
-                      ? `Modification: 
-                Added: ${product.addedToppings.join(", ")},
-                Removed: ${product.removedToppings.join(", ")}
-            `
-                      : ""
-                  }`;
-                 })
-                 .join("\n")}
-              Price: ${finalPrice.toFixed(2)},
-              Payment Method: ${paymentMethod}
-               ${
-                 invoice
-                   ? `Invoice: 
-              Name: ${invoice.companyName}
-              Address: ${invoice.companyAddress}
-              Activity: ${invoice.companyActivity}
-              VAT: ${invoice.companyVAT}
-              Owner: ${invoice.companyOwner}
-              `
-                   : ""
-               }
+        ${
+          orderType === "delivery"
+            ? `
+           Address: ${address.fullAddress},
+           Time: ${deliveryTime},
+           ${products
+             .map((product) => {
+               return `
+               Name: ${product.name}, 
+               Quantity: ${product.quantity},
+                 ${
+                   product.name !== "Half and Half" &&
+                   (product.modifications.addedToppings || product.modifications.removedToppings)
+                     ? `Modification: 
+               Added: ${product.modifications.addedToppings.join(", ")},
+               Removed: ${product.modifications.removedToppings.join(", ")}
+           `
+                     : ""
+                 }
+                 ${
+                   product.name === "Half and Half"
+                     ? `First Half: ${product.firstHalf.name} 
+               Added: ${product.firstHalf.modifications.added.join(", ")},
+               Removed: ${product.firstHalf.modifications.removed.join(", ")},
+
+               Second Half: ${product.secondHalf.name} 
+               Added: ${product.secondHalf.modifications.added.join(", ")},
+               Removed: ${product.secondHalf.modifications.removed.join(", ")}
+           `
+                     : ""
+                 }`;
+             })
+             .join("\n")}
+           Price: ${finalPrice.toFixed(2)},
+           Phone Number: ${phoneNumber}
+           Floor: ${floor},
+           Door Bell: ${doorBell},
+           Comments: ${comments},
+           Payment Method: ${paymentMethod},
+           ${
+             invoice
+               ? `Invoice: 
+             Name: ${invoice.companyName}
+             Address: ${invoice.companyAddress}
+             Activity: ${invoice.companyActivity}
+             VAT: ${invoice.companyVAT}
+             Owner: ${invoice.companyOwner}
              `
-         }
-    `,
+               : ""
+           }`
+            : `
+             Store: ${store},
+             Time: ${deliveryTime},
+              ${products
+                .map((product) => {
+                  return `
+               Name: ${product.name}, 
+               Quantity: ${product.quantity},
+                 ${
+                   product.modifications.addedToppings || product.modifications.removedToppings
+                     ? `Modification: 
+               Added: ${product.modifications.addedToppings.join(", ")},
+               Removed: ${product.modifications.removedToppings.join(", ")}
+           `
+                     : ""
+                 }
+                 ${
+                   product.name === "Half and Half"
+                     ? `First Half: ${product.firstHalf.name} 
+               Added: ${product.firstHalf.modifications.added.join(", ")},
+               Removed: ${product.firstHalf.modifications.removed.join(", ")},
+               Second Half: ${product.secondHalf.name} 
+               Added: ${product.secondHalf.modifications.added.join(", ")},
+               Removed: ${product.secondHalf.modifications.removed.join(", ")}
+           `
+                     : ""
+                 }`;
+                })
+                .join("\n")}
+             Price: ${finalPrice.toFixed(2)},
+             Payment Method: ${paymentMethod}
+              ${
+                invoice
+                  ? `Invoice: 
+             Name: ${invoice.companyName}
+             Address: ${invoice.companyAddress}
+             Activity: ${invoice.companyActivity}
+             VAT: ${invoice.companyVAT}
+             Owner: ${invoice.companyOwner}
+             `
+                  : ""
+              }
+            `
+        }
+   `,
     };
 
     const mailOptionsForOrderer = {
-      from: "dominos.clone01@gmail.com",
+      from: APP_EMAIL,
       to: email,
       subject: `Order - Successful`,
       text: `
       Hello,
 
-      You successfully create order for ${
-        orderType === "delivery" ? `delivery to ${address.fullAddress} ` : `pickint at ${store}`
+      You successfully created an order for ${
+        orderType === "delivery" ? `delivery to ${address.fullAddress}` : `pick-up at ${store}`
       } for ${deliveryTime}.
 
       Your Order: 
@@ -747,10 +793,23 @@ userSchema.statics.newOrder = async function (
       Name: ${product.name}, 
       Quantity: ${product.quantity},
       ${
-        product.addedToppings || product.removedToppings
+        product.name !== "Half and Half" &&
+        (product.modifications.addedToppings || product.modifications.removedToppings)
           ? `Modification: 
-              Added: ${product.addedToppings.join(", ")},
-              Removed: ${product.removedToppings.join(", ")}
+              Added: ${product.modifications.addedToppings.join(", ")},
+              Removed: ${product.modifications.removedToppings.join(", ")}
+            `
+          : ""
+      }
+      ${
+        product.name === "Half and Half"
+          ? `First Half: ${product.firstHalf.name} 
+              Added: ${product.firstHalf.modifications.added.join(", ")},
+              Removed: ${product.firstHalf.modifications.removed.join(", ")},
+
+              Second Half: ${product.secondHalf.name} 
+              Added: ${product.secondHalf.modifications.added.join(", ")},
+              Removed: ${product.secondHalf.modifications.removed.join(", ")}
             `
           : ""
       }`;
@@ -813,17 +872,39 @@ userSchema.statics.newOrder = async function (
       }
     });
 
-    const nonDealProductObjects = nonDealProducts.map((product) => ({
-      name: product.name,
-      size: product.size,
-      crust: product.crust,
-      toppings: product.toppings,
-      addedToppings: product.addedToppings,
-      removedToppings: product.removedToppings,
-      quantity: product.quantity,
-      price: product.price,
-      type: product.type,
-    }));
+    const nonDealProductObjects = nonDealProducts.map((product) => {
+      if (product.name === "Half and Half") {
+        return {
+          name: product.name,
+          size: product.size,
+          crust: product.crust,
+          quantity: product.quantity,
+          price: product.price,
+          type: product.type,
+          firstHalf: {
+            name: product.firstHalf.name,
+            addedToppings: product.firstHalf.modifications.added,
+            removedToppings: product.firstHalf.modifications.removed,
+          },
+          secondHalf: {
+            name: product.secondHalf.name,
+            addedToppings: product.secondHalf.modifications.added,
+            removedToppings: product.secondHalf.modifications.removed,
+          },
+        };
+      } else {
+        return {
+          name: product.name,
+          size: product.size,
+          crust: product.crust,
+          addedToppings: product.addedToppings,
+          removedToppings: product.removedToppings,
+          quantity: product.quantity,
+          price: product.price,
+          type: product.type,
+        };
+      }
+    });
 
     const dealProductObjects = dealProducts.map((deal) => ({
       price: deal.price,
@@ -1046,7 +1127,7 @@ userSchema.statics.forgotPassword = async function (email) {
     user.resetPasswordTokenExpireDate = Date.now() + 3600000;
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: EMAIL_SERVICE,
       auth: {
         user: APP_EMAIL,
         pass: GOOGLE_AUTH_PASS,
@@ -1055,7 +1136,7 @@ userSchema.statics.forgotPassword = async function (email) {
 
     const mailOptions = {
       from: APP_EMAIL,
-      to: MY_EMAIL,
+      to: email,
       subject: "Password Reset",
       text: `Click to reset Password: http://localhost:5173/reset-password/${token}`,
     };

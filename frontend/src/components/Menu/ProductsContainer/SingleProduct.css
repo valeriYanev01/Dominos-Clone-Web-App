@@ -80,3 +80,36 @@
 .menu-spc-btn:hover {
   background-color: #70a83e;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .menu-single-product-container {
+    flex-basis: unset;
+    max-width: unset;
+    width: 80vw !important;
+  }
+
+  .menu-spc-title {
+    font-size: 1.2rem;
+  }
+
+  .menu-spc-desc {
+    font-size: 1rem;
+    width: 90%;
+    overflow-y: auto;
+  }
+
+  .menu-spc-btn {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

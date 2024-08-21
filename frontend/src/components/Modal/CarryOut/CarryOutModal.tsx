@@ -144,7 +144,7 @@ const CarryOutModal = () => {
 
   useEffect(() => {
     setOrderTime(deliveryHoursOpenedStore[0]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deliveryHoursOpen = deliveryHoursOpenedStore
@@ -230,7 +230,7 @@ const CarryOutModal = () => {
         <CarryOutMap coords={storeCoords} />
       </div>
 
-      <div className={`com-order-btn `} onClick={handleOrder}>
+      <div className="com-order-btn" onClick={handleOrder}>
         ORDER NOW!
       </div>
     </div>

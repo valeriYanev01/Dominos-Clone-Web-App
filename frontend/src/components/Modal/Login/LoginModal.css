@@ -1,15 +1,21 @@
 .login-modal-container {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   max-height: 80vh;
   overflow: auto;
 }
 
 .login-modal-title {
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 1.25rem;
   margin: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
+}
+
+.login-modal-title img,
+.login-modal-title span {
+  margin: 0 !important;
 }
 
 .login-modal-title span,
@@ -25,18 +31,18 @@
 .login-modal-oAuthLinks-container {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-bottom: 30px;
+  gap: 2rem;
+  margin-bottom: 2rem;
   width: 100% !important;
 }
 
 .login-modal-oAuthLink {
-  width: calc(50% - 20px);
+  width: calc(50% - 1.25rem);
   background-color: black;
   border-radius: 5px;
   color: white;
   text-decoration: none;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   display: flex;
   justify-content: center;
 }
@@ -46,16 +52,16 @@
 }
 
 .login-modal-oAuthLink span {
-  padding-left: 10px;
+  padding-left: 0.625rem;
   margin-right: auto;
-  font-size: 20px;
+  font-size: 1.25rem;
   letter-spacing: 1px;
 }
 
 .login-modal-svg {
   margin: 0px;
-  height: 20px;
-  padding-right: 5px;
+  height: 1.25rem;
+  padding-right: 0.3125rem;
   border-right: 1px solid white;
   align-self: center;
 }
@@ -63,16 +69,16 @@
 .login-modal-input-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 0.625rem;
+  margin-bottom: 0.625rem;
 }
 
 .login-modal-input-container input {
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   border: 1px solid #e3e4e5;
   border-radius: 5px;
   color: #555;
-  font-size: 20px;
+  font-size: 1.25rem;
   background-color: #f2f4f5;
 }
 
@@ -82,22 +88,22 @@
 
 .login-modal-fp-ks {
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
 .login-modal-forgot-password {
   color: black;
   font-style: italic;
-  font-size: 18px;
+  font-size: 1.125rem;
   margin: 0;
 }
 
 .login-modal-ks {
   display: flex;
-  gap: 10px;
+  gap: 0.625rem;
   margin: 0;
   margin-left: auto;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .login-modal-ks input {
@@ -106,7 +112,7 @@
 
 .login-modal-login-container {
   text-align: center;
-  padding-bottom: 30px;
+  padding-bottom: 2rem;
   border-bottom: dashed 2px lightgray;
 }
 
@@ -114,35 +120,94 @@
   width: 50%;
   background-color: #e2213d;
   color: white;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   border-radius: 5px;
-  font-size: 22px;
+  font-size: 1.375rem;
   cursor: pointer;
 }
 
 .login-modal-signup-text {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   color: #555;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .login-modal-register-container {
-  margin-top: 20px;
+  margin-top: 1.25rem;
   text-align: center;
 }
 
 .login-modal-register {
-  padding: 5px 10px;
-  font-size: 22px;
+  padding: 0.3125rem 0.625rem;
+  font-size: 1.375rem;
   width: 50%;
   background-color: #0d6490;
   border-radius: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
   cursor: pointer;
 }
 
 .login-modal-register-link {
   text-decoration: none;
   color: #fff;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .login-modal-title span,
+  .deal-decor {
+    font-size: 1.2rem;
+  }
+
+  .login-modal-oAuthLinks-container {
+    gap: 1rem;
+    width: fit-content !important;
+  }
+  .login-modal-oAuthLink {
+    width: fit-content !important;
+  }
+
+  .login-modal-svg {
+    border-right: none !important;
+  }
+
+  .login-modal-fp-ks {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .login-modal-ks {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .login-modal-ks label {
+    margin: 0;
+  }
+
+  .login-modal-login-container {
+    padding-bottom: 1rem;
+  }
+
+  .login-modal-register-link {
+    width: -webkit-fill-available !important;
+    width: 50%;
+    display: block;
+  }
+
+  .login-modal-register {
+    margin-bottom: 0;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

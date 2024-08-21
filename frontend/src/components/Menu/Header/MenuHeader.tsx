@@ -94,7 +94,7 @@ const MenuHeader: React.FC<SelectedFilters> = ({ setSelectedFilters }) => {
 
   return (
     <div className="menu-header-container">
-      <div className="menu-header" style={activeOrder ? { paddingTop: "150px" } : { paddingTop: "110px" }}>
+      <div className="menu-header" style={activeOrder ? { paddingTop: "9.375rem" } : { paddingTop: "6.875rem" }}>
         <div className="menu-header-item">
           {menuHeaderItems.map((item) =>
             item !== "deals" ? (

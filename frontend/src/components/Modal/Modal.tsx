@@ -9,6 +9,7 @@ import ProductModal from "./Product/ProductModal";
 import OrderMethod from "./OrderMethod/OrderMethod";
 import DeleteAccount from "./DeleteAccount/DeleteAccount";
 import DealModal from "./Deal/DealModal";
+import { MobileContext } from "../../context/MobileContext";
 
 interface ModalInterface {
   openModal: boolean;
@@ -16,6 +17,7 @@ interface ModalInterface {
 
 const Modal: React.FC<ModalInterface> = ({ openModal }) => {
   const { modalType, setOpenModal, setModalType, setProduct } = useContext(ModalContext);
+  const { isMobile } = useContext(MobileContext);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -43,22 +45,25 @@ const Modal: React.FC<ModalInterface> = ({ openModal }) => {
     <>
       {openModal && (
         <div className="modal-container">
-          <div className="abra" style={modalType === "product" || modalType === "deal" ? { width: "80vw" } : {}}>
+          <div
+            className="abra"
+            style={
+              (!isMobile && modalType === "product") || (!isMobile && modalType === "deal")
+                ? { width: "80vw" }
+                : (isMobile && modalType === "product") || (isMobile && modalType === "deal")
+                ? { width: "100vw" }
+                : {}
+            }
+          >
             <div
-              className={`modall ${
-                modalType === "login" ? "modal-login-width" : modalType === "deal" ? "modal-deal-width" : ""
-              }`}
+              className="modall"
               style={
                 modalType === "product" || modalType === "deal"
                   ? { border: "none", background: "white", maskImage: "none" }
                   : {}
               }
             >
-              <div
-                className={`${modalType !== "product" && modalType !== "deal" ? "inner-layer" : ""} ${
-                  modalType === "login" ? "modal-login-inner-layer" : ""
-                }`}
-              >
+              <div className={`${modalType !== "product" && modalType !== "deal" ? "inner-layer" : ""} `}>
                 {modalType === "selectStore" ? (
                   <SelectStoreModal />
                 ) : modalType === "delivery" ? (

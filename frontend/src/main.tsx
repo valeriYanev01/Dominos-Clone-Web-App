@@ -10,6 +10,7 @@ import { OrderContextProvider } from "./context/OrderContext.tsx";
 import { AddressContextProvider } from "./context/AddressContext.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ModalContextProvider } from "./context/ModalContext.tsx";
+import { MobileContextProvider } from "./context/MobileContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -17,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Auth0Provider
         domain="valeri.eu.auth0.com"
         clientId="jtVXRSEFdnDePdSgvnLmOmPEXJjGPMMN"
-        authorizationParams={{ redirect_uri: "http://localhost:5173" }}
+        authorizationParams={{ redirect_uri: "https://localhost:5173" }}
       >
         <ModalContextProvider>
           <LoginContextProvider>
@@ -25,7 +26,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <OrderContextProvider>
                 <MenuContextProvider>
                   <MapContextProvider>
-                    <App />
+                    <MobileContextProvider>
+                      <App />
+                    </MobileContextProvider>
                   </MapContextProvider>
                 </MenuContextProvider>
               </OrderContextProvider>

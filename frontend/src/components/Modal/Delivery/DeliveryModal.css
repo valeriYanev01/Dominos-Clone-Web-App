@@ -6,6 +6,7 @@
 .dm-heading {
   display: flex;
   gap: 20px;
+  text-align: center;
 }
 
 .dm-heading p {
@@ -171,4 +172,24 @@
 .dm-address-order-btn-disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media screen and (max-width: 480px) {
+  .dm-heading p {
+    font-size: 1.2rem;
+  }
+
+  .dm-address-delivery-time p,
+  .dm-address-delivery-time select {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

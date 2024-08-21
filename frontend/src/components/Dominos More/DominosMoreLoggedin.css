@@ -223,7 +223,7 @@
 }
 
 .swiper-pagination {
-  position: relative !important;
+  position: relative;
   margin-top: 2rem;
 }
 
