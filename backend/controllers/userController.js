@@ -59,7 +59,6 @@ export const userSignup = async (req, res) => {
 };
 
 export const userLogin = async (req, res) => {
-  console.log("HI");
   const { email, password, keepLoggedIn } = req.body;
 
   try {
