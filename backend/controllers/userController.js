@@ -63,10 +63,12 @@ export const userLogin = async (req, res) => {
 
   try {
     const user = await UserModel.login(email, password);
+    console.log(user);
     const token = createToken(user._id, keepLoggedIn);
 
     res.status(200).json({ email, token });
   } catch (err) {
+    console.log(err);
     return res.status(400).json({ error: err.message });
   }
 };

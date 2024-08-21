@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import cryptoRandomString from "crypto-random-string";
 import nodemailer from "nodemailer";
 import * as crypto from "crypto";
@@ -385,6 +385,8 @@ userSchema.statics.login = async function (email, password) {
   }
 
   const user = await this.findOne({ email });
+
+  console.log(user);
 
   if (!user) {
     throw new Error("Wrong credentials");
