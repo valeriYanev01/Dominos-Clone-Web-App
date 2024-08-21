@@ -13,7 +13,7 @@ const NewPasswordComponent: React.FC = () => {
   const token = useParams().token;
 
   const handleResetPassword = async () => {
-    const response = await axios.post("http://localhost:3000/api/users/reset-password", {
+    const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/reset-password", {
       password,
       confirmPassword,
       token,

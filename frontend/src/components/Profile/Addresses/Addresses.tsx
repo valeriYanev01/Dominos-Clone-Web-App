@@ -50,7 +50,7 @@ const Addresses: React.FC = () => {
     const fetchAddresses = async () => {
       if (location.pathname.includes("addresses") && token && emailLogin) {
         try {
-          const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
+          const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-addresses", {
             headers: { Authorization: `Bearer ${token}` },
             params: { email: emailLogin },
           });
@@ -67,7 +67,7 @@ const Addresses: React.FC = () => {
 
   const fetchAddress = async (address: string) => {
     try {
-      const response = await axios.get("http://localhost:3000/api/users/get-single-address", {
+      const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-single-address", {
         headers: { Authorization: `Bearer ${token}` },
         params: { name: address, email: emailLogin },
       });
@@ -99,7 +99,7 @@ const Addresses: React.FC = () => {
     if (addressSelected) {
       try {
         await axios.put(
-          "http://localhost:3000/api/users/update-address",
+          "https://dominos-clone-backend.vercel.app/api/users/update-address",
           {
             email: emailLogin,
             id: id,
@@ -131,7 +131,7 @@ const Addresses: React.FC = () => {
   const handleDeleteAddress = async () => {
     if (addressSelected) {
       try {
-        await axios.delete(`http://localhost:3000/api/users/delete-address`, {
+        await axios.delete(`https://dominos-clone-backend.vercel.app/api/users/delete-address`, {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin, address: name },
         });

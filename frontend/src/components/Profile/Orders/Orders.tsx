@@ -66,7 +66,7 @@ const Orders: React.FC = () => {
   useEffect(() => {
     if (token) {
       const fetchOrders = async () => {
-        const response = await axios.get("http://localhost:3000/api/users/get-orders", {
+        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-orders", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });

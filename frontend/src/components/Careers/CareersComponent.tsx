@@ -38,7 +38,7 @@ const CareersComponent: React.FC = () => {
       try {
         setError("");
 
-        const response = await axios.post("http://localhost:3000/api/users/verify-google-recaptcha-token", {
+        const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/verify-google-recaptcha-token", {
           recaptchaToken: recaptchaToken,
         });
 
@@ -62,7 +62,7 @@ const CareersComponent: React.FC = () => {
             formData.append("email", email);
             formData.append("position", position);
 
-            const response = await axios.post("http://localhost:3000/api/users/apply", formData, {
+            const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/apply", formData, {
               headers: { "Content-Type": "multipart/form-data" },
             });
             const result = response.data;

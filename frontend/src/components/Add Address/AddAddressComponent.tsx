@@ -48,7 +48,7 @@ const AddAddressComponent: React.FC = () => {
   const handleAddAddress = async () => {
     try {
       await axios.post(
-        "http://localhost:3000/api/users/add-address",
+        "https://dominos-clone-backend.vercel.app/api/users/add-address",
         {
           email: emailLogin,
           name,

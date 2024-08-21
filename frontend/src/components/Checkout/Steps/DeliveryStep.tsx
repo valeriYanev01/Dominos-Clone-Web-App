@@ -108,7 +108,7 @@ const DeliveryStep: React.FC<Props> = ({
     if (token && emailLogin) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/users/add-invoice",
+          "https://dominos-clone-backend.vercel.app/api/users/add-invoice",
           { email: emailLogin, companyName, companyAddress, companyActivity, companyVAT, companyOwner },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -118,7 +118,7 @@ const DeliveryStep: React.FC<Props> = ({
             setLoading(true);
 
             try {
-              const response = await axios.get("http://localhost:3000/api/users/get-invoices", {
+              const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-invoices", {
                 headers: { Authorization: `Bearer ${token}` },
                 params: { email: emailLogin },
               });
@@ -156,13 +156,13 @@ const DeliveryStep: React.FC<Props> = ({
     setError("");
 
     try {
-      const response = await axios.delete("http://localhost:3000/api/users/delete-invoice", {
+      const response = await axios.delete("https://dominos-clone-backend.vercel.app/api/users/delete-invoice", {
         headers: { Authorization: `Bearer ${token}` },
         params: { companyVAT, email: emailLogin },
       });
 
       if (response.data.invoice.modifiedCount === 1) {
-        const response = await axios.get("http://localhost:3000/api/users/get-invoices", {
+        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-invoices", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });
@@ -185,7 +185,7 @@ const DeliveryStep: React.FC<Props> = ({
     if (emailLogin && token) {
       try {
         const response = await axios.put(
-          "http://localhost:3000/api/users/update-invoice",
+          "https://dominos-clone-backend.vercel.app/api/users/update-invoice",
           {
             email: emailLogin,
             companyName: selectedInvoice?.companyName,
@@ -199,7 +199,7 @@ const DeliveryStep: React.FC<Props> = ({
 
         if (response.data.invoice) {
           try {
-            const response = await axios.get("http://localhost:3000/api/users/get-invoices", {
+            const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-invoices", {
               headers: { Authorization: `Bearer ${token}` },
               params: { email: emailLogin },
             });

@@ -52,7 +52,7 @@ export const AddressContextProvider: React.FC<{ children: ReactNode }> = ({ chil
     const fetchAddresses = async () => {
       if (location.pathname.includes("addresses") && token && emailLogin) {
         try {
-          const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
+          const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-addresses", {
             headers: { Authorization: `Bearer ${token}` },
             params: { email: emailLogin },
           });

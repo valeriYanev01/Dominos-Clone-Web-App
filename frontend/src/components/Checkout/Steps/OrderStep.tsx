@@ -94,11 +94,11 @@ const OrderStep: React.FC<Props> = ({
   const handlePayWithSelectedCard = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/payment/create-payment-intent",
+        "https://dominos-clone-backend.vercel.app/api/payment/create-payment-intent",
         {
           amount: 2000,
           payment_method: selectedCard,
-          return_url: "http://localhost:5173/tracker",
+          return_url: "https://dominos-clone-app.vercel.app/tracker",
           customer: customerID,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -107,7 +107,7 @@ const OrderStep: React.FC<Props> = ({
       setClientSecret(response.data.paymentIntent.client_secret);
 
       if (response.data.paymentIntent.status === "succeeded") {
-        window.location.href = "http://localhost:5173/tracker";
+        window.location.href = "https://dominos-clone-app.vercel.app/tracker";
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -130,7 +130,7 @@ const OrderStep: React.FC<Props> = ({
     if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
       try {
         const response = await axios.put(
-          "http://localhost:3000/api/users/new-order",
+          "https://dominos-clone-backend.vercel.app/api/users/new-order",
           {
             email: emailLogin,
             products: itemsInBasket,
@@ -165,7 +165,7 @@ const OrderStep: React.FC<Props> = ({
     } else {
       try {
         const response = await axios.put(
-          "http://localhost:3000/api/users/new-order",
+          "https://dominos-clone-backend.vercel.app/api/users/new-order",
           {
             email: emailLogin,
             products: itemsInBasket,
@@ -200,7 +200,7 @@ const OrderStep: React.FC<Props> = ({
 
     if (selectedCoupon) {
       await axios.put(
-        "http://localhost:3000/api/users/update-coupon-used",
+        "https://dominos-clone-backend.vercel.app/api/users/update-coupon-used",
         { email: emailLogin, _id: selectedCoupon },
         { headers: { Authorization: `Bearer ${token}` } }
       );

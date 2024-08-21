@@ -10,7 +10,7 @@ const DeleteAccount: React.FC = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      await axios.delete("http://localhost:3000/api/users/account-delete", {
+      await axios.delete("https://dominos-clone-backend.vercel.app/api/users/account-delete", {
         headers: { Authorization: `Bearer ${token}` },
         params: { email: emailLogin },
       });

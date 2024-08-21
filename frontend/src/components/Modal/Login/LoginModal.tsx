@@ -24,7 +24,7 @@ const LoginModal = () => {
   const handleLogin = async () => {
     setError("");
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", { email, password, keepLoggedIn });
+      const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/login", { email, password, keepLoggedIn });
       localStorage.setItem("user", String([response.data.email, response.data.token]));
       setOpenModal(false);
       setLoggedIn(true);

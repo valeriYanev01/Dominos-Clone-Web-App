@@ -39,7 +39,7 @@ const CheckoutForm: React.FC<Props> = ({ setCardError, setCardSuccess }) => {
       } else {
         try {
           const response = await axios.post(
-            "http://localhost:3000/api/payment/save-payment-method",
+            "https://dominos-clone-backend.vercel.app/api/payment/save-payment-method",
             {
               paymentMethodID: paymentMethod.id,
               email: emailLogin,

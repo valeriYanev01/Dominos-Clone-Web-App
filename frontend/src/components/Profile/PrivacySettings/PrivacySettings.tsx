@@ -21,7 +21,7 @@ const PrivacySettings: React.FC = () => {
   useEffect(() => {
     if (token) {
       const fetchConsents = async () => {
-        const response = await axios.get("http://localhost:3000/api/users", {
+        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users", {
           params: { email: emailLogin },
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -49,7 +49,7 @@ const PrivacySettings: React.FC = () => {
   const handleUpdateConsent = async () => {
     try {
       await axios.put(
-        "http://localhost:3000/api/users/update-consent",
+        "https://dominos-clone-backend.vercel.app/api/users/update-consent",
         { email: emailLogin, delivery, confidentiality, termsOfUse, deals, updates, more },
         { headers: { Authorization: `Bearer ${token}` } }
       );
