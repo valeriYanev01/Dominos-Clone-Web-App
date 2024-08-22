@@ -164,13 +164,23 @@
   .login-modal-oAuthLinks-container {
     gap: 1rem;
     width: fit-content !important;
+    margin-bottom: 1rem;
   }
+
   .login-modal-oAuthLink {
     width: fit-content !important;
   }
 
+  .login-modal-oAuthLink span {
+    font-size: 1rem;
+  }
+
   .login-modal-svg {
     border-right: none !important;
+  }
+
+  .login-modal-input-container input {
+    font-size: 1rem;
   }
 
   .login-modal-fp-ks {
@@ -187,14 +197,27 @@
     margin: 0;
   }
 
+  .login-modal-forgot-password {
+    font-size: 0.9rem;
+  }
+
   .login-modal-login-container {
     padding-bottom: 1rem;
+  }
+
+  .login-modal-login,
+  .login-modal-register {
+    font-size: 1.2rem;
   }
 
   .login-modal-register-link {
     width: -webkit-fill-available !important;
     width: 50%;
     display: block;
+  }
+
+  .login-modal-signup-text {
+    font-size: 1rem;
   }
 
   .login-modal-register {

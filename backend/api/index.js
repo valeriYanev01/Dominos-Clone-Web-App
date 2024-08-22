@@ -13,28 +13,22 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const URI = process.env.URI;
 
-const corsOptions = {
-  origin: ["https://dominos-clone-app.vercel.app"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/users", userRouter);
 app.use("/api/payment", paymentRouter);
 
-const connectToDB = async () => {
-  try {
-    await mongoose.connect(URI);
-    console.log("Connected To Database!");
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-app.listen(PORT, () => {
-  connectToDB();
+app.post("/api/test", (req, res) => {
+  res.json({ message: "Test seccessful!" });
 });
+
+mongoose
+  .connect(URI, { retryWrites: false })
+  .then(() => {
+    app.listen(PORT, () => console.log(`App is connected to DB running on port: ${PORT}`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });

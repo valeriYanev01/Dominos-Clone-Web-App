@@ -24,20 +24,21 @@ const LoginModal = () => {
   const handleLogin = async () => {
     setError("");
     try {
-      const response = await axios.post(
-        "https://dominos-clone-backend-aklq6syh7-valeriyanev01s-projects.vercel.app/api/users/login",
-        {
-          email,
-          password,
-          keepLoggedIn,
-        }
-      );
+      const response = await axios.post("https://dcback.vercel.app/api/users/login", {
+        email,
+        password,
+        keepLoggedIn,
+      });
 
+      console.log("TRY");
+
+      console.log(response);
       localStorage.setItem("user", String([response.data.email, response.data.token]));
       setOpenModal(false);
       setLoggedIn(true);
       setEmailLogin(response.data.email);
     } catch (err) {
+      console.log("CATCh");
       console.log(err);
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || "An error occurred");

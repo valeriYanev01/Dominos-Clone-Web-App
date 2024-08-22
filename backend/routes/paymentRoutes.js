@@ -12,13 +12,11 @@ import {
 
 const router = express.Router();
 
-router.use(verifyToken);
-
-router.get("/config", getPKey);
-router.get("/all-payment-methods", getAllPaymentMethods);
-router.post("/create-payment-intent", createPaymentIntent);
-router.post("/save-payment-method", savePaymentMethod);
-router.post("/create-new-customer", createNewCustomer);
-router.delete("/delete-payment-method", deletePaymentMethod);
+router.get("/config", verifyToken, getPKey);
+router.get("/all-payment-methods", verifyToken, getAllPaymentMethods);
+router.post("/create-payment-intent", verifyToken, createPaymentIntent);
+router.post("/save-payment-method", verifyToken, savePaymentMethod);
+router.post("/create-new-customer", verifyToken, createNewCustomer);
+router.delete("/delete-payment-method", verifyToken, deletePaymentMethod);
 
 export { router as paymentRouter };

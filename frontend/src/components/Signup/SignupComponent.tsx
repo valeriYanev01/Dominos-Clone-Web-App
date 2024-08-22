@@ -30,7 +30,7 @@ const SignupComponent: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/signup", {
+      const response = await axios.post("https://dcback.vercel.app/api/users/signup", {
         email,
         password,
         confirmPassword,
