@@ -38,7 +38,7 @@ const DeliveryModal: React.FC = () => {
   useEffect(() => {
     const getAllOrders = async () => {
       try {
-        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-orders", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-orders", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });
@@ -72,7 +72,7 @@ const DeliveryModal: React.FC = () => {
   useEffect(() => {
     const getAllAddresses = async () => {
       try {
-        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-addresses", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-addresses", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });

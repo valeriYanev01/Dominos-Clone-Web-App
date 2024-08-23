@@ -11,7 +11,7 @@ const ForgotPasswordComponent: React.FC = () => {
     navigator.vibrate(50);
     setError("");
     try {
-      const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/forgot-password", { email });
+      const response = await axios.post("https://dcback.vercel.app/api/users/forgot-password", { email });
 
       if (response.data.success) {
         setSuccess(true);

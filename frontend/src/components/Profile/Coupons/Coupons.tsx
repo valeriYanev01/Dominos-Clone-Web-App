@@ -28,7 +28,7 @@ const Coupons: React.FC = () => {
   useEffect(() => {
     if (token && emailLogin) {
       const fetchCoupons = async () => {
-        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-coupons", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-coupons", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });
@@ -48,7 +48,7 @@ const Coupons: React.FC = () => {
             setExpiredCoupons((prevstate) => [...prevstate, coupon]);
 
             await axios.put(
-              "https://dominos-clone-backend.vercel.app/api/users/update-coupon-expired",
+              "https://dcback.vercel.app/api/users/update-coupon-expired",
               {
                 email: emailLogin,
                 _id: coupon._id,

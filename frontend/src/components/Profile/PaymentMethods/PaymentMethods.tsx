@@ -30,7 +30,7 @@ const PaymentMethods: React.FC = () => {
     if (token) {
       const getPublishableKey = async () => {
         try {
-          const response = await axios.get("https://dominos-clone-backend.vercel.app/api/payment/config", {
+          const response = await axios.get("https://dcback.vercel.app/api/payment/config", {
             headers: { Authorization: `Bearer ${token}` },
           });
           setStripePromise(loadStripe(response.data.publishableKey));
@@ -49,7 +49,7 @@ const PaymentMethods: React.FC = () => {
     if (token && customerID) {
       const fetchAllPaymentMethods = async () => {
         try {
-          const response = await axios.get("https://dominos-clone-backend.vercel.app/api/payment/all-payment-methods", {
+          const response = await axios.get("https://dcback.vercel.app/api/payment/all-payment-methods", {
             headers: { Authorization: `Bearer ${token}` },
             params: { customerID },
           });
@@ -69,7 +69,7 @@ const PaymentMethods: React.FC = () => {
       setCardError("");
       try {
         const response = await axios.post(
-          "https://dominos-clone-backend.vercel.app/api/payment/create-payment-intent",
+          "https://dcback.vercel.app/api/payment/create-payment-intent",
           {
             amount: 2000,
             customer: customerID,
@@ -93,7 +93,7 @@ const PaymentMethods: React.FC = () => {
   useEffect(() => {
     const fetchAllPaymentMethods = async () => {
       try {
-        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/payment/all-payment-methods", {
+        const response = await axios.get("https://dcback.vercel.app/api/payment/all-payment-methods", {
           headers: { Authorization: `Bearer ${token}` },
           params: { customerID },
         });
@@ -125,14 +125,14 @@ const PaymentMethods: React.FC = () => {
 
   const handleDeleteCard = async (paymentMethodID: string) => {
     try {
-      const response = await axios.delete("https://dominos-clone-backend.vercel.app/api/payment/delete-payment-method", {
+      const response = await axios.delete("https://dcback.vercel.app/api/payment/delete-payment-method", {
         headers: { Authorization: `Bearer ${token}` },
         params: { email: emailLogin, paymentMethodID },
       });
 
       if (response.data.success) {
         try {
-          const response = await axios.get("https://dominos-clone-backend.vercel.app/api/payment/all-payment-methods", {
+          const response = await axios.get("https://dcback.vercel.app/api/payment/all-payment-methods", {
             headers: { Authorization: `Bearer ${token}` },
             params: { customerID },
           });

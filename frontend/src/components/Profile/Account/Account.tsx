@@ -35,7 +35,7 @@ const Account: React.FC = () => {
     if (emailLogin && token) {
       const fetchUserInformation = async () => {
         try {
-          const data = await axios.get("https://dominos-clone-backend.vercel.app/api/users", {
+          const data = await axios.get("https://dcback.vercel.app/api/users", {
             params: { email: emailLogin },
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -57,7 +57,7 @@ const Account: React.FC = () => {
   const handleUpdateDetails = async () => {
     try {
       await axios.post(
-        "https://dominos-clone-backend.vercel.app/api/users/account/update",
+        "https://dcback.vercel.app/api/users/account/update",
         {
           email: emailLogin,
           firstName: name,

@@ -52,7 +52,7 @@ export const Checkout: React.FC = () => {
       const fetchAllInvoices = async () => {
         setLoading(true);
         try {
-          const response = await axios.get("http://localhost:3000/api/users/get-invoices", {
+          const response = await axios.get("https://dcback.vercel.app/api/users/get-invoices", {
             headers: { Authorization: `Bearer ${token}` },
             params: { email: emailLogin },
           });
@@ -73,7 +73,7 @@ export const Checkout: React.FC = () => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/users/get-single-address", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-single-address", {
           headers: { Authorization: `Bearer ${token}` },
           params: {
             name: JSON.parse(localStorage.getItem("order-details") as string).addressName,
@@ -93,7 +93,7 @@ export const Checkout: React.FC = () => {
 
     const fetchAllAddresses = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/users/get-addresses", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-addresses", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });

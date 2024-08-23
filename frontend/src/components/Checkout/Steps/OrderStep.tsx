@@ -94,7 +94,7 @@ const OrderStep: React.FC<Props> = ({
   const handlePayWithSelectedCard = async () => {
     try {
       const response = await axios.post(
-        "https://dominos-clone-backend.vercel.app/api/payment/create-payment-intent",
+        "https://dcback.vercel.app/api/payment/create-payment-intent",
         {
           amount: 2000,
           payment_method: selectedCard,
@@ -130,7 +130,7 @@ const OrderStep: React.FC<Props> = ({
     if (JSON.parse(localStorage.getItem("order-details") as string).type === "delivery") {
       try {
         const response = await axios.put(
-          "https://dominos-clone-backend.vercel.app/api/users/new-order",
+          "https://dcback.vercel.app/api/users/new-order",
           {
             email: emailLogin,
             products: itemsInBasket,
@@ -165,7 +165,7 @@ const OrderStep: React.FC<Props> = ({
     } else {
       try {
         const response = await axios.put(
-          "https://dominos-clone-backend.vercel.app/api/users/new-order",
+          "https://dcback.vercel.app/api/users/new-order",
           {
             email: emailLogin,
             products: itemsInBasket,
@@ -200,7 +200,7 @@ const OrderStep: React.FC<Props> = ({
 
     if (selectedCoupon) {
       await axios.put(
-        "https://dominos-clone-backend.vercel.app/api/users/update-coupon-used",
+        "https://dcback.vercel.app/api/users/update-coupon-used",
         { email: emailLogin, _id: selectedCoupon },
         { headers: { Authorization: `Bearer ${token}` } }
       );

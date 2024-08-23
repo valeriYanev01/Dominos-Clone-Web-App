@@ -21,7 +21,7 @@ const DominosMoreLoggedin: React.FC = () => {
 
   useEffect(() => {
     const fetchPreviousOrdersWithPizza = async () => {
-      const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/get-orders", {
+      const response = await axios.get("https://dcback.vercel.app/api/users/get-orders", {
         params: { email: emailLogin },
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -93,7 +93,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     if (googleUser?.given_name && isAuthenticated) {
       const signGoogleUser = async () => {
         try {
-          const response = await axios.post("https://dominos-clone-backend.vercel.app/api/users/google", {
+          const response = await axios.post("https://dcback.vercel.app/api/users/google", {
             email: googleUser?.email,
             firstName: googleUser?.given_name,
             lastName: googleUser?.family_name,
@@ -169,7 +169,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     const fetchCustomerID = async () => {
       try {
-        const response = await axios.get("https://dominos-clone-backend.vercel.app/api/users/", {
+        const response = await axios.get("https://dcback.vercel.app/api/users/", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });
@@ -182,7 +182,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         } else {
           try {
             const response = await axios.post(
-              "https://dominos-clone-backend.vercel.app/api/payment/create-new-customer",
+              "https://dcback.vercel.app/api/payment/create-new-customer",
               {
                 email: emailLogin,
               },
@@ -205,7 +205,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
             try {
               await axios.put(
-                "https://dominos-clone-backend.vercel.app/api/users/update-active-order",
+                "https://dcback.vercel.app/api/users/update-active-order",
                 { email: emailLogin },
                 { headers: { Authorization: `Bearer ${token}` } }
               );
@@ -247,7 +247,7 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     const updateDominosMorePoints = async () => {
       try {
         await axios.put(
-          "https://dominos-clone-backend.vercel.app/api/users/update-dominos-more",
+          "https://dcback.vercel.app/api/users/update-dominos-more",
           { email: emailLogin },
           { headers: { Authorization: `Bearer ${token}` } }
         );
