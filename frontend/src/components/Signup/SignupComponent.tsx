@@ -37,7 +37,21 @@ const SignupComponent: React.FC = () => {
         firstName: name,
         lastName: surname,
         img: uploadImg,
-        addresses: [],
+        addresses: [
+          {
+            email,
+            name: "My First Address",
+            fullAddress: "Бул. Цар Борис Iii, София 1619, Bulgaria",
+            store: "Sofia - Pavlovo",
+            phoneNumber: "0888888888",
+            doorBell: "15",
+            floor: "2",
+            block: "1",
+            apartment: "15",
+            entrance: "A",
+            coordinates: [42.664237, 23.257418],
+          },
+        ],
         orders: [],
         consents: [
           { delivery: true },
