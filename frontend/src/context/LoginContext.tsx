@@ -108,8 +108,6 @@ export const LoginContextProvider: React.FC<{ children: ReactNode }> = ({ childr
             more: 0,
           });
 
-          console.log(response);
-
           localStorage.setItem("user", String([response.data.user.email, response.data.token]));
           setToken(response.data.token);
           setEmailLogin(response.data.user.email);
