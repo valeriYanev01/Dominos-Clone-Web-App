@@ -25,7 +25,7 @@ export const MobileContextProvider: React.FC<{ children: ReactNode }> = ({ child
   useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
 
-    if (width < 768) {
+    if (width <= 768) {
       setIsMobile(true);
     } else {
       setIsMobile(false);

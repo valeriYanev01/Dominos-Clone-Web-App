@@ -3,7 +3,7 @@ import "./Account.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 
 const Account: React.FC = () => {
   const [name, setName] = useState("");

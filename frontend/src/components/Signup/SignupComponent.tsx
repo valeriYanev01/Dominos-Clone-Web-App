@@ -6,7 +6,7 @@ import axios from "axios";
 
 const SignupComponent: React.FC = () => {
   const [showPerks, setShowPerks] = useState(false);
-  const [uploadImg, setUploadImg] = useState("");
+  const [uploadImg, setUploadImg] = useState(""); // need to upload it to mongodb on register
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -16,6 +16,7 @@ const SignupComponent: React.FC = () => {
   const [delivery, setDelivery] = useState(false);
   const [deals, setDeals] = useState(false);
   const [updates, setUpdates] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { setLoggedIn, setEmailLogin } = useContext(LoginContext);
 
@@ -29,6 +30,9 @@ const SignupComponent: React.FC = () => {
   };
 
   const handleRegister = async () => {
+    setLoading(true);
+    setError("");
+
     try {
       const response = await axios.post("https://dcback.vercel.app/api/users/signup", {
         email,
@@ -74,11 +78,19 @@ const SignupComponent: React.FC = () => {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || "An error occurred");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="signup-form-container">
+    <form
+      className="signup-form-container"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleRegister();
+      }}
+    >
       <div className="signup-heading-container">
         <img src="svg/decorLeftRed.svg" className="deal-decor" />
         <p>REGISTER</p>
@@ -177,11 +189,11 @@ const SignupComponent: React.FC = () => {
       </div>
       <div>
         <span>{error && error}</span>
-        <div className="signup-btn" onClick={handleRegister}>
+        <button className={`signup-btn ${loading ? "signup-btn-loading" : ""}`} type="submit" disabled={loading}>
           REGISTER
-        </div>
+        </button>
       </div>
-    </div>
+    </form>
   );
 };
 

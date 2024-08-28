@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./PrivacySettings.css";
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";

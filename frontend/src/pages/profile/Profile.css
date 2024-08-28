@@ -19,3 +19,25 @@
   padding-bottom: 20px;
   margin-bottom: 50px;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .profile-account,
+  .profile-addresses,
+  .profile-orders,
+  .profile-privacy-settings,
+  .pc-body,
+  .saved-payment-methods {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

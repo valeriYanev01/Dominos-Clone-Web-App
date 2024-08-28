@@ -10,6 +10,7 @@ import LoggedInNavigation from "./LoggedInNavigation";
 import { useNavigate } from "react-router-dom";
 import Basket from "./Basket/Basket";
 import MobileLinks from "./MobileLinks";
+import { OrderContext } from "../../context/OrderContext";
 
 const Navbar = ({ page }: Page) => {
   const [navColors, setNavColors] = useState<NavColors>({
@@ -26,6 +27,7 @@ const Navbar = ({ page }: Page) => {
 
   const { setOpenModal, setModalType } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
+  const { itemsInBasket } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -63,7 +65,7 @@ const Navbar = ({ page }: Page) => {
 
   return (
     <>
-      {showMobileLinks && <MobileLinks />}
+      {showMobileLinks && <MobileLinks setShowProfileMenu={setShowProfileMenu} />}
 
       <nav
         className="navigation-container"
@@ -100,9 +102,9 @@ const Navbar = ({ page }: Page) => {
         <li
           className="navigation-basket navigation-basket-mobile"
           onClick={() => {
-            if (loggedIn) {
+            if (loggedIn && itemsInBasket.length > 0) {
               navigate("/checkout");
-            } else {
+            } else if (!loggedIn) {
               setModalType("login");
               setOpenModal(true);
             }

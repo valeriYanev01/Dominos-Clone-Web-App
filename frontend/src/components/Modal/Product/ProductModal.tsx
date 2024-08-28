@@ -1097,22 +1097,22 @@ const ProductModal: React.FC = () => {
                 <div key={uuid()} className="topping">
                   <input
                     type="checkbox"
-                    id={`${uuid()}`}
+                    id={t}
                     checked={modifiedToppings.includes(t)}
                     onChange={(e) => {
                       handleChangeToppings(t, e.target.checked);
                     }}
                   />
-                  <label htmlFor={`${uuid()}`}>{t}</label>
+                  <label htmlFor={t}>{t}</label>
                   {modifiedToppings.includes(t) && (
                     <div className="additional-topping">
                       <input
                         type="checkbox"
-                        id={`${i}-additional ${uuid()}`}
+                        id={`${i}-additional ${t}`}
                         checked={modifiedToppings.includes(`Extra ${t}`)}
                         onChange={(e) => handleChangeToppings(`Extra ${t}`, e.target.checked)}
                       />
-                      <label htmlFor={`${i}-additional ${uuid()}`}>Extra {t}</label>
+                      <label htmlFor={`${i}-additional ${t}`}>Extra {t}</label>
                     </div>
                   )}
                 </div>

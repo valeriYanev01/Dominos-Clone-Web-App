@@ -21,3 +21,19 @@
   flex: 3;
   font-weight: normal;
 }
+
+@media screen and (max-width: 480px) {
+  .pas-addresses-add-new-container {
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

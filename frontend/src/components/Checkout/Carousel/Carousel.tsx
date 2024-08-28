@@ -10,11 +10,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { BasketItem, OrderContext } from "../../../context/OrderContext";
 import "./Carousel.css";
+import { MobileContext } from "../../../context/MobileContext";
 
 const Carousel: React.FC = () => {
   const { setModalType, setOpenModal } = useContext(ModalContext);
   const { loggedIn } = useContext(LoginContext);
   const { setItemsInBasket } = useContext(OrderContext);
+  const { isMobile } = useContext(MobileContext);
 
   const items = products
     .map((product) => {
@@ -52,7 +54,7 @@ const Carousel: React.FC = () => {
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
           spaceBetween={10}
-          slidesPerView={4}
+          slidesPerView={isMobile ? 1 : 4}
           autoplay={{ delay: 2000, disableOnInteraction: true }}
           loop={true}
           style={{ marginLeft: "20px" }}

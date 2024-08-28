@@ -13,11 +13,11 @@ const DeliveryModal: React.FC = () => {
   const [lastOrderAddressName, setLastOrderAddressName] = useState();
   const [otherAddresses, setOtherAddresses] = useState<Address[]>([]);
   const [lastOrderAddress, setLastOrderAddress] = useState<Address>();
-  const [showAddresses, setShowAddresses] = useState(true);
+  const [showAddresses, setShowAddresses] = useState(false);
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
   const [error, setError] = useState("");
-  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
   const { setOpenModal, setModalType, setProduct } = useContext(ModalContext);
@@ -30,6 +30,8 @@ const DeliveryModal: React.FC = () => {
     setOrderTime,
     setActiveOrder,
     isOpenForDelivery,
+    isReadyForOrder,
+    setIsReadyForOrder,
   } = useContext(OrderContext);
   const { selectedAddress, setSelectedAddress } = useContext(AddressContext);
 
@@ -37,6 +39,8 @@ const DeliveryModal: React.FC = () => {
 
   useEffect(() => {
     const getAllOrders = async () => {
+      setLoading(true);
+
       try {
         const response = await axios.get("https://dcback.vercel.app/api/users/get-orders", {
           headers: { Authorization: `Bearer ${token}` },
@@ -60,6 +64,8 @@ const DeliveryModal: React.FC = () => {
         if (axios.isAxiosError(err)) {
           setError(err.response?.data.error);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -71,6 +77,8 @@ const DeliveryModal: React.FC = () => {
 
   useEffect(() => {
     const getAllAddresses = async () => {
+      setLoading(true);
+
       try {
         const response = await axios.get("https://dcback.vercel.app/api/users/get-addresses", {
           headers: { Authorization: `Bearer ${token}` },
@@ -94,6 +102,8 @@ const DeliveryModal: React.FC = () => {
         if (axios.isAxiosError(err)) {
           setError(err.response?.data.error);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -179,12 +189,6 @@ const DeliveryModal: React.FC = () => {
     "22:30",
   ];
 
-  useEffect(() => {
-    if (selectedAddress.name.length > 0 && selectedAddress.fullAddress.length > 0 && orderTime.length > 0) {
-      setIsReadyForOrder(true);
-    }
-  }, [orderTime.length, selectedAddress]);
-
   const deliveryHoursOpen = deliveryHoursOpenedStore
     .map((hour) => {
       if (hour !== "NOW") {
@@ -255,7 +259,9 @@ const DeliveryModal: React.FC = () => {
         <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
 
-      {!showAddresses ? (
+      {loading && <p className="dm-loading-addresses">Loading...</p>}
+
+      {!showAddresses && (!lastOrderAddress || !showRecentAddress) && !loading ? (
         <p className="dm-no-addresses">To begin your delivery order please add your delivery address below</p>
       ) : (
         <div className="dm-adresses-container">
@@ -318,11 +324,14 @@ const DeliveryModal: React.FC = () => {
             <div className="dm-addresses-others">
               <p className="dm-addresses-heading">Other Adresses</p>
               {otherAddresses &&
+                otherAddresses.length > 0 &&
                 otherAddresses.map((address: Address) => (
                   <div
                     key={address._id}
                     onClick={() => handleSelectedAddress(address)}
-                    className={`address-container ${selectedAddress.name === address.name ? "selected-address" : ""}`}
+                    className={`address-container ${
+                      selectedAddress && selectedAddress.name === address.name ? "selected-address" : ""
+                    }`}
                   >
                     <img
                       onClick={() => {
@@ -332,19 +341,31 @@ const DeliveryModal: React.FC = () => {
                       }}
                       src="/svg/edit.svg"
                       className="dm-address-edit-img"
-                      style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
+                      style={
+                        selectedAddress && selectedAddress.name === address.name
+                          ? { display: "block" }
+                          : { display: "none" }
+                      }
                     />
                     <img
                       src="/svg/greenCheck.svg"
                       className="dm-address-check-img"
-                      style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
+                      style={
+                        selectedAddress && selectedAddress.name === address.name
+                          ? { display: "block" }
+                          : { display: "none" }
+                      }
                     />
                     <p className="dm-address-name">{address.name}</p>
                     <div className="dm-address-location-container">
                       <img
                         src="/svg/addressLocation.svg"
                         className="dm-address-location-store"
-                        style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
+                        style={
+                          selectedAddress && selectedAddress.name === address.name
+                            ? { display: "block" }
+                            : { display: "none" }
+                        }
                       />
                       <p>{address.fullAddress}</p>
                     </div>
@@ -353,7 +374,11 @@ const DeliveryModal: React.FC = () => {
                       <img
                         src="/svg/addressStore.svg"
                         className="dm-address-location-store"
-                        style={selectedAddress.name === address.name ? { display: "block" } : { display: "none" }}
+                        style={
+                          selectedAddress && selectedAddress.name === address.name
+                            ? { display: "block" }
+                            : { display: "none" }
+                        }
                       />
                       <p>
                         Your Store: <span className="dm-address-store-name">{address.store}</span>
@@ -363,7 +388,6 @@ const DeliveryModal: React.FC = () => {
                 ))}
             </div>
           )}
-
           {error && <p>{error}</p>}
         </div>
       )}
@@ -399,6 +423,7 @@ const DeliveryModal: React.FC = () => {
         onClick={() => {
           if (isReadyForOrder) {
             handleOrder();
+            setIsReadyForOrder(false);
           }
         }}
       >

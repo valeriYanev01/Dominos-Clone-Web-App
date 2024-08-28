@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Orders.css";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 import { BasketItem, OrderContext } from "../../../context/OrderContext";
 import { useNavigate } from "react-router-dom";
 import { Invoice } from "../../../pages/checkout/Checkout";
@@ -47,6 +47,8 @@ interface Order {
 const Orders: React.FC = () => {
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [showActiveTrackerMessage, setShowActiveTrackerMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -64,8 +66,11 @@ const Orders: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      const fetchOrders = async () => {
+    const fetchOrders = async () => {
+      setError("");
+      setLoading(true);
+
+      try {
         const response = await axios.get("https://dcback.vercel.app/api/users/get-orders", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
@@ -74,14 +79,21 @@ const Orders: React.FC = () => {
         const reversedOrdersArray = response.data.allOrders.orders.reverse();
 
         setAllOrders(reversedOrdersArray);
-      };
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data.error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    if (token) {
       fetchOrders();
     }
   }, [token, emailLogin]);
 
   const handleReorder = (order: Order) => {
-    console.log(order);
     if (activeTracker) {
       setShowActiveTrackerMessage(true);
 
@@ -216,6 +228,9 @@ const Orders: React.FC = () => {
           ))}
         </div>
       )}
+
+      {error && <p>{error}</p>}
+      {loading && <p className="orders-loading">Loading...</p>}
 
       {showActiveTrackerMessage && (
         <div className="orders-active-order">

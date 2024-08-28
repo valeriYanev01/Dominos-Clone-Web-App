@@ -87,3 +87,63 @@
   flex: 1;
   margin-top: 0;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .checkout-page-content-container {
+    width: 90%;
+  }
+  .checkout-pizza-meter {
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  .checkout-dominos-more-container {
+    margin: 0;
+  }
+
+  .checkout-dominos-more {
+    width: 6rem;
+  }
+
+  .pizza-meter-container {
+    border-right: 1px solid #55555588;
+  }
+
+  .pizza-meter {
+    width: 5rem;
+  }
+
+  .checkout-pm-text {
+    display: none;
+  }
+
+  .checkout-pm-points-digits {
+    font-size: 3rem;
+  }
+
+  .checkout-pm-points-text {
+    font-size: 1rem;
+  }
+
+  .checkout-details-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .checkout-details-delivery,
+  .checkout-details-payment-container,
+  .checkout-details-order {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

@@ -36,19 +36,23 @@
   width: 100% !important;
 }
 
-.login-modal-oAuthLink {
-  width: calc(50% - 1.25rem);
-  background-color: black;
+.login-modal-oAuthLink-single-container {
+  border: none !important;
+  width: 100%;
+  background-color: #000;
   border-radius: 5px;
+}
+
+.login-modal-oAuthLink-single-container:nth-child(1) {
+  background-color: #0d6490 !important;
+}
+
+.login-modal-oAuthLink {
   color: white;
   text-decoration: none;
   padding: 0.3125rem 0.625rem;
   display: flex;
   justify-content: center;
-}
-
-.login-modal-oAuthLink:first-of-type {
-  background-color: #0d6490 !important;
 }
 
 .login-modal-oAuthLink span {
@@ -116,6 +120,12 @@
   border-bottom: dashed 2px lightgray;
 }
 
+.login-modal-login-loading {
+  opacity: 0.5;
+  cursor: default !important;
+  pointer-events: none;
+}
+
 .login-modal-login {
   width: 50%;
   background-color: #e2213d;
@@ -124,6 +134,7 @@
   border-radius: 5px;
   font-size: 1.375rem;
   cursor: pointer;
+  border: none;
 }
 
 .login-modal-signup-text {
@@ -163,12 +174,12 @@
 
   .login-modal-oAuthLinks-container {
     gap: 1rem;
-    width: fit-content !important;
     margin-bottom: 1rem;
+    flex: 1;
   }
 
   .login-modal-oAuthLink {
-    width: fit-content !important;
+    gap: 0;
   }
 
   .login-modal-oAuthLink span {

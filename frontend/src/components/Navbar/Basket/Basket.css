@@ -206,3 +206,20 @@
 .navigation-basket-btn:hover {
   background-color: #78ac36;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-basket-items {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

@@ -50,3 +50,33 @@
 .pc-coupon p span {
   font-weight: bold;
 }
+
+.coupons-loading {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+@media screen and (max-width: 480px) {
+  .pc-navigation {
+    width: 90%;
+    gap: 1rem;
+  }
+
+  .pc-navigation p {
+    flex: 1;
+    font-size: 0.9rem;
+  }
+
+  .pc-coupon-container {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

@@ -1,0 +1,41 @@
+.heading {
+  padding: 3.125rem 0 1.875rem 0;
+  display: flex;
+  margin-top: 2.5rem;
+  justify-content: center;
+  gap: 2.5rem;
+  color: #000;
+}
+
+.heading img,
+.heading p {
+  margin: 0;
+  align-self: center;
+}
+
+.heading p {
+  font-size: 1.5rem;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .heading {
+    padding: 2rem 0 1rem 0;
+    justify-content: center !important;
+    gap: 1rem;
+  }
+
+  .heading p {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

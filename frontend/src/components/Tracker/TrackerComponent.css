@@ -68,3 +68,33 @@
 .tracker-continue-order-link {
   text-decoration: none;
 }
+
+@media screen and (max-width: 480px) {
+  .tracker-body {
+    width: 90%;
+  }
+
+  .tracker-new-order,
+  .tracker-continue-order {
+    transform: translate(-50%, -50%);
+  }
+
+  .tracker-svg-text p,
+  .tracker-new-order-text,
+  .tracker-continue-order-text {
+    font-size: 1rem !important;
+  }
+
+  .tracker-circle {
+    width: fit-content;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

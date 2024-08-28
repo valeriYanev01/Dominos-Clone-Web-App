@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./NewPasswordComponent.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Heading from "../Heading/Heading";
+import Heading from "../Profile/Heading/Heading";
 
 const NewPasswordComponent: React.FC = () => {
   const [password, setPassword] = useState("");

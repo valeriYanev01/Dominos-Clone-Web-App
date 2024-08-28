@@ -5,7 +5,7 @@ import { OrderContext } from "../../context/OrderContext";
 
 const ActiveOrder: React.FC = () => {
   const { setOpenModal, setModalType } = useContext(ModalContext);
-  const { orderStore, orderTime, navigateToCheckoutPage } = useContext(OrderContext);
+  const { orderStore, orderTime, navigateToCheckoutPage, setIsReadyForOrder } = useContext(OrderContext);
 
   const navigate = useNavigate();
 
@@ -40,8 +40,8 @@ const ActiveOrder: React.FC = () => {
           </div>
         )}
         {
-          <div className="navbar-active-order-step">
-            <img src="/svg/order/time.svg" className="navbar-active-order-step-img" />
+          <div className="navbar-active-order-step" onClick={() => setIsReadyForOrder(false)}>
+            <img src="/svg/order/time.svg" className="navbar-active-order-step-img navbar-img" />
             <span className="navbar-active-order-step-text">{orderTime}</span>
           </div>
         }
@@ -59,7 +59,7 @@ const ActiveOrder: React.FC = () => {
           setModalType(JSON.parse(localStorage.getItem("order-details") as string).type);
         }}
       >
-        <div className="navbar-active-order-step">
+        <div className="navbar-active-order-step" onClick={() => setIsReadyForOrder(false)}>
           <img src="/svg/order/step2.svg" className="navbar-active-order-step-img" />
           {localStorage.getItem("order-details") &&
           JSON.parse(localStorage.getItem("order-details") as string).addressLocation ? (

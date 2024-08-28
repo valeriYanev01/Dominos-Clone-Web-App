@@ -121,7 +121,7 @@ const Links: React.FC<Props> = ({
       {activeOrder && window.location.pathname.includes("menu") && (
         <div
           onMouseEnter={() => {
-            setShowBasketOnHover(itemsInBasketQuantity > 0 ? true : false);
+            setShowBasketOnHover(itemsInBasketQuantity > 0);
             setShowProfileMenu(false);
           }}
           onMouseLeave={() => setShowBasketOnHover(false)}
@@ -137,7 +137,7 @@ const Links: React.FC<Props> = ({
         </div>
       )}
 
-      {loggedIn ? (
+      {loggedIn && (
         <li>
           <img
             src="/svg/profile.svg"
@@ -145,8 +145,6 @@ const Links: React.FC<Props> = ({
             onClick={() => setShowProfileMenu(!showProfileMenu)}
           />
         </li>
-      ) : (
-        ""
       )}
 
       {showProfileMenu && <ProfileMenu setShowProfileMenu={setShowProfileMenu} />}

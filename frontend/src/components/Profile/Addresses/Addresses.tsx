@@ -6,9 +6,9 @@ import { LoginContext } from "../../../context/LoginContext";
 import Map from "../../Map/Map";
 import useGetSuggestion from "../../../hooks/useGetSuggestion";
 import { MapContext } from "../../../context/MapContext";
-import Heading from "../../Heading/Heading";
 import AddNewAddress from "../../Buttons/AddNewAddress";
 import { Address } from "../../../types/Address";
+import Heading from "../Heading/Heading";
 
 const Addresses: React.FC = () => {
   const [addresses, setAddresses] = useState([]);
@@ -23,6 +23,7 @@ const Addresses: React.FC = () => {
   const [id, setId] = useState("");
   const [addressSelected, setAddressSelected] = useState(false);
   const [store, setStore] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { token, emailLogin } = useContext(LoginContext);
 
@@ -48,24 +49,33 @@ const Addresses: React.FC = () => {
 
   useEffect(() => {
     const fetchAddresses = async () => {
-      if (location.pathname.includes("addresses") && token && emailLogin) {
-        try {
-          const response = await axios.get("https://dcback.vercel.app/api/users/get-addresses", {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { email: emailLogin },
-          });
-          setAddresses(response.data.allAddresses.addresses);
-        } catch (err) {
-          if (axios.isAxiosError(err)) {
-            setError(err.response?.data.error || "An error occurred");
-          }
+      setError("");
+      setLoading(true);
+
+      try {
+        const response = await axios.get("https://dcback.vercel.app/api/users/get-addresses", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { email: emailLogin },
+        });
+        setAddresses(response.data.allAddresses.addresses);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data.error || "An error occurred");
         }
+      } finally {
+        setLoading(false);
       }
     };
-    fetchAddresses();
+
+    if (location.pathname.includes("addresses") && token && emailLogin) {
+      fetchAddresses();
+    }
   }, [location, token, emailLogin]);
 
   const fetchAddress = async (address: string) => {
+    setLoading(true);
+    setError("");
+
     try {
       const response = await axios.get("https://dcback.vercel.app/api/users/get-single-address", {
         headers: { Authorization: `Bearer ${token}` },
@@ -73,8 +83,6 @@ const Addresses: React.FC = () => {
       });
 
       const data = response.data.address;
-
-      console.log(data);
 
       setId(data._id);
       setName(data.name);
@@ -91,7 +99,11 @@ const Addresses: React.FC = () => {
       setLong(data.coordinates[1]);
       setZoom(20);
     } catch (err) {
-      console.log(err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data.error || "An error occurred");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -149,25 +161,31 @@ const Addresses: React.FC = () => {
 
   return (
     <div className="profile-addresses">
-      <Heading text={"MODIFY YOUR DETAILS, ADD OR DELETE AN ADDRESS"} />
+      <Heading text="MODIFY YOUR DETAILS, ADD OR DELETE AN ADDRESS" />
 
       <div className="pas-body">
-        <div className="pas-addresses">
-          {addresses.map((address: Address) => (
-            <div
-              className="pas-single-address"
-              key={address.name}
-              onClick={(e) => {
-                const target = e.target as HTMLElement;
-                fetchAddress(target.innerText);
-                setAddressSelected(true);
-              }}
-            >
-              {address.name}
-            </div>
-          ))}
-          <AddNewAddress />
-        </div>
+        {loading ? (
+          <p className="addresses-loading">Loading...</p>
+        ) : (
+          <div className="pas-addresses">
+            {addresses.map((address: Address) => (
+              <div
+                className="pas-single-address"
+                key={address.name}
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  fetchAddress(target.innerText);
+                  setAddressSelected(true);
+                }}
+              >
+                {address.name}
+              </div>
+            ))}
+
+            <AddNewAddress />
+          </div>
+        )}
+
         <div className="pas-settings">
           <div className="pas-settings-address-container">
             <label htmlFor="address-name">ADDRESS NAME</label>

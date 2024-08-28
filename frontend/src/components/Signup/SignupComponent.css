@@ -178,6 +178,12 @@
   margin-top: 3rem;
   font-size: 1.375rem;
   letter-spacing: 1px;
+  border: none;
+}
+
+.signup-btn-loading {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .signup-btn:hover {

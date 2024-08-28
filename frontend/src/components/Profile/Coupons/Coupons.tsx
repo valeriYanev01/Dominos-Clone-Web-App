@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Coupons.css";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 
 export type Coupons = {
   name: string;
@@ -20,20 +20,23 @@ const Coupons: React.FC = () => {
   const [activeCoupons, setActiveCoupons] = useState<Coupons[]>([]);
   const [usedCoupons, setUsedCoupons] = useState<Coupons[]>([]);
   const [expiredCoupons, setExpiredCoupons] = useState<Coupons[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [couponCategory, setCouponCategory] = useState<CouponCategories>("active");
 
   const { emailLogin, token } = useContext(LoginContext);
 
   useEffect(() => {
-    if (token && emailLogin) {
-      const fetchCoupons = async () => {
+    const fetchCoupons = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
         const response = await axios.get("https://dcback.vercel.app/api/users/get-coupons", {
           headers: { Authorization: `Bearer ${token}` },
           params: { email: emailLogin },
         });
-
-        console.log(response);
 
         setActiveCoupons([]);
         setUsedCoupons([]);
@@ -61,8 +64,16 @@ const Coupons: React.FC = () => {
             setActiveCoupons((prevState) => [...prevState, coupon]);
           }
         });
-      };
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data.error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    if (token && emailLogin) {
       fetchCoupons();
     }
   }, [token, emailLogin]);
@@ -70,13 +81,15 @@ const Coupons: React.FC = () => {
   return (
     <div className="profile-coupons">
       <div className="pc-navigation">
-        <p onClick={() => setCouponCategory("active")}>YOUR REWARDED COUPONS</p>
+        <p onClick={() => setCouponCategory("active")}>REWARDED COUPONS</p>
         <p onClick={() => setCouponCategory("used")}>USED COUPONS</p>
         <p onClick={() => setCouponCategory("expired")}>EXPIRED COUPONS</p>
       </div>
 
       <div className="pc-body">
-        {couponCategory === "active" ? (
+        {loading ? (
+          <p className="coupons-loading">Loading...</p>
+        ) : couponCategory === "active" ? (
           <>
             <Heading text={"YOUR REWARED COUPONS"} />
             <p className="pc-subheading">YOUR REWARED COUPONS</p>
@@ -109,26 +122,28 @@ const Coupons: React.FC = () => {
                 ))}
             </div>
           </>
-        ) : couponCategory === "expired" ? (
-          <>
-            <Heading text={"EXPIRED COUPONS"} />
-            <p className="pc-subheading">EXPIRED COUPONS</p>
-            <div className="pc-coupon-container">
-              {expiredCoupons &&
-                expiredCoupons.map((coupon) => (
-                  <div key={coupon._id} className="pc-coupon">
-                    <p>{coupon.name}</p>
-                    <p>
-                      <span>Expired on:</span>
-                      {new Date(coupon.validity).toLocaleDateString("en-GB")}
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </>
         ) : (
-          ""
+          couponCategory === "expired" && (
+            <>
+              <Heading text={"EXPIRED COUPONS"} />
+              <p className="pc-subheading">EXPIRED COUPONS</p>
+              <div className="pc-coupon-container">
+                {expiredCoupons &&
+                  expiredCoupons.map((coupon) => (
+                    <div key={coupon._id} className="pc-coupon">
+                      <p>{coupon.name}</p>
+                      <p>
+                        <span>Expired on:</span>
+                        {new Date(coupon.validity).toLocaleDateString("en-GB")}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+            </>
+          )
         )}
+
+        {error && <p>{error}</p>}
       </div>
     </div>
   );

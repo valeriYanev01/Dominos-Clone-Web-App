@@ -89,7 +89,16 @@ export const ModalContextProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   return (
     <ModalContext.Provider
-      value={{ openModal, setOpenModal, modalType, setModalType, product, setProduct, deal, setDeal }}
+      value={{
+        openModal,
+        setOpenModal,
+        modalType,
+        setModalType,
+        product,
+        setProduct,
+        deal,
+        setDeal,
+      }}
     >
       {children}
     </ModalContext.Provider>

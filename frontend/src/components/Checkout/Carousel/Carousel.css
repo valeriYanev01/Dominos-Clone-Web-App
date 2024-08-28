@@ -53,3 +53,39 @@
   margin: 0;
   width: fit-content !important;
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .checkout-page-carousel-container {
+    padding: 0;
+    padding-bottom: 1rem;
+  }
+
+  .swiper {
+    padding: 0 !important;
+  }
+
+  .swiper-slide {
+    padding: 0;
+    justify-content: center;
+  }
+
+  .checkout-page-carousel-heading {
+    margin: 0;
+    padding-top: 1rem;
+  }
+
+  .checkout-page-carousel-add-to-basket img {
+    width: 2rem !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

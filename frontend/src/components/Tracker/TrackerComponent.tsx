@@ -3,7 +3,7 @@ import "./TrackerComponent.css";
 import { OrderContext } from "../../context/OrderContext";
 import { Link, useNavigate } from "react-router-dom";
 import { ModalContext } from "../../context/ModalContext";
-import Heading from "../Heading/Heading";
+import Heading from "../Profile/Heading/Heading";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reducer = (state: any, action: { type: string }) => {
@@ -133,7 +133,7 @@ const TrackerComponent: React.FC = () => {
       <div className="tracker-svg-container">
         <div className="tracker-svg-text">
           <p>|</p>
-          <p>{state.text}</p>
+          <p className="tracker-status-text">{state.text}</p>
         </div>
         <div className="tracker-circle-container">
           <svg
@@ -180,34 +180,30 @@ const TrackerComponent: React.FC = () => {
           </svg>
           {!activeTracker && !activeOrder ? (
             <div className="tracker-new-order">
-              <div>
-                <p className="tracker-new-order-text">You don't have an active order.</p>
-                <br />
-                <span
-                  onClick={() => {
-                    setOpenModal(true);
-                    setModalType("method");
-                  }}
-                  className="tracker-new-order-btn"
-                >
-                  ORDER
-                </span>
-              </div>
+              <p className="tracker-new-order-text">You don't have an active order.</p>
+              <br />
+              <span
+                onClick={() => {
+                  setOpenModal(true);
+                  setModalType("method");
+                }}
+                className="tracker-new-order-btn"
+              >
+                ORDER
+              </span>
             </div>
           ) : (
             !activeTracker &&
             activeOrder && (
               <div className="tracker-continue-order">
-                <div>
-                  <p className="tracker-continue-order-text">Continue with your order.</p>
-                  <br />
-                  <Link
-                    to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}
-                    className="tracker-continue-order-link"
-                  >
-                    <span className="tracker-continue-order-btn">CONTINUE</span>
-                  </Link>
-                </div>
+                <p className="tracker-continue-order-text">Continue with your order.</p>
+                <br />
+                <Link
+                  to={`/menu/${orderStore.toLocaleLowerCase().split(" ").join("")}/pizza`}
+                  className="tracker-continue-order-link"
+                >
+                  <span className="tracker-continue-order-btn">CONTINUE</span>
+                </Link>
               </div>
             )
           )}

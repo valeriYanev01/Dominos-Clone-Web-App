@@ -309,6 +309,49 @@
     top: 7% !important;
   }
 
+  .toppings-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .all-toppings {
+    width: 100%;
+    margin-left: 2rem;
+    display: grid;
+  }
+
+  .topping-name {
+    font-size: 1.2rem;
+  }
+
+  .topping {
+    display: flex;
+    width: 100%;
+  }
+
+  .additional-topping {
+    margin-left: auto;
+  }
+
+  .topping label {
+    font-size: 1.1rem;
+    margin-left: 0.5rem !important;
+  }
+
+  .topping input {
+    transform: scale(1.2);
+  }
+
+  .topping input,
+  .topping label {
+    margin: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .all-toppings:last-of-type .topping:last-of-type {
+    margin-bottom: 2rem;
+  }
+
   /* FOR HALF AND HALF PIZZAS */
 
   .hah-size-crust-container,

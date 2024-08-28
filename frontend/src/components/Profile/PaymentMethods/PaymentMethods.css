@@ -32,3 +32,22 @@
   right: 0.4rem;
   bottom: 0.2rem;
 }
+
+@media screen and (max-width: 480px) {
+  .spm-body {
+    width: 90%;
+  }
+
+  .spm-cards-container li {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
+}

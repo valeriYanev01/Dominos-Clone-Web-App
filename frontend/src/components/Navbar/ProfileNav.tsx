@@ -12,9 +12,7 @@ const ProfileNav: React.FC<Props> = ({ setShowProfileMenu, setActiveProfileOptio
   return (
     <ul
       className="profile-nav"
-      style={
-        JSON.parse(localStorage.getItem("active-order") as string) ? { marginTop: "8.7rem" } : { paddingTop: "7rem" }
-      }
+      style={JSON.parse(localStorage.getItem("active-order") as string) ? { marginTop: "8.7rem" } : { marginTop: "0" }}
     >
       <li
         onClick={() => {

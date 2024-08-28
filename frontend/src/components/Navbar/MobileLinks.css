@@ -7,7 +7,7 @@
 }
 
 .navigation-mobile-links div {
-  margin-top: 10rem;
+  padding-top: 10rem;
 }
 
 .nav-mobile,
@@ -24,6 +24,14 @@
   list-style: none;
   border-bottom: 1px solid #0078ae;
   width: 80%;
+  display: flex;
+  align-items: center !important;
+  height: 100%;
+  user-select: none;
+}
+
+.nav-mobile li:last-child {
+  border: none !important;
 }
 
 .nav-mobile a {
@@ -45,4 +53,16 @@
 
 .nav-mobile-special {
   padding-bottom: 1rem;
+}
+
+.nav-mobile-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-mobile-profile img,
+.nav-mobile-profile span {
+  margin: 0;
 }

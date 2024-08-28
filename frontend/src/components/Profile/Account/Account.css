@@ -1,6 +1,6 @@
 .pa-body {
   width: 80%;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .pa-disabled {
@@ -10,12 +10,12 @@
 .pa-body div {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .pa-name-container {
   flex-direction: row !important;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .pa-name-container div {
@@ -30,7 +30,7 @@
 .pa-body input {
   border: 1px solid #e3e4e5;
   background-color: #e3e4e581;
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .pa-body input:focus {
@@ -40,23 +40,51 @@
 
 .pa-body label {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .pa-btn {
   background-color: #609e29;
   color: #fff;
   text-align: center;
-  padding: 5px 10px;
+  padding: 0.3125rem 0.625rem;
   cursor: pointer;
   border-radius: 5px;
   width: 25%;
   margin-right: 0;
-  margin-top: 50px;
-  font-size: 22px;
+  margin-top: 3rem;
+  font-size: 1.375rem;
   letter-spacing: 1px;
 }
 
 .pa-btn:hover {
   background-color: #78ac36;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 480px) {
+  .pa-body {
+    width: 95%;
+  }
+
+  .pa-name-container {
+    flex-direction: column !important;
+    gap: 0;
+    margin-bottom: 0 !important;
+  }
+
+  .pa-name-container div label,
+  div label {
+    font-size: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 1024px) {
+}
+
+@media screen and (max-width: 1200px) {
 }

@@ -5,7 +5,7 @@ import "./PaymentMethods.css";
 import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
 import { LoginContext } from "../../../context/LoginContext";
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 
 interface PaymentMethod {
   id: string;

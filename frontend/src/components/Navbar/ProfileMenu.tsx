@@ -36,6 +36,7 @@ const ProfileMenu: React.FC<Props> = ({ setShowProfileMenu }) => {
     }
 
     localStorage.clear();
+    window.location.reload();
   };
 
   return (

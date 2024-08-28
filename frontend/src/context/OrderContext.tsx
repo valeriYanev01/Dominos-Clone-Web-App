@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Address } from "../types/Address";
 import { LoginContext } from "./LoginContext";
+import { AddressContext } from "./AddressContext";
 
 interface OrderDetails {
   type: string;
@@ -98,6 +99,8 @@ interface OrderContextInterface {
   setSelectedCoupon: React.Dispatch<React.SetStateAction<string>>;
   showCoupons: boolean;
   setShowCoupons: React.Dispatch<React.SetStateAction<boolean>>;
+  isReadyForOrder: boolean;
+  setIsReadyForOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 class Product {
@@ -191,6 +194,8 @@ export const OrderContext = createContext<OrderContextInterface>({
   setSelectedCoupon: () => {},
   showCoupons: false,
   setShowCoupons: () => {},
+  isReadyForOrder: false,
+  setIsReadyForOrder: () => {},
 });
 
 export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -241,14 +246,22 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   });
   const [selectedCoupon, setSelectedCoupon] = useState("");
   const [showCoupons, setShowCoupons] = useState(false);
+  const [isReadyForOrder, setIsReadyForOrder] = useState(false);
 
   const { loggedIn } = useContext(LoginContext);
+  const { selectedAddress } = useContext(AddressContext);
 
   useEffect(() => {
     if (orderTime) {
       localStorage.setItem("order-time", orderTime);
     }
   }, [orderTime]);
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setItemsInBasket([]);
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     if (localStorage.getItem("order-time")) {
@@ -572,6 +585,18 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
   }, [savedData]);
 
+  useEffect(() => {
+    if (
+      selectedAddress &&
+      selectedAddress.name &&
+      selectedAddress.name.length > 0 &&
+      selectedAddress.fullAddress.length > 0 &&
+      orderTime.length > 0
+    ) {
+      setIsReadyForOrder(true);
+    }
+  }, [orderTime.length, selectedAddress, setIsReadyForOrder]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -621,6 +646,8 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
         setSelectedCoupon,
         showCoupons,
         setShowCoupons,
+        isReadyForOrder,
+        setIsReadyForOrder,
       }}
     >
       {children}

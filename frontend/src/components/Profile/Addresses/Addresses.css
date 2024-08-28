@@ -129,6 +129,10 @@
   background-color: #df232d;
 }
 
+.addresses-loading {
+  text-align: center;
+}
+
 @media screen and (max-width: 480px) {
   .your-store-text {
     font-size: 1rem;
@@ -140,6 +144,34 @@
 
   .address-settings-details-container div {
     flex-direction: column;
+  }
+
+  .pas-body {
+    flex-direction: column;
+  }
+
+  .pas-single-address {
+    margin-left: 1rem;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
+
+  .pas-edit {
+    display: flex;
+    margin-top: 1rem;
+    margin-right: 0;
+  }
+
+  .pas-edit-save,
+  .pas-edit-delete {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .pas-edit-save {
+    margin: 0;
   }
 }
 
