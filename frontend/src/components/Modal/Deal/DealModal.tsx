@@ -212,6 +212,7 @@ const DealModal: React.FC = () => {
       secondHalf: { name: "", addedToppings: [], removedToppings: [] },
       size: "",
       toppings: [],
+      deal: [],
     };
 
     const pizzas = [...selectedPizzas];
