@@ -16,6 +16,7 @@ const DeliveryModal: React.FC = () => {
   const [showAddresses, setShowAddresses] = useState(false);
   const [showOtherAddresses, setShowOtherAddresses] = useState(false);
   const [showRecentAddress, setShowRecentAddress] = useState(false);
+  const [newAddresses, setNewAddresses] = useState<Address[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -85,9 +86,12 @@ const DeliveryModal: React.FC = () => {
           params: { email: emailLogin },
         });
 
-        const newAddresses = response.data.allAddresses.addresses.filter((address: Address) => {
-          return address.name !== lastOrderAddressName;
-        });
+        if (lastOrderAddressName) {
+          const tempNewAddresses = response.data.allAddresses.addresses.filter((address: Address) => {
+            return address.name !== lastOrderAddressName;
+          });
+          setNewAddresses(tempNewAddresses);
+        }
 
         if (newAddresses.length < 1) {
           setShowOtherAddresses(false);
@@ -110,7 +114,7 @@ const DeliveryModal: React.FC = () => {
     if (emailLogin && token) {
       getAllAddresses();
     }
-  }, [emailLogin, lastOrderAddressName, token]);
+  }, [emailLogin, lastOrderAddressName, newAddresses, token]);
 
   useEffect(() => {
     if (selectedAddress && selectedAddress.store) {
@@ -259,9 +263,9 @@ const DeliveryModal: React.FC = () => {
         <img src="/svg/decorRightRed.svg" className="deal-decor" />
       </div>
 
-      {loading && <p className="dm-loading-addresses">Loading...</p>}
+      {loading && (!lastOrderAddress || !showRecentAddress) && <p className="dm-loading-addresses">Loading...</p>}
 
-      {!showAddresses && (!lastOrderAddress || !showRecentAddress) && !loading ? (
+      {!showAddresses && !lastOrderAddress && !showRecentAddress && !loading ? (
         <p className="dm-no-addresses">To begin your delivery order please add your delivery address below</p>
       ) : (
         <div className="dm-adresses-container">
