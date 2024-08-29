@@ -26,6 +26,7 @@ const LoginModal = () => {
   const handleLogin = useCallback(async () => {
     setError("");
     setLoading(true);
+
     try {
       const response = await axios.post("https://dcback.vercel.app/api/users/login", {
         email,
@@ -37,6 +38,7 @@ const LoginModal = () => {
       setOpenModal(false);
       setLoggedIn(true);
       setEmailLogin(response.data.email);
+      window.location.reload();
     } catch (err) {
       console.log("CATCh");
       console.log(err);

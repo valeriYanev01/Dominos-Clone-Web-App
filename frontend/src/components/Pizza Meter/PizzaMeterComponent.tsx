@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../../context/LoginContext";
 import "./PizzaMeterComponent.css";
 import { useLocation } from "react-router-dom";
+import { MobileContext } from "../../context/MobileContext";
 
 const PizzaMeterComponent: React.FC = () => {
   const [inDominosMorePage, setInDominosMorePage] = useState(false);
 
   const { dominosMorePoints } = useContext(LoginContext);
+  const { isMobile } = useContext(MobileContext);
 
   const location = useLocation();
 
@@ -37,7 +39,9 @@ const PizzaMeterComponent: React.FC = () => {
             : ""
         }`}
         className="pizza-meter"
-        style={inDominosMorePage ? { width: "20rem" } : {}}
+        style={
+          inDominosMorePage && !isMobile ? { width: "20rem" } : inDominosMorePage && isMobile ? { width: "12rem" } : {}
+        }
       />
     </div>
   );

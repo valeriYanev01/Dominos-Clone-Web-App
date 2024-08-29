@@ -106,7 +106,6 @@ const HalfAndHalfPizzaQuantity: React.FC<Props> = ({
       setProduct([]);
 
       setItemsInBasket((prevItems) => {
-        console.log(prevItems);
         return [
           ...prevItems,
           {

@@ -83,6 +83,11 @@
   margin-top: 0;
 }
 
+.checkout-details-order {
+  max-height: 50vh;
+  overflow: auto;
+}
+
 .checkout-details-payment-container {
   flex: 1;
   margin-top: 0;

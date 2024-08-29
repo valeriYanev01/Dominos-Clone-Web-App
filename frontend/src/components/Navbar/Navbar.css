@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   justify-content: space-between;
-  width: 100%;
+  width: 100vw;
   padding: 0.625rem 0;
   z-index: 9999;
 }
@@ -18,6 +18,7 @@
 
 .navigation-menu-mobile {
   display: none;
+  margin-left: 1rem;
 }
 
 .navigation-list-container-links > li > a,
@@ -251,7 +252,7 @@
   list-style: none;
   top: 5.625rem;
   justify-content: center;
-  width: 100%;
+  width: 100vw;
   background-color: #f4f4f4;
   z-index: 9;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);

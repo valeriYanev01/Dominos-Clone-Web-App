@@ -16,6 +16,9 @@
 }
 
 @media screen and (max-width: 768px) {
+  .menu-products-container {
+    grid-template-columns: repeat(3, auto);
+  }
 }
 
 @media screen and (max-width: 1024px) {
