@@ -212,53 +212,57 @@ const OrderStep: React.FC<Props> = ({
   };
 
   return (
-    <div className="checkout-details-order">
-      <span className="checkout-details-step">3</span>
+    <div className="checkout-details-order-container">
+      <div className="checkout-details-order">
+        <span className="checkout-details-step">3</span>
 
-      <p className="checkout-details-delivery-heading">ORDER CONFIRMATION</p>
+        <p className="checkout-details-delivery-heading">ORDER CONFIRMATION</p>
 
-      <div>
-        {itemsInBasket
-          .filter((item) => item.deal)
-          .map((item, i) => (
-            <DealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
-          ))}
-
-        {itemsInBasket.length > 0 &&
-          itemsInBasket
-            .filter((item) => !item.deal)
+        <div>
+          {itemsInBasket
+            .filter((item) => item.deal)
             .map((item, i) => (
-              <NonDealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
+              <DealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
             ))}
 
-        {freeDelivery ? (
-          <p className="navigation-basket-promo-text">
-            Free Delivery <span className="navigation-basket-free-delivery">1.99 Lv.</span> 0.00 Lv.
-          </p>
-        ) : (
-          <p>Paid Delivery 1.99 BGN!!!</p>
-        )}
+          {itemsInBasket.length > 0 &&
+            itemsInBasket
+              .filter((item) => !item.deal)
+              .map((item, i) => (
+                <NonDealItem key={uuid()} removeItemFromBasket={removeItemFromBasket} item={item} i={i} />
+              ))}
 
-        <div className="navigation-basket-total-price-container">
-          <div>
-            Total:{" "}
-            <span className={`${finalPrice + 1 < finalPriceNoDiscount ? "navigation-basket-price-total-line" : ""}`}>
-              {freeDelivery ? finalPriceNoDiscount.toFixed(2) : (finalPriceNoDiscount + 1.99).toFixed(2)}
-            </span>
-          </div>
-          {finalPrice + 1 < finalPriceNoDiscount && (
-            <>
-              <p className="navigation-basket-price-discount">
-                Total with discount: <span>{finalPrice.toFixed(2)}</span>
-              </p>
-              <p className="navigation-basket-price-save">You Save: {(finalPriceNoDiscount - finalPrice).toFixed(2)}</p>
-            </>
+          {freeDelivery ? (
+            <p className="navigation-basket-promo-text">
+              Free Delivery <span className="navigation-basket-free-delivery">1.99 Lv.</span> 0.00 Lv.
+            </p>
+          ) : (
+            <p>Paid Delivery 1.99 BGN!!!</p>
           )}
-        </div>
-      </div>
 
-      <div className="checkout-final-order-btn" onClick={handleOrder}>
-        ORDER NOW
+          <div className="navigation-basket-total-price-container">
+            <div>
+              Total:{" "}
+              <span className={`${finalPrice + 1 < finalPriceNoDiscount ? "navigation-basket-price-total-line" : ""}`}>
+                {freeDelivery ? finalPriceNoDiscount.toFixed(2) : (finalPriceNoDiscount + 1.99).toFixed(2)}
+              </span>
+            </div>
+            {finalPrice + 1 < finalPriceNoDiscount && (
+              <>
+                <p className="navigation-basket-price-discount">
+                  Total with discount: <span>{finalPrice.toFixed(2)}</span>
+                </p>
+                <p className="navigation-basket-price-save">
+                  You Save: {(finalPriceNoDiscount - finalPrice).toFixed(2)}
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="checkout-final-order-btn" onClick={handleOrder}>
+          ORDER NOW
+        </div>
       </div>
     </div>
   );
