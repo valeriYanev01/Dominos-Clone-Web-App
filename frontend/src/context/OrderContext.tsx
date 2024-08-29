@@ -223,9 +223,7 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   });
   const [navigateToCheckoutPage, setNavigateToCheckoutPage] = useState(false);
   const [itemsInBasket, setItemsInBasket] = useState<BasketItem[]>(
-    JSON.parse(localStorage.getItem("basket-items") as string)
-      ? JSON.parse(localStorage.getItem("basket-items") as string)
-      : []
+    localStorage.getItem("basket-items") ? JSON.parse(localStorage.getItem("basket-items") as string) : []
   );
   const [finalPrice, setFinalPrice] = useState(0);
   const [thirdPizzaPromotions, setThirdPizzaPromotions] = useState(0);
@@ -252,16 +250,26 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   const { selectedAddress } = useContext(AddressContext);
 
   useEffect(() => {
+    const tempOrderType = localStorage.getItem("order-details");
+
+    if (tempOrderType) {
+      setOrderType(JSON.parse(tempOrderType as string).type);
+    }
+  }, []);
+
+  useEffect(() => {
     if (orderTime) {
       localStorage.setItem("order-time", orderTime);
     }
   }, [orderTime]);
 
   useEffect(() => {
-    if (!loggedIn) {
+    const loggedInUser = localStorage.getItem("user");
+
+    if (loggedInUser && loggedInUser.length < 1) {
       setItemsInBasket([]);
     }
-  }, [loggedIn]);
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem("order-time")) {
@@ -308,6 +316,13 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     localStorage.setItem("basket-items", JSON.stringify(itemsInBasket));
   }, [itemsInBasket]);
+
+  // useEffect(() => {
+  //instead of this useEffect, i initialize it with localStorage value, to keep state on browser refresh
+  //   if (localStorage.getItem("basket-items")) {
+  //     setItemsInBasket(JSON.parse(localStorage.getItem("basket-items") as string));
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (itemsInBasket.length > 0) {
