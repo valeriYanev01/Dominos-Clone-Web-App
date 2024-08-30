@@ -15,14 +15,14 @@ import Orders from "./components/Profile/Orders/Orders";
 import Coupons from "./components/Profile/Coupons/Coupons";
 import PrivacySettings from "./components/Profile/PrivacySettings/PrivacySettings";
 import PaymentMethods from "./components/Profile/PaymentMethods/PaymentMethods";
-import AddAddress from "./pages/addAddress/AddAddress";
 import Tracker from "./pages/tracker/Tracker";
 import { Checkout } from "./pages/checkout/Checkout";
 import Careers from "./pages/careers/Careers";
-
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import NewPassword from "./pages/forgotPassword/NewPassword";
+import AddAddress from "./pages/addAddress/AddAddress";
+
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 function App() {
   const { openModal } = useContext(ModalContext);
@@ -56,8 +56,6 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/step1" element={<Home />} />
-        <Route path="/step2" element={<Home />} />
         <Route path="menu/:store/*" element={<Menu />} />
         <Route path="dominos-more" element={<DominosMore />} />
         <Route path="signup" element={<Signup />} />
