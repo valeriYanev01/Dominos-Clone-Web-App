@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";

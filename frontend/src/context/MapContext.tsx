@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { ReactNode, createContext, useState } from "react";
 
 interface SuggestedAddresses {

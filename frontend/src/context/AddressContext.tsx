@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import axios from "axios";
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { LoginContext } from "./LoginContext";
