@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Address } from "../types/Address";
 import { LoginContext } from "./LoginContext";
