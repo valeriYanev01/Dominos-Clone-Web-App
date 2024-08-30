@@ -2,7 +2,7 @@ import React from "react";
 import "./AddAddress.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import AddAddressComponent from "../../components/AddAddress/AddAddressComponent";
+import AddAddressComponent from "../../components/NewAddress/AddAddressComponent";
 
 const AddAddress: React.FC = () => {
   return (
