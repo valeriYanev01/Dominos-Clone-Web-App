@@ -699,12 +699,12 @@ userSchema.statics.newOrder = async function (
                  ${
                    product.name === "Half and Half"
                      ? `First Half: ${product.firstHalf.name} 
-               Added: ${product.firstHalf.modifications.added.join(", ")},
+               Added: ${product.firstHalf.modifications.addedToppings.join(", ")},
                Removed: ${product.firstHalf.modifications.removed.join(", ")},
 
                Second Half: ${product.secondHalf.name} 
                Added: ${product.secondHalf.modifications.added.join(", ")},
-               Removed: ${product.secondHalf.modifications.removed.join(", ")}
+               Removed: ${product.secondHalf.modifications.removedToppings.join(", ")}
            `
                      : ""
                  }`;
@@ -746,11 +746,11 @@ userSchema.statics.newOrder = async function (
                  ${
                    product.name === "Half and Half"
                      ? `First Half: ${product.firstHalf.name} 
-               Added: ${product.firstHalf.modifications.added.join(", ")},
-               Removed: ${product.firstHalf.modifications.removed.join(", ")},
+               Added: ${product.firstHalf.modifications.addedToppings.join(", ")},
+               Removed: ${product.firstHalf.modifications.removedToppings.join(", ")},
                Second Half: ${product.secondHalf.name} 
-               Added: ${product.secondHalf.modifications.added.join(", ")},
-               Removed: ${product.secondHalf.modifications.removed.join(", ")}
+               Added: ${product.secondHalf.modifications.addedToppings.join(", ")},
+               Removed: ${product.secondHalf.modifications.removedToppings.join(", ")}
            `
                      : ""
                  }`;
@@ -804,12 +804,12 @@ userSchema.statics.newOrder = async function (
       ${
         product.name === "Half and Half"
           ? `First Half: ${product.firstHalf.name} 
-              Added: ${product.firstHalf.modifications.added.join(", ")},
-              Removed: ${product.firstHalf.modifications.removed.join(", ")},
+              Added: ${product.firstHalf.modifications.addedToppings.join(", ")},
+              Removed: ${product.firstHalf.modifications.removedToppings.join(", ")},
 
               Second Half: ${product.secondHalf.name} 
-              Added: ${product.secondHalf.modifications.added.join(", ")},
-              Removed: ${product.secondHalf.modifications.removed.join(", ")}
+              Added: ${product.secondHalf.modifications.addedToppings.join(", ")},
+              Removed: ${product.secondHalf.modifications.removedToppings.join(", ")}
             `
           : ""
       }`;
@@ -883,13 +883,13 @@ userSchema.statics.newOrder = async function (
           type: product.type,
           firstHalf: {
             name: product.firstHalf.name,
-            addedToppings: product.firstHalf.modifications.added,
-            removedToppings: product.firstHalf.modifications.removed,
+            addedToppings: product.firstHalf.modifications.addedToppings,
+            removedToppings: product.firstHalf.modifications.removedToppings,
           },
           secondHalf: {
             name: product.secondHalf.name,
-            addedToppings: product.secondHalf.modifications.added,
-            removedToppings: product.secondHalf.modifications.removed,
+            addedToppings: product.secondHalf.modifications.addedToppings,
+            removedToppings: product.secondHalf.modifications.removedToppings,
           },
         };
       } else {
